@@ -79,7 +79,6 @@ const PDFGenerator = ({
     <div className="pdf-generator space-y-4">
       {showPreview && (
         <div className="mb-4">
-          <h3 className="text-lg font-semibold text-gray-700 mb-3">Document Preview</h3>
           <div className="border border-gray-300 rounded-lg overflow-hidden">
             <BlobProvider 
               document={<PDFDocument 

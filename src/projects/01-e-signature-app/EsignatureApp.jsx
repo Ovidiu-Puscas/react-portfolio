@@ -25,7 +25,7 @@ export default function EsignatureApp() {
   };
 
   return (
-    <div className="min-h-[calc(100dvh-65px)] bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100">
       
       {/* Mobile-first responsive layout */}
       <div className="flex flex-col lg:grid lg:grid-cols-10 lg:gap-0 h-full">

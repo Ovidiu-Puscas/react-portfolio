@@ -58,7 +58,7 @@ const AppLibrary = () => {
         </div>
         
         {/* App Content */}
-        <div className="">
+        <div className="h-[calc(100vh-65px)]">
           <selectedApp.component />
         </div>
       </div>
