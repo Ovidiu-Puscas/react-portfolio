@@ -1,0 +1,108 @@
+import React, { useState } from 'react';
+import ProjectCard from './components/ProjectCard';
+import EsignatureApp from './01-e-signature-app/EsignatureApp';
+
+const AppLibrary = () => {
+  const [selectedApp, setSelectedApp] = useState(null);
+
+  const apps = [
+    {
+      id: 'e-signature',
+      title: 'E-Signature App',
+      description: 'Create and sign documents electronically with real-time PDF preview. Features digital signature capture, document editing, and PDF generation.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+        </svg>
+      ),
+      color: 'blue',
+      component: EsignatureApp
+    },
+    // Add more apps here as you create them
+  ];
+
+  const handleAppSelect = (app) => {
+    if (app.component) {
+      setSelectedApp(app);
+    } else {
+      // For coming soon apps, show a notification or modal
+      alert(`${app.title} is coming soon!`);
+    }
+  };
+
+  const handleBackToLibrary = () => {
+    setSelectedApp(null);
+  };
+
+  // If an app is selected, render it
+  if (selectedApp) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Header with back button */}
+        <div className="bg-white shadow-sm border-b">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <button
+                onClick={handleBackToLibrary}
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
+              >
+                <svg className="w-5 h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span className="hidden sm:inline">Back to Library</span>
+              </button>
+              <h1 className="text-lg sm:text-xl font-semibold text-gray-900">{selectedApp.title}</h1>
+              <div className="w-16 sm:w-20"></div> {/* Spacer for centering */}
+            </div>
+          </div>
+        </div>
+        
+        {/* App Content */}
+        <div className="">
+          <selectedApp.component />
+        </div>
+      </div>
+    );
+  }
+
+  // Render the library view
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+            Project Library
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+            Explore my collection of React applications. Each project demonstrates different skills and technologies.
+          </p>
+        </div>
+
+        {/* Apps Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {apps.map((app) => (
+            <ProjectCard
+              key={app.id}
+              title={app.title}
+              description={app.description}
+              icon={app.icon}
+              color={app.color}
+              onClick={() => handleAppSelect(app)}
+              isActive={false}
+            />
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div className="mt-12 sm:mt-16 text-center">
+          <p className="text-gray-500 text-sm px-4">
+            More projects coming soon! Each card represents a different React application showcasing various skills and technologies.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AppLibrary; 
