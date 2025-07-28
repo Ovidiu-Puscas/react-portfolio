@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ProjectCard from './components/ProjectCard';
 import EsignatureApp from './01-e-signature-app/EsignatureApp';
+import Title from './components/Title';
+import Description from './components/Description';
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -51,7 +53,7 @@ const AppLibrary = () => {
                 </svg>
                 <span className="hidden sm:inline">Back to Library</span>
               </button>
-              <h1 className="text-lg sm:text-xl font-semibold text-gray-900">{selectedApp.title}</h1>
+              <Title title={{ heading: 'h1', text: selectedApp.title, class: 'text-lg sm:text-xl font-semibold text-gray-900' }} />
               <div className="w-16 sm:w-20"></div> {/* Spacer for centering */}
             </div>
           </div>
@@ -71,12 +73,8 @@ const AppLibrary = () => {
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-            Project Library
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-            Explore my collection of React applications. Each project demonstrates different skills and technologies.
-          </p>
+          <Title title={{ heading: 'h1', text: 'Project Library', class: 'text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4' }} />
+          <Description description={{ text: 'Explore my collection of React applications. Each project demonstrates different skills and technologies.', class: 'text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4' }} />
         </div>
 
         {/* Apps Grid */}
@@ -96,9 +94,7 @@ const AppLibrary = () => {
 
         {/* Footer */}
         <div className="mt-12 sm:mt-16 text-center">
-          <p className="text-gray-500 text-sm px-4">
-            More projects coming soon! Each card represents a different React application showcasing various skills and technologies.
-          </p>
+          <Description description={{ text: 'More projects coming soon! Each card represents a different React application showcasing various skills and technologies.', class: 'text-gray-500 text-sm px-4' }} />
         </div>
       </div>
     </div>
