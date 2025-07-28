@@ -7,7 +7,7 @@ const SEO = ({
   image, 
   url, 
   type = 'website',
-  author = 'React Developer'
+  author = 'Ovidiu Alexandru Pușcaș'
 }) => {
   useEffect(() => {
     // Update document title
