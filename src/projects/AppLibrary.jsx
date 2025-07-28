@@ -4,6 +4,7 @@ import EsignatureApp from './01-e-signature-app/EsignatureApp';
 import Title from './components/Title';
 import Description from './components/Description';
 import SEO from '../components/SEO';
+import ComplementaryColorApp from './02-complementary-colors/ComplementaryColorsApp';
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -20,6 +21,19 @@ const AppLibrary = () => {
       ),
       color: 'blue',
       component: EsignatureApp
+    },
+    {
+      //Complementary Color Generator
+      id: 'complementary-color',
+      title: 'Complementary Color Generator',
+      description: 'Generate complementary colors for any given color. Features a color picker and a color palette.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.636-1.636a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+        </svg>
+      ),
+      color: 'green',
+      component: ComplementaryColorApp
     },
     // Add more apps here as you create them
   ];
