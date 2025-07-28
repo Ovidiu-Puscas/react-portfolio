@@ -62,6 +62,33 @@ An interactive color theory application demonstrating advanced UI/UX and color m
 - Responsive layout with smooth animations and transitions
 - Modern UI with gradients, shadows, and hover effects
 
+### Like My Photo App
+An interactive photo gallery application demonstrating social media-like functionality and user interaction patterns:
+
+**Core Features:**
+- Interactive photo grid with masonry layout
+- Double-click to like functionality with heart animations
+- Real-time like counter updates
+- Responsive masonry grid layout
+- Heart animation effects on like interaction
+- Photo overlay with like indicators
+
+**React Skills Demonstrated:**
+- **Custom Hooks**: useLikePhoto hook for like state management
+- **State Management**: useState for photo data and like interactions
+- **Component Composition**: Modular photo card, grid, and overlay components
+- **Event Handling**: Double-click interactions and like/unlike functionality
+- **Responsive Design**: Masonry grid layout with responsive breakpoints
+- **Animation Effects**: Heart animations and visual feedback
+
+**Technical Implementation:**
+- Custom useLikePhoto hook for like state management
+- Masonry grid layout using CSS columns
+- Heart animation with setTimeout for visual feedback
+- Responsive design with mobile-first approach
+- Photo data management with dynamic like updates
+- Modern UI with hover effects and smooth transitions
+
 ### Coming Soon
 - Task Manager with drag-and-drop functionality
 - Weather Dashboard with real-time data
@@ -79,6 +106,10 @@ An interactive color theory application demonstrating advanced UI/UX and color m
 ### Signature & PDF Functionality
 - **react-signature-canvas 1.1.0-alpha.2**: Digital signature capture and manipulation
 - **@react-pdf/renderer 4.3.0**: PDF generation, preview, and download capabilities
+
+### Color & UI Components
+- **@uiw/react-color-wheel 2.7.1**: Interactive color wheel component
+- **@tailwindcss/line-clamp 0.4.4**: Text truncation utilities
 
 ### Development Tools
 - **Create React App 5.0.1**: Modern React development environment
@@ -110,12 +141,15 @@ This project demonstrates proficiency in:
 ### Technical Implementation
 - **PDF Generation**: Real-time PDF creation with custom styling
 - **Canvas Manipulation**: Direct canvas API usage for signature capture
+- **Color Theory**: Advanced color calculations and harmony analysis
+- **Social Interactions**: Like functionality with animations and state management
 - **Data Handling**: Form state management and data validation
 - **File Operations**: PDF download and preview functionality
 
 ### Code Quality
 - **Component Structure**: Clean separation of concerns
 - **Reusable Components**: Modular design for scalability
+- **Custom Hooks**: Encapsulated logic for reusability
 - **Modern JavaScript**: ES6+ features and async patterns
 - **CSS Architecture**: Utility-first styling with Tailwind
 
@@ -164,6 +198,8 @@ src/
 ├── App.js                 # Main application component
 ├── App.css               # Global styles
 ├── index.js              # Application entry point
+├── components/
+│   └── SEO.jsx          # SEO component
 └── projects/
     ├── AppLibrary.jsx    # Main project library component
     ├── components/       # Shared components
@@ -176,17 +212,30 @@ src/
     │       ├── PDFGenerator.jsx
     │       ├── PDFRenderer.jsx
     │       └── DrawSignature.jsx
-    └── 02-complementary-colors/
-        ├── ComplementaryColorsApp.jsx
+    ├── 02-complementary-colors/
+    │   ├── ComplementaryColorsApp.jsx
+    │   ├── components/
+    │   │   ├── ColorCombination.jsx
+    │   │   ├── ColorDisplay.jsx
+    │   │   ├── ColorPicker.jsx
+    │   │   ├── ColorPreview.jsx
+    │   │   ├── ColorWheel.jsx
+    │   │   └── HarmonyDisplay.jsx
+    │   └── utils/
+    │       └── colorUtils.js
+    └── 03-like-my-photo/
+        ├── LikePhotoApp.jsx
         ├── components/
-        │   ├── ColorCombination.jsx
-        │   ├── ColorDisplay.jsx
-        │   ├── ColorPicker.jsx
-        │   ├── ColorPreview.jsx
-        │   ├── ColorWheel.jsx
-        │   └── HarmonyDisplay.jsx
-        └── utils/
-            └── colorUtils.js
+        │   ├── PhotoCard.jsx
+        │   ├── PhotoGrid.jsx
+        │   ├── PhotoContainer.jsx
+        │   ├── PhotoOverlay.jsx
+        │   ├── LikeIndicator.jsx
+        │   ├── HeartAnimation.jsx
+        │   ├── PhotoImage.jsx
+        │   └── LikeButtons.jsx
+        └── hooks/
+            └── useLikePhoto.js
 ```
 
 ## Deployment

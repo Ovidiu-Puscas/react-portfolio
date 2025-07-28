@@ -5,6 +5,7 @@ import Title from './components/Title';
 import Description from './components/Description';
 import SEO from '../components/SEO';
 import ComplementaryColorApp from './02-complementary-colors/ComplementaryColorsApp';
+import LikePhotoApp from './03-like-my-photo/LikePhotoApp';
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -34,6 +35,18 @@ const AppLibrary = () => {
       ),
       color: 'green',
       component: ComplementaryColorApp
+    },
+    {
+      id: 'like-my-photo',
+      title: 'Like My Photo',
+      description: 'Like My Photo',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      ),
+      color: 'purple',
+      component: LikePhotoApp
     },
     // Add more apps here as you create them
   ];

@@ -36,7 +36,7 @@ const ComplementaryColorsApp = () => {
         description="Explore color harmonies with our interactive complementary colors tool. Generate complementary, monochromatic, analogous, triadic, and tetradic color schemes."
         keywords="color harmony, complementary colors, color theory, color wheel, color schemes, design tools"
         type="website"
-        author="React Developer"
+        author="Ovidiu Alexandru Pușcaș"
       />
       
       <div className="bg-gray-50 py-8 px-4">
