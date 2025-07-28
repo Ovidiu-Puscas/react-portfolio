@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import PDFGenerator from './components/PDFGenerator';
+import Title from '../components/Title';
+import Description from '../components/Description';
 
 export default function EsignatureApp() {
   const sigPadRef = useRef();
@@ -31,7 +33,7 @@ export default function EsignatureApp() {
       <div className="flex flex-col lg:grid lg:grid-cols-10 lg:gap-0 h-full">
         {/* Left Column - Signature Form (30% on desktop, full width on mobile) */}
         <div className="lg:col-span-3 bg-white p-4 sm:p-6 lg:p-8 overflow-y-auto order-2 lg:order-1">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6">Document Details</h2>
+          <Title title={{ heading: 'h2', text: 'Document Details', class: 'text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6' }} />
           
           {/* Document Form */}
           <div className="space-y-4 mb-6 sm:mb-8">
@@ -70,7 +72,7 @@ export default function EsignatureApp() {
 
           {/* Signature Section */}
           <div>
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">Digital Signature</h3>
+            <Title title={{ heading: 'h3', text: 'Digital Signature', class: 'text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4' }} />
             <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-4">
               <SignatureCanvas 
                 ref={sigPadRef}
@@ -102,7 +104,7 @@ export default function EsignatureApp() {
 
         {/* Right Column - PDF Preview (70% on desktop, full width on mobile) */}
         <div className="lg:col-span-7 bg-white p-4 sm:p-6 lg:p-8 overflow-y-auto order-1 lg:order-2">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6">PDF Preview</h2>
+          <Title title={{ heading: 'h2', text: 'PDF Preview', class: 'text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6' }} />
           
           {signatureData ? (
             <div className="space-y-4">
@@ -121,7 +123,7 @@ export default function EsignatureApp() {
               <svg className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mb-3 sm:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <p className="text-gray-500 text-base sm:text-lg font-medium text-center">Complete the form and add your signature to see the PDF preview</p>
+              <Description description={{ text: 'Complete the form and add your signature to see the PDF preview', class: 'text-gray-500 text-base sm:text-lg font-medium text-center' }} />
             </div>
           )}
         </div>

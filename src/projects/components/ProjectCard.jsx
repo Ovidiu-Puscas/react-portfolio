@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Title from './Title';
+import Description from './Description';
 
 const ProjectCard = ({ 
   title, 
@@ -54,8 +56,8 @@ const ProjectCard = ({
             )}
           </div>
           
-          <h3 className="text-xl font-bold mb-2">{title}</h3>
-          <p className="text-white/80 text-sm line-clamp-2">{description}</p>
+          <Title title={{ heading: 'h3', text: title, class: 'text-xl font-bold mb-2' }} />
+          <Description description={{ text: description, class: 'text-white/80 text-sm line-clamp-2' }} />
           
           {/* Hover Effect Overlay */}
           <div className={`
