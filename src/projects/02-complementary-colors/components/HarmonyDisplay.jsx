@@ -8,6 +8,7 @@ const HarmonyDisplay = ({ colors, harmonyType, selectedColor }) => {
       case 'analogous': return 'Analogous';
       case 'triadic': return 'Triadic';
       case 'tetradic': return 'Tetradic';
+      case 'square': return 'Square';
       default: return 'Color Harmony';
     }
   };
@@ -19,6 +20,7 @@ const HarmonyDisplay = ({ colors, harmonyType, selectedColor }) => {
       case 'analogous': return 'Colors that are next to each other on the color wheel';
       case 'triadic': return 'Three colors equally spaced around the color wheel';
       case 'tetradic': return 'Four colors forming a rectangle on the color wheel';
+      case 'square': return 'Four colors forming a square on the color wheel';
       default: return '';
     }
   };

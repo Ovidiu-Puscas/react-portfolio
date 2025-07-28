@@ -37,6 +37,31 @@ A comprehensive digital signature application demonstrating advanced React skill
 - Responsive grid layout with proper mobile optimization
 - Modern UI with gradients, shadows, and smooth transitions
 
+### Complementary Colors App
+An interactive color theory application demonstrating advanced UI/UX and color manipulation skills:
+
+**Core Features:**
+- Interactive color wheel with real-time color selection
+- Complementary color calculation and display
+- Color harmony analysis (analogous, triadic, split-complementary)
+- Color preview with hex and RGB values
+- Responsive design with mobile-optimized touch interactions
+
+**React Skills Demonstrated:**
+- **State Management**: useState for color state, harmony calculations, and UI interactions
+- **Custom Hooks**: Color utility functions and harmony calculations
+- **Component Composition**: Modular color picker, wheel, and display components
+- **Event Handling**: Mouse and touch interactions for color selection
+- **Responsive Design**: Mobile-first approach with touch-friendly controls
+- **Real-time Updates**: Dynamic color calculations and preview updates
+
+**Technical Implementation:**
+- Color theory algorithms (complementary, analogous, triadic harmonies)
+- Interactive SVG-based color wheel with precise color selection
+- Real-time color value calculations and conversions
+- Responsive layout with smooth animations and transitions
+- Modern UI with gradients, shadows, and hover effects
+
 ### Coming Soon
 - Task Manager with drag-and-drop functionality
 - Weather Dashboard with real-time data
@@ -145,12 +170,23 @@ src/
     │   ├── ProjectCard.jsx
     │   ├── Title.jsx
     │   └── Description.jsx
-    └── 01-e-signature-app/
-        ├── EsignatureApp.jsx
-        └── components/
-            ├── PDFGenerator.jsx
-            ├── PDFRenderer.jsx
-            └── DrawSignature.jsx
+    ├── 01-e-signature-app/
+    │   ├── EsignatureApp.jsx
+    │   └── components/
+    │       ├── PDFGenerator.jsx
+    │       ├── PDFRenderer.jsx
+    │       └── DrawSignature.jsx
+    └── 02-complementary-colors/
+        ├── ComplementaryColorsApp.jsx
+        ├── components/
+        │   ├── ColorCombination.jsx
+        │   ├── ColorDisplay.jsx
+        │   ├── ColorPicker.jsx
+        │   ├── ColorPreview.jsx
+        │   ├── ColorWheel.jsx
+        │   └── HarmonyDisplay.jsx
+        └── utils/
+            └── colorUtils.js
 ```
 
 ## Deployment
