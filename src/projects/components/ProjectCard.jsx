@@ -56,7 +56,7 @@ const ProjectCard = ({
             )}
           </div>
           
-          <Title title={{ heading: 'h3', text: title, class: 'text-xl font-bold mb-2' }} />
+          <Title title={{ heading: 'h3', text: title, class: 'text-xl font-bold mb-2 text-white' }} />
           <Description description={{ text: description, class: 'text-white/80 text-sm line-clamp-2' }} />
           
           {/* Hover Effect Overlay */}
