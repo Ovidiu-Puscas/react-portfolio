@@ -126,7 +126,7 @@ export default function LikePhotoApp() {
     };
 
     return (
-        <div className="container mx-auto px-4">
+        <>  
             <SEO 
                 title="Like My Photo" 
                 description="Like My Photo" 
@@ -134,9 +134,11 @@ export default function LikePhotoApp() {
                 type="website"
                 author="Ovidiu Alexandru Pușcaș"
             />
-            <Description description={{ text: 'Double-click on images to like them! ❤️', class: 'text-lg pt-4' }} />
-            <PhotoGrid photos={photos} onLikesChange={handleLikesChange} />
-        </div>
+            <div className="container mx-auto px-4">
+                <Description description={{ text: 'Double-click on images to like them! ❤️', class: 'text-lg pt-4' }} />
+                <PhotoGrid photos={photos} onLikesChange={handleLikesChange} />
+            </div>
+        </>
     );
 }
 
