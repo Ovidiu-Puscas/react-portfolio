@@ -141,12 +141,19 @@ export const calculateTetradic = (hexColor) => {
   const [h, s, l] = rgbToHsl(rgb.r, rgb.g, rgb.b);
   
   const colors = [];
-  // Generate 4 tetradic colors (90° apart)
-  for (let i = 0; i < 4; i++) {
-    const newH = (h + i * 90) % 360;
-    const [r, g, b] = hslToRgb(newH, s, l);
-    colors.push(rgbToHex(r, g, b));
-  }
+  // Generate 4 tetradic colors (2 pairs of complementary colors)
+  // First pair: base color and its complement
+  const [r1, g1, b1] = hslToRgb(h, s, l);
+  const [r2, g2, b2] = hslToRgb((h + 180) % 360, s, l);
+  
+  // Second pair: offset by 30° from the first pair
+  const [r3, g3, b3] = hslToRgb((h + 30) % 360, s, l);
+  const [r4, g4, b4] = hslToRgb((h + 210) % 360, s, l);
+  
+  colors.push(rgbToHex(r1, g1, b1));
+  colors.push(rgbToHex(r2, g2, b2));
+  colors.push(rgbToHex(r3, g3, b3));
+  colors.push(rgbToHex(r4, g4, b4));
   
   return colors;
 };
