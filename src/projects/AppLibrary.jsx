@@ -3,6 +3,7 @@ import ProjectCard from './components/ProjectCard';
 import EsignatureApp from './01-e-signature-app/EsignatureApp';
 import Title from './components/Title';
 import Description from './components/Description';
+import SEO from '../components/SEO';
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -40,6 +41,14 @@ const AppLibrary = () => {
   if (selectedApp) {
     return (
       <div className="min-h-screen bg-gray-50">
+        <SEO 
+          title={`${selectedApp.title} - React Portfolio`}
+          description={selectedApp.description}
+          keywords={`React, ${selectedApp.title}, Web Development, Interactive App`}
+          url={`https://xtreemedigital.com/react-portofolio/app/${selectedApp.id}`}
+          type="article"
+        />
+        
         {/* Header with back button */}
         <div className="bg-white shadow-sm border-b">
           <div className="px-4 sm:px-6 lg:px-8">
@@ -70,6 +79,14 @@ const AppLibrary = () => {
   // Render the library view
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <SEO 
+        title="React Portfolio - Interactive Web Applications"
+        description="Explore my collection of React applications including E-Signature tools, color generators, and interactive web projects. Built with modern React technologies."
+        keywords="React, JavaScript, Web Development, Portfolio, E-Signature, Interactive Apps"
+        url="https://xtreemedigital.com/react-portofolio/"
+        type="website"
+      />
+      
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
