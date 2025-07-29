@@ -6,6 +6,7 @@ import Description from './components/Description';
 import SEO from '../components/SEO';
 import ComplementaryColorApp from './02-complementary-colors/ComplementaryColorsApp';
 import LikePhotoApp from './03-like-my-photo/LikePhotoApp';
+import TaxCalculatorApp from './04-tax-calculator/TaxCalculatorApp';
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -48,6 +49,18 @@ const AppLibrary = () => {
       color: 'purple',
       component: LikePhotoApp
     },
+    {
+      id: 'tax-calculator',
+      title: 'Tax Calculator',
+      description: 'Calculate monthly income and taxes for Micro SRL in Romania. Features exchange rate conversion and tax calculations for 2025-2026.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+      ),
+      color: 'red',
+      component: TaxCalculatorApp
+    },
     // Add more apps here as you create them
   ];
 
@@ -68,14 +81,14 @@ const AppLibrary = () => {
   if (selectedApp) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <SEO 
+        <SEO
           title={`${selectedApp.title} - React Portfolio`}
           description={selectedApp.description}
           keywords={`React, ${selectedApp.title}, Web Development, Interactive App`}
           url={`https://xtreemedigital.com/react-portofolio/app/${selectedApp.id}`}
           type="article"
         />
-        
+
         {/* Header with back button */}
         <div className="bg-white shadow-sm border-b">
           <div className="px-4 sm:px-6 lg:px-8">
@@ -94,7 +107,7 @@ const AppLibrary = () => {
             </div>
           </div>
         </div>
-        
+
         {/* App Content */}
         <div className="h-[calc(100vh-65px)]">
           <selectedApp.component />
@@ -106,14 +119,14 @@ const AppLibrary = () => {
   // Render the library view
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <SEO 
+      <SEO
         title="React Portfolio - Interactive Web Applications"
         description="Explore my collection of React applications including E-Signature tools, color generators, and interactive web projects. Built with modern React technologies."
         keywords="React, JavaScript, Web Development, Portfolio, E-Signature, Interactive Apps"
         url="https://xtreemedigital.com/react-portofolio/"
         type="website"
       />
-      
+
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
@@ -145,4 +158,4 @@ const AppLibrary = () => {
   );
 };
 
-export default AppLibrary; 
+export default AppLibrary;
