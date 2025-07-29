@@ -1,6 +1,30 @@
 # React Portfolio - Project Library
 
-A modern React portfolio showcasing various applications and projects. This repository contains a collection of React applications, each demonstrating different skills and technologies.
+A modern React portfolio showcasing various applications and projects with a **modular component architecture**. This repository contains a collection of React applications, each demonstrating different skills and technologies using reusable, maintainable component patterns.
+
+## 🏗️ Modular Architecture
+
+This portfolio follows a **component-driven development** approach with three levels of reusability:
+
+### 📦 Global Components (`src/components/`)
+
+Reusable components shared across the entire application:
+
+- **SEO.jsx** - Dynamic meta tags and SEO optimization
+
+### 🔗 Project-Shared Components (`src/projects/components/`)
+
+Components shared between projects:
+
+- **Title.jsx** - Consistent heading components (h1-h6)
+- **Description.jsx** - Standardized description/paragraph component
+- **ProjectCard.jsx** - Interactive project cards with hover effects
+- **GameStats.jsx** - Configurable stats display with action buttons
+- **Button.jsx** - Flexible button component with multiple variants
+
+### 🎯 App-Specific Components
+
+Each project maintains specialized components in its own folder for unique functionality.
 
 ## Features
 
@@ -141,9 +165,9 @@ A comprehensive financial calculator for Romanian Micro SRL tax calculations wit
 - **Responsive Design**: Mobile-optimized with horizontal scrolling
 - **Error Resilience**: Fallback rates when API is unavailable
 
-### Road Builder Puzzle
+### Road Builder Puzzle ⭐ **Recently Refactored with Modular Architecture**
 
-An interactive sliding puzzle game with racing theme and advanced pathfinding algorithms:
+An interactive sliding puzzle game showcasing **component-driven development** and advanced pathfinding algorithms:
 
 **Core Features:**
 
@@ -155,33 +179,48 @@ An interactive sliding puzzle game with racing theme and advanced pathfinding al
 - JSON export functionality for tile connection data
 - Animated victory and failure feedback with explosions and confetti
 
+**Modular Component Architecture:**
+
+- **Global Components Used**: SEO for dynamic meta tags and SEO optimization
+- **Project Components Used**: Title, Description, GameStats, Button for consistent UI patterns
+- **App-Specific Components**:
+  - `PuzzleBoard.jsx` - Game board rendering
+  - `PuzzleTile.jsx` - Individual puzzle tiles
+  - `ConnectionEditor.jsx` - Visual road connection editor
+  - `AnimationOverlay.jsx` - Success/failure animations
+  - `GameOverlay.jsx` - Victory screens
+  - `GameInstructions.jsx` - Game instructions
+
 **React Skills Demonstrated:**
 
+- **Modular Design**: Component separation for reusability and maintainability
 - **Complex State Management**: Multiple useState hooks for game state, board configuration, and editor mode
 - **Algorithm Implementation**: Breadth-first search for path validation and tile connectivity
-- **Conditional Rendering**: Dynamic UI based on game state and tile validation
 - **Component Composition**: Modular game board, editor, and animation components
-- **Event Handling**: Tile click interactions and drag-and-drop mechanics
-- **Animation Management**: Timed sequences for victory/failure animations
+- **Props Management**: Clean data flow between parent and child components
+- **Global Component Integration**: Seamless use of shared components across the app
 
 **Technical Implementation:**
 
+- **Component-Driven Architecture**: Refactored from monolithic to modular structure
 - Breadth-first search algorithm for validating road connectivity
 - Dynamic tile validation system with configurable start/end tiles
 - Real-time path checking with tile connection matrix
 - JSON-based tile relationship configuration system
 - Responsive grid layout with touch-friendly mobile controls
 - CSS animations for car rotation and visual feedback
-- Production-ready codebase with clean separation of concerns
+- **SEO Integration**: Dynamic meta tags for better search optimization
 
 **Key Features:**
 
+- **Modular Architecture**: Clean component separation following React best practices
+- **Reusable Components**: Uses global GameStats and Button components
 - **Intelligent Validation**: Ensures proper start tiles (roadsBottomTopEnd, roadsRightEndLeft) and end tiles
 - **Dynamic Car Rotation**: Car automatically rotates -90° when on roadsRightEndLeft start tile
 - **Advanced Pathfinding**: BFS algorithm validates complete road connections
 - **Visual Editor**: Interactive tile connection editor with JSON export capability
 - **Responsive Design**: Mobile-optimized with touch interactions
-- **Production Ready**: Clean codebase with debug functionality removed
+- **Production Ready**: Clean, maintainable codebase with modular architecture
 
 ### Coming Soon
 
@@ -317,13 +356,15 @@ src/
 ├── App.css               # Global styles
 ├── index.js              # Application entry point
 ├── components/
-│   └── SEO.jsx          # SEO component
+│   └── SEO.jsx          # Global SEO component
 └── projects/
     ├── AppLibrary.jsx    # Main project library component
-    ├── components/       # Shared components
+    ├── components/       # Project-shared components
     │   ├── ProjectCard.jsx
     │   ├── Title.jsx
-    │   └── Description.jsx
+    │   ├── Description.jsx
+    │   ├── GameStats.jsx
+    │   └── Button.jsx
     ├── 01-e-signature-app/
     │   ├── EsignatureApp.jsx
     │   └── components/
@@ -373,5 +414,10 @@ src/
         │   ├── road_tile_connections_with_sides.json
         │   └── [road tile images]
         └── components/
-            └── [empty - all functionality in main component]
+            ├── PuzzleBoard.jsx      # Game board rendering
+            ├── PuzzleTile.jsx       # Individual puzzle tiles
+            ├── ConnectionEditor.jsx # Visual connection editor
+            ├── AnimationOverlay.jsx # Success/failure animations
+            ├── GameOverlay.jsx      # Victory screens
+            └── GameInstructions.jsx # Game instructions
 ```
