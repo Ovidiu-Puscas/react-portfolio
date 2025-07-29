@@ -14,6 +14,21 @@ import roadBottomTopEnd from './assets/roadsBottomTopEnd.jpg';
 import roadConnectionsData from './assets/road_tile_connections_with_sides.json';
 import './RoadBuilderPuzzleApp.css';
 
+// Global Components
+import SEO from '../../components/SEO';
+
+// Project Components
+import Title from '../components/Title';
+import Description from '../components/Description';
+import GameStats from '../components/GameStats';
+
+// App-specific Components
+import PuzzleBoard from './components/PuzzleBoard';
+import ConnectionEditor from './components/ConnectionEditor';
+import AnimationOverlay from './components/AnimationOverlay';
+import GameOverlay from './components/GameOverlay';
+import GameInstructions from './components/GameInstructions';
+
 const RoadBuilderPuzzleApp = () => {
   const [gameBoard, setGameBoard] = useState([]);
   const [gameState, setGameState] = useState('playing'); // 'playing', 'won', 'testing', 'failed', 'editor'
@@ -253,18 +268,6 @@ const RoadBuilderPuzzleApp = () => {
       toConnections[toSide]?.includes(fromTile.roadType);
   };
 
-  const getTileStyle = (tile) => {
-    if (tile.type === 'empty') return {};
-
-    return {
-      backgroundImage: `url(${tile.image})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      imageRendering: 'pixelated'
-    };
-  };
-
   const testRoad = () => {
     setGameState('testing');
     setShowAnimation(true);
@@ -411,196 +414,92 @@ const RoadBuilderPuzzleApp = () => {
     return imageMap[tileType];
   };
 
+  // Prepare stats and buttons for GameStats component
+  const gameStatsData = {
+    stats: [
+      { label: 'Moves', value: moves }
+    ],
+    buttons: [
+      {
+        text: 'Drive!',
+        icon: '🏎️',
+        onClick: testRoad,
+        disabled: gameState !== 'playing',
+        variant: 'primary'
+      },
+      {
+        text: editorMode ? 'Game Mode' : 'Editor Mode',
+        icon: editorMode ? '🎮' : '🔧',
+        onClick: toggleConnectionEditor,
+        variant: 'secondary'
+      },
+      {
+        text: 'New Game',
+        onClick: initializeGame,
+        variant: 'warning'
+      }
+    ]
+  };
+
   return (
     <div className="road-builder-container">
+      <SEO
+        title="Road Builder Puzzle - React Portfolio"
+        description="Slide tiles to create a road path for the car to reach the checkered flag in this interactive puzzle game!"
+        keywords="puzzle game, road builder, sliding puzzle, react game, interactive"
+      />
+
       <div className="game-header">
-        <h2>Road Builder Puzzle</h2>
-        <p>Slide tiles to create a road path for the car to reach the checkered flag!</p>
-        <div className="game-stats">
-          <span>Moves: {moves}</span>
-          <button
-            onClick={testRoad}
-            className="drive-btn"
-            disabled={gameState !== 'playing'}
-          >
-            🏎️ Drive!
-          </button>
-          <button
-            onClick={toggleConnectionEditor}
-            className="editor-btn"
-          >
-            {editorMode ? '🎮 Game Mode' : '🔧 Editor Mode'}
-          </button>
-          <button onClick={initializeGame} className="reset-btn">New Game</button>
-        </div>
+        <Title title={{ heading: 'h2', text: 'Road Builder Puzzle', class: 'text-white' }} />
+        <Description description={{
+          text: 'Slide tiles to create a road path for the car to reach the checkered flag!',
+          class: ''
+        }} />
+        <GameStats
+          stats={gameStatsData.stats}
+          buttons={gameStatsData.buttons}
+          className="game-stats"
+        />
       </div>
 
       {/* Visual Connection Editor */}
       {editorMode && (
-        <div className="connection-editor">
-          <div className="editor-header">
-            <h3>Visual Road Connection Editor</h3>
-            <div className="editor-controls">
-              <button onClick={exportConnections} className="export-btn">💾 Export JSON</button>
-              <button onClick={resetConnections} className="reset-connections-btn">🔄 Reset</button>
-            </div>
-          </div>
-
-          <div className="editor-content">
-            <div className="tile-selector">
-              <h4>Select Tile Type:</h4>
-              <div className="tile-grid">
-                {getAllTileTypes().map(tileType => (
-                  <div
-                    key={tileType}
-                    className={`tile-option ${selectedTileType === tileType ? 'selected' : ''}`}
-                    onClick={() => setSelectedTileType(tileType)}
-                  >
-                    <div
-                      className="tile-preview"
-                      style={{
-                        backgroundImage: `url(${getTileImage(tileType)})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                      }}
-                    ></div>
-                    <span className="tile-name">{tileType.replace('roads', '')}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {selectedTileType && (
-              <div className="connection-editor-panel">
-                <h4>Editing: {selectedTileType}</h4>
-                <div className="connection-sides">
-                  {['top', 'right', 'bottom', 'left'].map(side => (
-                    <div key={side} className="side-connections">
-                      <h5>{side.toUpperCase()} Connections:</h5>
-                      <div className="connection-tiles">
-                        {getAllTileTypes().map(targetTile => (
-                          <label
-                            key={targetTile}
-                            className="connection-option"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedTileType && editableConnections[selectedTileType] && editableConnections[selectedTileType][side] ? editableConnections[selectedTileType][side].includes(targetTile) : false}
-                              onChange={() => toggleConnection(selectedTileType, side, targetTile)}
-                            />
-                            <div
-                              className="connection-tile-preview"
-                              style={{
-                                backgroundImage: `url(${getTileImage(targetTile)})`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center'
-                              }}
-                            ></div>
-                            <span>{targetTile.replace('roads', '')}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+        <ConnectionEditor
+          selectedTileType={selectedTileType}
+          setSelectedTileType={setSelectedTileType}
+          editableConnections={editableConnections}
+          toggleConnection={toggleConnection}
+          exportConnections={exportConnections}
+          resetConnections={resetConnections}
+          getTileImage={getTileImage}
+          getAllTileTypes={getAllTileTypes}
+        />
       )}
 
       {!editorMode && (
-        <div className="puzzle-board">
-          {gameBoard.map((row, rowIndex) => (
-            <div key={rowIndex} className="puzzle-row">
-              {row.map((tile, colIndex) => (
-                <div
-                  key={`${rowIndex}-${colIndex}`}
-                  className={`puzzle-tile ${tile.type === 'empty' ? 'empty' : 'filled'} ${canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? 'movable' : ''}`}
-                  onClick={() => handleTileClick(rowIndex, colIndex)}
-                  style={getTileStyle(tile)}
-                >
-                  {/* Static checkered flag background for finish position */}
-                  {rowIndex === 3 && colIndex === 3 && <div className="flag-marker">🏁</div>}
-
-                  {/* F1 car only shows on top-left position */}
-                  {rowIndex === 0 && colIndex === 0 && (
-                    <div className="car-overlay">
-                      <img
-                        src={f1Car}
-                        alt="F1 Car"
-                        className={`car-image ${tile.roadType === 'roadsRightEndLeft' ? 'car-rotated' : ''}`}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+        <PuzzleBoard
+          gameBoard={gameBoard}
+          onTileClick={handleTileClick}
+          canMoveTile={canMoveTile}
+          gameState={gameState}
+        />
       )}
 
       {/* Animation Overlay */}
-      {showAnimation && (
-        <div className="animation-overlay">
-          {animationType === 'explosion' && (
-            <div className="explosion-container">
-              <img src={explosion} alt="Explosion" className="explosion-gif" />
-              <h2 className="animation-text explosion-text">Road Blocked!</h2>
-              <p>The path doesn't connect properly. Try again!</p>
-            </div>
-          )}
+      <AnimationOverlay
+        showAnimation={showAnimation}
+        animationType={animationType}
+      />
 
-          {animationType === 'confetti' && (
-            <div className="confetti-container">
-              <div className="confetti-animation">
-                {[...Array(50)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="confetti-piece"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      animationDelay: `${Math.random() * 3}s`,
-                      backgroundColor: ['#ff6b35', '#ffd700', '#00ff00', '#ff69b4', '#00bfff'][Math.floor(Math.random() * 5)]
-                    }}
-                  ></div>
-                ))}
-              </div>
-              <h2 className="animation-text success-text">🎉 Success!</h2>
-              <p>Perfect road! The car reached the finish line!</p>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Game Victory Overlay */}
+      <GameOverlay
+        gameState={gameState}
+        moves={moves}
+        onNewGame={initializeGame}
+      />
 
-      {gameState === 'won' && (
-        <div className="game-overlay won">
-          <h2>🏆 Victory!</h2>
-          <p>You built a perfect road in {moves} moves!</p>
-          <div className="victory-stats">
-            <div className="stat">
-              <span className="stat-label">Total Moves:</span>
-              <span className="stat-value">{moves}</span>
-            </div>
-            <div className="stat">
-              <span className="stat-label">Status:</span>
-              <span className="stat-value">Road Complete!</span>
-            </div>
-          </div>
-          <button onClick={initializeGame}>Play Again</button>
-        </div>
-      )}
-
-      <div className="game-instructions">
-        <h3>How to Play:</h3>
-        <ul>
-          <li>Click tiles adjacent to the empty space to move them</li>
-          <li>Arrange road tiles to create a connected path</li>
-          <li>Click "Drive!" to test if your road works</li>
-          <li>Get the F1 car (top-left) to connect to the checkered flag (bottom-right)</li>
-          <li>Roads must connect properly to form a valid path</li>
-        </ul>
-      </div>
+      {/* Game Instructions */}
+      <GameInstructions />
     </div>
   );
 };
