@@ -7,6 +7,7 @@ import SEO from '../components/SEO';
 import ComplementaryColorApp from './02-complementary-colors/ComplementaryColorsApp';
 import LikePhotoApp from './03-like-my-photo/LikePhotoApp';
 import TaxCalculatorApp from './04-tax-calculator/TaxCalculatorApp';
+import RoadBuilderPuzzleApp from './05-road-builder-puzzle/RoadBuilderPuzzleApp';
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -60,6 +61,18 @@ const AppLibrary = () => {
       ),
       color: 'red',
       component: TaxCalculatorApp
+    },
+    {
+      id: 'road-builder-puzzle',
+      title: 'Road Builder Puzzle',
+      description: 'Interactive sliding puzzle game where you arrange road tiles to create a path for the car to reach the checkered flag. Features pathfinding validation and dynamic car rotation.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      ),
+      color: 'orange',
+      component: RoadBuilderPuzzleApp
     },
     // Add more apps here as you create them
   ];

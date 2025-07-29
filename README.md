@@ -141,6 +141,48 @@ A comprehensive financial calculator for Romanian Micro SRL tax calculations wit
 - **Responsive Design**: Mobile-optimized with horizontal scrolling
 - **Error Resilience**: Fallback rates when API is unavailable
 
+### Road Builder Puzzle
+
+An interactive sliding puzzle game with racing theme and advanced pathfinding algorithms:
+
+**Core Features:**
+
+- Interactive 4x4 sliding tile puzzle with road tile pieces
+- Dynamic car with automatic rotation based on start tile orientation
+- Advanced pathfinding validation using breadth-first search algorithm
+- Start and end tile validation for proper race track construction
+- Visual connection editor for tile relationship configuration
+- JSON export functionality for tile connection data
+- Animated victory and failure feedback with explosions and confetti
+
+**React Skills Demonstrated:**
+
+- **Complex State Management**: Multiple useState hooks for game state, board configuration, and editor mode
+- **Algorithm Implementation**: Breadth-first search for path validation and tile connectivity
+- **Conditional Rendering**: Dynamic UI based on game state and tile validation
+- **Component Composition**: Modular game board, editor, and animation components
+- **Event Handling**: Tile click interactions and drag-and-drop mechanics
+- **Animation Management**: Timed sequences for victory/failure animations
+
+**Technical Implementation:**
+
+- Breadth-first search algorithm for validating road connectivity
+- Dynamic tile validation system with configurable start/end tiles
+- Real-time path checking with tile connection matrix
+- JSON-based tile relationship configuration system
+- Responsive grid layout with touch-friendly mobile controls
+- CSS animations for car rotation and visual feedback
+- Production-ready codebase with clean separation of concerns
+
+**Key Features:**
+
+- **Intelligent Validation**: Ensures proper start tiles (roadsBottomTopEnd, roadsRightEndLeft) and end tiles
+- **Dynamic Car Rotation**: Car automatically rotates -90° when on roadsRightEndLeft start tile
+- **Advanced Pathfinding**: BFS algorithm validates complete road connections
+- **Visual Editor**: Interactive tile connection editor with JSON export capability
+- **Responsive Design**: Mobile-optimized with touch interactions
+- **Production Ready**: Clean codebase with debug functionality removed
+
 ### Coming Soon
 
 - Task Manager with drag-and-drop functionality
@@ -322,20 +364,14 @@ src/
         │   └── Disclaimer.jsx
         └── services/
             └── currencyService.js
+    └── 05-road-builder-puzzle/
+        ├── RoadBuilderPuzzleApp.jsx
+        ├── RoadBuilderPuzzleApp.css
+        ├── assets/
+        │   ├── f1.png
+        │   ├── explosion.gif
+        │   ├── road_tile_connections_with_sides.json
+        │   └── [road tile images]
+        └── components/
+            └── [empty - all functionality in main component]
 ```
-
-## Deployment
-
-This project can be deployed to any static hosting service:
-
-1. Run `npm run build` to create optimized production build
-2. Deploy the `build` folder to your hosting service
-3. Configure your hosting service to serve `index.html` for all routes
-
-## Contributing
-
-This is a personal portfolio project showcasing React development skills. The codebase demonstrates modern React patterns and best practices for building scalable applications.
-
-## License
-
-This project is for portfolio demonstration purposes.

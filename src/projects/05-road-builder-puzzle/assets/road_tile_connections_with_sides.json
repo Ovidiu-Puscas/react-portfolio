@@ -1,0 +1,148 @@
+{
+  "roadsLeftEndRight": {
+    "left": [
+      "roadsHorizontalStraight",
+      "roadsBottomTurnRight",
+      "roadsTopTurnRight",
+      "roadsRightEndLeft",
+      "roadsRightTurnLeft"
+    ],
+    "right": [],
+    "top": [],
+    "bottom": []
+  },
+  "roadsRightEndLeft": {
+    "left": [],
+    "right": [
+      "roadsRightTurnRight",
+      "roadsTopTurnLeft",
+      "roadsHorizontalStraight",
+      "roadsLeftEndRight"
+    ],
+    "top": [],
+    "bottom": []
+  },
+  "roadsRightTurnRight": {
+    "left": [
+      "roadsTopTurnRight",
+      "roadsRightEndLeft",
+      "roadsBottomTurnRight",
+      "roadsHorizontalStraight",
+      "roadsRightTurnLeft"
+    ],
+    "right": [],
+    "top": [],
+    "bottom": [
+      "roadsVerticalStraight",
+      "roadsTopEndBottom",
+      "roadsTopTurnRight",
+      "roadsTopTurnLeft"
+    ]
+  },
+  "roadsRightTurnLeft": {
+    "left": [],
+    "right": [
+      "roadsLeftEndRight",
+      "roadsRightTurnRight",
+      "roadsTopTurnLeft",
+      "roadsHorizontalStraight"
+    ],
+    "top": [
+      "roadsVerticalStraight",
+      "roadsBottomTopEnd"
+    ],
+    "bottom": [
+      "roadsVerticalStraight",
+      "roadsTopTurnRight",
+      "roadsTopTurnLeft",
+      "roadsTopEndBottom"
+    ]
+  },
+  "roadsTopEndBottom": {
+    "left": [],
+    "right": [],
+    "top": [
+      "roadsRightTurnRight",
+      "roadsVerticalStraight",
+      "roadsBottomTopEnd",
+      "roadsRightTurnLeft"
+    ],
+    "bottom": []
+  },
+  "roadsTopTurnLeft": {
+    "left": [
+      "roadsHorizontalStraight",
+      "roadsTopTurnRight",
+      "roadsRightEndLeft",
+      "roadsRightTurnLeft"
+    ],
+    "right": [],
+    "top": [
+      "roadsVerticalStraight",
+      "roadsBottomTopEnd",
+      "roadsRightTurnRight",
+      "roadsRightTurnLeft"
+    ],
+    "bottom": []
+  },
+  "roadsTopTurnRight": {
+    "left": [],
+    "right": [
+      "roadsHorizontalStraight",
+      "roadsLeftEndRight",
+      "roadsRightTurnRight",
+      "roadsTopTurnLeft"
+    ],
+    "top": [
+      "roadsVerticalStraight",
+      "roadsBottomTopEnd",
+      "roadsRightTurnRight",
+      "roadsRightTurnLeft"
+    ],
+    "bottom": []
+  },
+  "roadsVerticalStraight": {
+    "left": [],
+    "right": [],
+    "top": [
+      "roadsBottomTopEnd",
+      "roadsRightTurnRight",
+      "roadsBottomTurnRight",
+      "roadsVerticalStraight",
+      "roadsRightTurnLeft"
+    ],
+    "bottom": [
+      "roadsTopTurnLeft",
+      "roadsTopEndBottom",
+      "roadsVerticalStraight",
+      "roadsTopTurnRight"
+    ]
+  },
+  "roadsBottomTopEnd": {
+    "left": [],
+    "right": [],
+    "top": [],
+    "bottom": [
+      "roadsTopEndBottom",
+      "roadsTopTurnLeft",
+      "roadsTopTurnRight",
+      "roadsVerticalStraight"
+    ]
+  },
+  "roadsHorizontalStraight": {
+    "left": [
+      "roadsRightTurnLeft",
+      "roadsRightEndLeft",
+      "roadsTopTurnRight",
+      "roadsHorizontalStraight"
+    ],
+    "right": [
+      "roadsLeftEndRight",
+      "roadsRightTurnRight",
+      "roadsTopTurnLeft",
+      "roadsHorizontalStraight"
+    ],
+    "top": [],
+    "bottom": []
+  }
+}
