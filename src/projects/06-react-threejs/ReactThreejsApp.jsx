@@ -9,18 +9,15 @@ import { CameraController } from './components/CameraController';
 import { PaintingSystem } from './components/PaintingSystem';
 import { ShapeChallenge } from './classes/ShapeChallenge';
 import GameUIComponent from './components/GameUIComponent';
-import { DevControls } from './components/DevControls';
-import { CAMERA_CONFIG, COLOR_PALETTE_CONFIG, PAINTING_CONFIG, SCENE_CONFIG, LOGGING_CONFIG } from './config/settings';
+import { SCENE_CONFIG } from './config/settings';
 
 const ReactThreejsApp = () => {
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
   const animationIdRef = useRef(null);
-  const gameUIRef = useRef(null);
   const [shapeChallenge, setShapeChallenge] = useState(null);
   const [paintingSystem, setPaintingSystem] = useState(null);
-  const devControlsRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -123,7 +120,7 @@ const ReactThreejsApp = () => {
 
         // Set up painting system with canvas mesh
         paintingSystemInstance.setCanvasMesh(canvasMesh);
-        
+
         // Loading complete
         setIsLoading(false);
       },
@@ -188,15 +185,12 @@ const ReactThreejsApp = () => {
       // Clean up PaintingSystem
       paintingSystemInstance.destroy();
 
-      // Clean up DevControls (hidden for now)
-      // if (devControlsRef.current) {
-      //   devControlsRef.current.destroy();
-      // }
-
       // React GameUI component will clean up automatically
 
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      // Store mountRef.current in a variable to avoid the ref warning
+      const mountElement = mountRef.current;
+      if (mountElement && renderer.domElement) {
+        mountElement.removeChild(renderer.domElement);
       }
       renderer.dispose();
 
@@ -230,7 +224,7 @@ const ReactThreejsApp = () => {
         className="flex-grow w-full overflow-hidden relative"
         style={{ minHeight: 0 }}
       />
-      <GameUIComponent 
+      <GameUIComponent
         shapeChallenge={shapeChallenge}
         paintingSystem={paintingSystem}
         isVisible={!isLoading}
