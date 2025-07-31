@@ -2,6 +2,91 @@
 
 A modern React portfolio showcasing various applications and projects with a **modular component architecture**. This repository contains a collection of React applications, each demonstrating different skills and technologies using reusable, maintainable component patterns.
 
+## 🚀 Deployment
+
+### Environment Configuration
+
+This project uses environment variables for secure configuration. Create a `.env` file in the root directory with the following variables:
+
+```bash
+# Currency API Configuration
+REACT_APP_CURRENCY_API_KEY=your_currency_api_key_here
+
+# Firebase Configuration
+REACT_APP_FIREBASE_API_KEY=your_firebase_api_key_here
+REACT_APP_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+REACT_APP_FIREBASE_PROJECT_ID=your-project-id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id_here
+REACT_APP_FIREBASE_APP_ID=your_app_id_here
+
+# Optional Firebase Services
+REACT_APP_FIREBASE_MEASUREMENT_ID=your_measurement_id_here
+
+# Google Cloud Build Configuration
+REACT_APP_GOOGLE_CLOUD_PROJECT_ID=your_google_cloud_project_id_here
+REACT_APP_GOOGLE_CLOUD_BUCKET_NAME=your_bucket_name_here
+```
+
+### Firebase Setup
+
+1. **Create a Firebase Project:**
+
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Create a new project or select existing one
+   - Enable Authentication, Firestore, and Storage services
+
+2. **Get Firebase Configuration:**
+
+   - In Firebase Console, go to Project Settings
+   - Scroll down to "Your apps" section
+   - Click "Add app" and select Web app
+   - Copy the configuration object
+
+3. **Configure Environment Variables:**
+   - Use the Firebase config values in your `.env` file
+   - Never commit the `.env` file to version control
+
+### Google Cloud Build
+
+This project includes configuration files for Google Cloud Build deployment:
+
+- **cloudbuild.yaml** - Google Cloud Build configuration with environment variables
+- **Dockerfile** - Alternative Docker-based deployment
+- **.gcloudignore** - Ensures proper file inclusion in build context
+
+#### Local Development:
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+#### Google Cloud Build Deployment:
+
+1. **Set up Cloud Build substitutions:**
+
+   ```bash
+   gcloud builds submit --config cloudbuild.yaml \
+     --substitutions=_CURRENCY_API_KEY="your_key",_FIREBASE_API_KEY="your_key",_BUCKET_NAME="your_bucket"
+   ```
+
+2. **Using Docker:**
+
+   ```bash
+   gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/react-portfolio
+   ```
+
+3. **Using App Engine:**
+   ```bash
+   gcloud app deploy
+   ```
+
+**Note:** Replace all placeholder values with your actual Google Cloud project and Firebase configuration.
+
 ## 🏗️ Modular Architecture
 
 This portfolio follows a **component-driven development** approach with three levels of reusability:
