@@ -1,4 +1,4 @@
-const API_KEY = 'cur_live_m6fYHQztyvCEYGKuGuej3MoctbdNoLk19supNJFO';
+const API_KEY = process.env.REACT_APP_CURRENCY_API_KEY;
 const API_URL = 'https://api.currencyapi.com/v3/latest';
 
 // Default fallback rates in case API fails

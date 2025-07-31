@@ -23,19 +23,19 @@ export class DevControls {
     this.colorPalette = colorPalette;
     this.shapeChallenge = shapeChallenge;
     this.isExpanded = false;
-    
+
     // Store references to scene helpers for toggling
     this.axesHelper = null;
     this.gridHelper = null;
     this.lightHelpers = [];
-    
+
     // Store direct references to lights to avoid fragile scene filtering
     this.ambientLight = null;
     this.directionalLight1 = null;
     this.directionalLight2 = null;
     this.spotlight = null;
     this.pointLight = null;
-    
+
     this.createDevPanel();
   }
 
@@ -93,11 +93,11 @@ export class DevControls {
   createControls() {
     // Camera Position section
     this.addSectionTitle('Camera Position');
-    this.addVector3Input('Position', 
+    this.addVector3Input('Position',
       { x: this.camera.position.x, y: this.camera.position.y, z: this.camera.position.z },
       (values) => this.updateCameraPosition(values)
     );
-    this.addVector3Input('Target', 
+    this.addVector3Input('Target',
       { x: this.cameraController.cameraTarget.x, y: this.cameraController.cameraTarget.y, z: this.cameraController.cameraTarget.z },
       (values) => this.updateCameraTarget(values)
     );
@@ -108,40 +108,40 @@ export class DevControls {
 
     // Lighting Controls
     this.addSectionTitle('Lighting');
-    this.addNumberInput('Ambient Intensity', 0.6, (value) => this.updateAmbientLight(value));
-    
+    this.addNumberInput('Ambient Intensity', this.ambientLight ? this.ambientLight.intensity : 0.6, (value) => this.updateAmbientLight(value));
+
     // Main directional light
     this.addSubSectionTitle('Main Dir Light');
-    this.addVector3Input('Dir Position', 
-      { x: -12, y: 15, z: 8 },
+    this.addVector3Input('Dir Position',
+      this.directionalLight1 ? { x: this.directionalLight1.position.x, y: this.directionalLight1.position.y, z: this.directionalLight1.position.z } : { x: -12, y: 15, z: 8 },
       (values) => this.updateDirectionalLight1(values)
     );
-    this.addNumberInput('Dir Intensity', 1.5, (value) => this.updateDirectionalLight1Intensity(value));
+    this.addNumberInput('Dir Intensity', this.directionalLight1 ? this.directionalLight1.intensity : 1.5, (value) => this.updateDirectionalLight1Intensity(value));
 
     // Secondary directional light
     this.addSubSectionTitle('Second Dir Light');
-    this.addVector3Input('Dir2 Position', 
-      { x: -15, y: 12, z: -5 },
+    this.addVector3Input('Dir2 Position',
+      this.directionalLight2 ? { x: this.directionalLight2.position.x, y: this.directionalLight2.position.y, z: this.directionalLight2.position.z } : { x: -15, y: 12, z: -5 },
       (values) => this.updateDirectionalLight2(values)
     );
-    this.addNumberInput('Dir2 Intensity', 1.0, (value) => this.updateDirectionalLight2Intensity(value));
+    this.addNumberInput('Dir2 Intensity', this.directionalLight2 ? this.directionalLight2.intensity : 1.0, (value) => this.updateDirectionalLight2Intensity(value));
 
     // Spotlight
     this.addSubSectionTitle('Spotlight');
-    this.addVector3Input('Spot Position', 
-      { x: -10, y: 18, z: 5 },
+    this.addVector3Input('Spot Position',
+      this.spotlight ? { x: this.spotlight.position.x, y: this.spotlight.position.y, z: this.spotlight.position.z } : { x: -10, y: 18, z: 5 },
       (values) => this.updateSpotlight(values)
     );
-    this.addNumberInput('Spot Intensity', 2.0, (value) => this.updateSpotlightIntensity(value));
-    this.addNumberInput('Spot Angle', Math.PI / 4, (value) => this.updateSpotlightAngle(value));
+    this.addNumberInput('Spot Intensity', this.spotlight ? this.spotlight.intensity : 2.0, (value) => this.updateSpotlightIntensity(value));
+    this.addNumberInput('Spot Angle', this.spotlight ? this.spotlight.angle : Math.PI / 4, (value) => this.updateSpotlightAngle(value));
 
     // Point light
     this.addSubSectionTitle('Point Light');
-    this.addVector3Input('Point Position', 
-      { x: -10, y: 13, z: 3 },
+    this.addVector3Input('Point Position',
+      this.pointLight ? { x: this.pointLight.position.x, y: this.pointLight.position.y, z: this.pointLight.position.z } : { x: -10, y: 13, z: 3 },
       (values) => this.updatePointLight(values)
     );
-    this.addNumberInput('Point Intensity', 1.2, (value) => this.updatePointLightIntensity(value));
+    this.addNumberInput('Point Intensity', this.pointLight ? this.pointLight.intensity : 1.2, (value) => this.updatePointLightIntensity(value));
 
     this.addSeparator();
 
@@ -159,7 +159,7 @@ export class DevControls {
     this.addButton('Reset Camera', () => this.resetCamera());
     this.addButton('Log Camera Info', () => this.logCameraPosition());
     this.addButton('Log Scene Info', () => this.logSceneInfo());
-    
+
     this.addSeparator();
 
     // Painting tests section
@@ -204,10 +204,7 @@ export class DevControls {
     labelEl.textContent = label;
     labelEl.style.cursor = 'pointer';
     labelEl.style.fontSize = '11px';
-    labelEl.addEventListener('click', () => {
-      checkbox.checked = !checkbox.checked;
-      callback(checkbox.checked);
-    });
+    // Remove manual toggle to avoid double toggling with default HTML behavior
 
     container.appendChild(checkbox);
     container.appendChild(labelEl);
@@ -280,7 +277,7 @@ export class DevControls {
     input.style.fontSize = '10px';
     input.style.padding = '2px 4px';
     input.style.borderRadius = '2px';
-    
+
     const debouncedCallback = debounce((value) => callback(value), 300);
     input.addEventListener('input', (e) => {
       debouncedCallback(parseFloat(e.target.value));

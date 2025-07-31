@@ -1,0 +1,34 @@
+.camera-controller-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  display: flex;
+  gap: 10px;
+}
+
+.camera-control-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.camera-control-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.camera-control-button:focus {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
+}
+
+.camera-control-button:active {
+  background: rgba(0, 0, 0, 1);
+}

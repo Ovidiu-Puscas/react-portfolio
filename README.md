@@ -270,8 +270,8 @@ An interactive sliding puzzle game showcasing **component-driven development** a
 
 ### Core Technologies
 
-- **React 19.1.0**: Latest React features with modern hooks and patterns
-- **React DOM 19.1.0**: Latest DOM rendering capabilities
+- **React 18.2.0**: Stable React features with modern hooks and patterns
+- **React DOM 18.2.0**: Stable DOM rendering capabilities
 - **Tailwind CSS 3.4.17**: Utility-first CSS framework for responsive design
 
 ### Signature & PDF Functionality
@@ -357,6 +357,16 @@ This project demonstrates proficiency in:
 
 - Node.js (version 14 or higher)
 - npm or yarn package manager
+
+### Environment Variables
+
+For the Tax Calculator app to work with real-time exchange rates, create a `.env` file in the root directory:
+
+```bash
+REACT_APP_CURRENCY_API_KEY=your_currency_api_key_here
+```
+
+You can get a free API key from [CurrencyAPI](https://currencyapi.com/).
 
 ### Installation
 

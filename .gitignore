@@ -184,3 +184,6 @@ package-lock.json.bak
 .eslintrc.local
 .prettierrc.local
 .stylelintrc.local
+
+# Claude AI assistant files
+.claude/

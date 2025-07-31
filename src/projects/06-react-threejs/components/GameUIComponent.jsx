@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { CHALLENGE_CONFIG } from '../config/settings.js';
+import './GameUIComponent.css';
 
 const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) => {
   const [score, setScore] = useState(0);
@@ -22,9 +23,33 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     // Initial update
     updateGameState();
 
-    // Set up periodic updates (could be replaced with proper event system)
-    const interval = setInterval(updateGameState, 100);
-    return () => clearInterval(interval);
+    // Set up event listeners for game state changes
+    const handleScoreChange = () => setScore(shapeChallenge.getScore());
+    const handleLevelChange = () => setLevel(shapeChallenge.getLevel());
+    const handleChallengeChange = () => {
+      setCurrentChallenge(shapeChallenge.getCurrentChallenge());
+      setChallenges(shapeChallenge.getAvailableChallenges() || []);
+    };
+
+    // Add event listeners if the shapeChallenge supports them
+    if (shapeChallenge.addEventListener) {
+      shapeChallenge.addEventListener('scoreChange', handleScoreChange);
+      shapeChallenge.addEventListener('levelChange', handleLevelChange);
+      shapeChallenge.addEventListener('challengeChange', handleChallengeChange);
+    } else {
+      // Fallback to polling if event system not available
+      const interval = setInterval(updateGameState, 100);
+      return () => clearInterval(interval);
+    }
+
+    // Cleanup event listeners
+    return () => {
+      if (shapeChallenge.removeEventListener) {
+        shapeChallenge.removeEventListener('scoreChange', handleScoreChange);
+        shapeChallenge.removeEventListener('levelChange', handleLevelChange);
+        shapeChallenge.removeEventListener('challengeChange', handleChallengeChange);
+      }
+    };
   }, [shapeChallenge]);
 
   const startChallenge = useCallback((shapeId) => {
@@ -33,12 +58,12 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     const challenge = shapeChallenge.startChallenge(shapeId);
     if (challenge) {
       setCurrentChallenge(challenge);
-      
+
       // Get current config to check if using custom coordinates
       const config = shapeChallenge.getChallengeConfig();
-      const isCustomCoordinates = Math.abs(config.centerX - CHALLENGE_CONFIG.defaultCenterX) > CHALLENGE_CONFIG.tolerance || 
-                                  Math.abs(config.centerY - CHALLENGE_CONFIG.defaultCenterY) > CHALLENGE_CONFIG.tolerance;
-      
+      const isCustomCoordinates = Math.abs(config.centerX - CHALLENGE_CONFIG.defaultCenterX) > CHALLENGE_CONFIG.tolerance ||
+        Math.abs(config.centerY - CHALLENGE_CONFIG.defaultCenterY) > CHALLENGE_CONFIG.tolerance;
+
       // Show target shape immediately if using custom coordinates, otherwise with delay
       if (isCustomCoordinates) {
         console.log('Using custom coordinates, showing target immediately');
@@ -49,7 +74,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
           shapeChallenge.showTargetDrawing(paintingSystem);
         }, 500);
       }
-      
+
       showFeedback(`Started ${challenge.name} challenge! Watch the dots, then replicate!`, 'info');
     }
   }, [shapeChallenge, paintingSystem]);
@@ -58,24 +83,24 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     if (!shapeChallenge) return;
 
     const result = shapeChallenge.finishDrawing();
-    
+
     if (result.score > 0) {
       // Calculate dot connection accuracy for detailed feedback
       const dotConnectionScore = shapeChallenge.getDotConnectionAccuracy();
       const dotConnectionPercentage = Math.round(dotConnectionScore * 100);
-      
+
       // Get detailed dot connection information
       const dotDetails = shapeChallenge.getDotConnectionDetails();
-      
+
       let feedbackMessage = `${result.message}\nOverall Accuracy: ${Math.round(result.accuracy * 100)}%\nDots Connected: ${dotConnectionPercentage}% (${dotDetails.connected}/${dotDetails.total})\nPoints: +${result.score}`;
-      
+
       // Add more detailed feedback for low accuracy
       if (dotConnectionPercentage < 50) {
         feedbackMessage += '\n💡 Tip: Try to connect more of the target dots!';
       } else if (dotConnectionPercentage < 80) {
         feedbackMessage += '\n💡 Good progress! Connect a few more dots for better score!';
       }
-      
+
       showFeedback(
         feedbackMessage,
         result.accuracy >= 0.7 ? 'success' : 'warning'
@@ -83,7 +108,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     } else {
       showFeedback(result.message, 'error');
     }
-    
+
     setScore(shapeChallenge.getScore());
   }, [shapeChallenge]);
 
@@ -94,26 +119,26 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
       showFeedback('No active challenge to analyze!', 'error');
       return;
     }
-    
+
     const dotDetails = shapeChallenge.getDotConnectionDetails();
     if (dotDetails.total === 0) {
       showFeedback('No drawing data to analyze!', 'error');
       return;
     }
-    
+
     const connectedDots = dotDetails.details.filter(d => d.connected).map(d => d.index + 1);
     const missedDots = dotDetails.details.filter(d => !d.connected).map(d => d.index + 1);
-    
+
     let analysisMessage = `Dot Connection Analysis:\nConnected: ${dotDetails.connected}/${dotDetails.total} (${Math.round(dotDetails.percentage * 100)}%)`;
-    
+
     if (connectedDots.length > 0) {
       analysisMessage += `\n✅ Connected dots: ${connectedDots.slice(0, 10).join(', ')}${connectedDots.length > 10 ? '...' : ''}`;
     }
-    
+
     if (missedDots.length > 0) {
       analysisMessage += `\n❌ Missed dots: ${missedDots.slice(0, 10).join(', ')}${missedDots.length > 10 ? '...' : ''}`;
     }
-    
+
     showFeedback(analysisMessage, 'info');
   }, [shapeChallenge]);
 
@@ -148,113 +173,67 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: '50%',
-        left: '10px',
-        transform: 'translateY(-50%)',
-        width: '300px',
-        background: 'rgba(0, 0, 0, 0.8)',
-        color: 'white',
-        padding: '15px',
-        borderRadius: '10px',
-        fontFamily: 'Arial, sans-serif',
-        zIndex: 1000,
-      }}
-    >
+    <div className="game-ui-container">
       {/* Title and Score */}
-      <div style={{ marginBottom: '15px' }}>
-        <h3 style={{ margin: '0 0 10px 0', color: '#ffd700' }}>
+      <div className="game-ui-header">
+        <h3 className="game-ui-title">
           🎯 Shape Drawing Game
         </h3>
-        <div style={{ fontSize: '18px', marginBottom: '15px' }}>
-          <strong>Score: </strong>
-          <span>{score}</span>
+        <div className="game-ui-stat">
+          <span className="game-ui-stat-label">Score:</span>
+          <span className="game-ui-stat-value">{score}</span>
         </div>
-        <div style={{ fontSize: '14px', marginBottom: '15px' }}>
-          <strong>Level: </strong>
-          <span>{level}</span>
+        <div className="game-ui-stat">
+          <span className="game-ui-stat-label">Level:</span>
+          <span className="game-ui-stat-value">{level}</span>
         </div>
       </div>
 
       {/* Current Challenge */}
-      <div style={{ marginBottom: '15px' }}>
-        <strong>Current Challenge:</strong>
-        <div style={{ color: '#ffd700', marginTop: '5px' }}>
+      <div className="game-ui-section">
+        <div className="game-ui-section-title">Current Challenge:</div>
+        <div className="game-ui-challenge-name">
           {currentChallenge ? currentChallenge.name : 'No challenge active'}
         </div>
-        <div style={{ fontSize: '12px', marginTop: '5px', color: '#ccc' }}>
+        <div className="game-ui-challenge-desc">
           {currentChallenge ? currentChallenge.description : 'Select a shape to start!'}
         </div>
       </div>
 
       {/* Challenge Buttons */}
-      <div style={{ marginBottom: '15px' }}>
-        {challenges.map(challenge => (
-          <button
-            key={challenge.id}
-            onClick={() => startChallenge(challenge.id)}
-            style={{
-              margin: '2px',
-              padding: '8px 12px',
-              border: 'none',
-              borderRadius: '5px',
-              background: '#4CAF50',
-              color: 'white',
-              cursor: 'pointer',
-              fontSize: '12px',
-            }}
-          >
-            {challenge.name}
-          </button>
-        ))}
+      <div className="game-ui-section">
+        <div className="game-ui-section-title">Available Challenges:</div>
+        <div className="game-ui-challenge-list">
+          {challenges.map(challenge => (
+            <div
+              key={challenge.id}
+              className={`game-ui-challenge-item ${currentChallenge?.id === challenge.id ? 'active' : ''}`}
+              onClick={() => startChallenge(challenge.id)}
+            >
+              <div className="game-ui-challenge-name">{challenge.name}</div>
+              <div className="game-ui-challenge-desc">{challenge.description}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Control Buttons */}
-      <div style={{ marginBottom: '15px' }}>
+      <div className="game-ui-controls">
         <button
           onClick={finishDrawing}
-          style={{
-            margin: '2px',
-            padding: '8px 12px',
-            border: 'none',
-            borderRadius: '5px',
-            background: '#2196F3',
-            color: 'white',
-            cursor: 'pointer',
-            fontSize: '12px',
-          }}
+          className="game-ui-button secondary"
         >
           Finish Drawing
         </button>
         <button
           onClick={resetCanvas}
-          style={{
-            margin: '2px',
-            padding: '8px 12px',
-            border: 'none',
-            borderRadius: '5px',
-            background: '#f44336',
-            color: 'white',
-            cursor: 'pointer',
-            fontSize: '12px',
-          }}
+          className="game-ui-button danger"
         >
           Reset Canvas
         </button>
         <button
           onClick={showDotConnectionAnalysis}
-          style={{
-            margin: '2px',
-            padding: '8px 12px',
-            border: 'none',
-            borderRadius: '5px',
-            background: '#FF9800',
-            color: 'white',
-            cursor: 'pointer',
-            fontSize: '12px',
-          }}
+          className="game-ui-button warning"
         >
           Analyze Dots
         </button>
@@ -262,16 +241,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
 
       {/* Feedback Display */}
       {feedback.visible && (
-        <div
-          style={{
-            padding: '10px',
-            borderRadius: '5px',
-            fontSize: '14px',
-            background: getBackgroundColor(feedback.type),
-            whiteSpace: 'pre-line',
-            marginTop: '10px',
-          }}
-        >
+        <div className={`game-ui-feedback ${feedback.type}`}>
           {feedback.message}
         </div>
       )}

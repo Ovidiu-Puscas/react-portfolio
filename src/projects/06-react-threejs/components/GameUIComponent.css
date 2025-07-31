@@ -1,0 +1,181 @@
+.game-ui-container {
+  position: fixed;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  z-index: 1000;
+  min-width: 250px;
+}
+
+.game-ui-header {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.game-ui-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #ffd700;
+}
+
+.game-ui-subtitle {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.game-ui-section {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.game-ui-section-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #ffd700;
+  font-size: 14px;
+}
+
+.game-ui-stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.game-ui-stat-label {
+  color: #ccc;
+}
+
+.game-ui-stat-value {
+  color: #fff;
+  font-weight: bold;
+}
+
+.game-ui-challenge-list {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+.game-ui-challenge-item {
+  padding: 8px;
+  margin: 2px 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background-color 0.2s;
+}
+
+.game-ui-challenge-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.game-ui-challenge-item.active {
+  background: rgba(76, 175, 80, 0.3);
+  border-left: 3px solid #4CAF50;
+}
+
+.game-ui-challenge-name {
+  font-weight: bold;
+  color: #fff;
+}
+
+.game-ui-challenge-desc {
+  color: #ccc;
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.game-ui-feedback {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  z-index: 1001;
+  max-width: 400px;
+  word-wrap: break-word;
+}
+
+.game-ui-feedback.success {
+  background: rgba(76, 175, 80, 0.9);
+}
+
+.game-ui-feedback.warning {
+  background: rgba(255, 152, 0, 0.9);
+}
+
+.game-ui-feedback.error {
+  background: rgba(244, 67, 54, 0.9);
+}
+
+.game-ui-feedback.info {
+  background: rgba(33, 150, 243, 0.9);
+}
+
+.game-ui-controls {
+  margin-top: 15px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.game-ui-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.game-ui-button.primary {
+  background: #4CAF50;
+  color: white;
+}
+
+.game-ui-button.primary:hover {
+  background: #45a049;
+}
+
+.game-ui-button.secondary {
+  background: #2196F3;
+  color: white;
+}
+
+.game-ui-button.secondary:hover {
+  background: #1976D2;
+}
+
+.game-ui-button.danger {
+  background: #f44336;
+  color: white;
+}
+
+.game-ui-button.danger:hover {
+  background: #d32f2f;
+}
+
+.game-ui-button.warning {
+  background: #FF9800;
+  color: white;
+}
+
+.game-ui-button.warning:hover {
+  background: #F57C00;
+}
