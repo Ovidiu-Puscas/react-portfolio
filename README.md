@@ -165,6 +165,42 @@ A comprehensive financial calculator for Romanian Micro SRL tax calculations wit
 - **Responsive Design**: Mobile-optimized with horizontal scrolling
 - **Error Resilience**: Fallback rates when API is unavailable
 
+### React Three.js 3D Painting App ⭐ **New Interactive 3D Experience**
+
+An immersive 3D painting application built with Three.js and React, demonstrating advanced 3D graphics programming and interactive media techniques:
+
+**Core Features:**
+
+- Interactive 3D canvas painting on a virtual easel using real GLB model
+- Real-time brush system with adjustable size and opacity controls
+- Dynamic color palette with 3D color spheres for selection
+- Shape challenge game system with target drawing replication
+- Advanced 3D lighting system with multiple light sources positioned behind camera
+- Camera rotation controls for exploring the 3D scene from different angles
+- Modern React component architecture integrated with Three.js systems
+- Loading states and responsive design for optimal user experience
+
+**React + Three.js Skills Demonstrated:**
+
+- **3D Graphics Integration**: Seamless Three.js integration within React ecosystem
+- **Canvas Texture Mapping**: Real-time painting system with UV coordinate mapping
+- **3D Interaction Systems**: Mouse/touch interactions translated to 3D space coordinates
+- **State Management**: Complex state coordination between React and Three.js systems
+- **Component Architecture**: Clean separation between React UI and 3D rendering logic
+- **Performance Optimization**: Efficient rendering loops and memory management
+- **Modern React Patterns**: Hooks-based architecture with proper cleanup and lifecycle management
+
+**Technical Implementation:**
+
+- **Three.js Scene Management**: Professional 3D scene setup with proper lighting and camera systems
+- **Real-time Texture Painting**: Canvas-based painting system mapped to 3D mesh textures
+- **Interactive 3D UI**: Color palette implemented as interactive 3D spheres in scene
+- **Advanced Lighting**: Multi-light setup with directional, spot, and point lights positioned behind camera
+- **GLB Model Loading**: Production-ready 3D model loading with proper error handling
+- **Responsive 3D Controls**: Camera rotation and scene interaction optimized for all devices
+- **Memory Management**: Proper cleanup of Three.js resources and event listeners
+- **Security Hardening**: XSS prevention and safe DOM manipulation practices
+
 ### Road Builder Puzzle ⭐ **Recently Refactored with Modular Architecture**
 
 An interactive sliding puzzle game showcasing **component-driven development** and advanced pathfinding algorithms:
@@ -243,6 +279,13 @@ An interactive sliding puzzle game showcasing **component-driven development** a
 - **react-signature-canvas 1.1.0-alpha.2**: Digital signature capture and manipulation
 - **@react-pdf/renderer 4.3.0**: PDF generation, preview, and download capabilities
 
+### 3D Graphics & Interactive Media
+
+- **three 0.178.0**: Professional 3D graphics library for WebGL rendering
+- **GLTFLoader**: 3D model loading and parsing for GLB/GLTF files
+- **Canvas API**: Real-time texture painting and manipulation
+- **WebGL**: Hardware-accelerated 3D rendering
+
 ### Color & UI Components
 
 - **@uiw/react-color-wheel 2.7.1**: Interactive color wheel component
@@ -286,8 +329,12 @@ This project demonstrates proficiency in:
 
 ### Technical Implementation
 
+- **3D Graphics Programming**: Three.js integration with React for immersive 3D experiences
+- **Real-time Texture Painting**: Canvas-based painting systems mapped to 3D mesh surfaces
+- **3D Scene Management**: Professional lighting setups, camera controls, and model loading
+- **WebGL Optimization**: Efficient 3D rendering with proper memory management
 - **PDF Generation**: Real-time PDF creation with custom styling
-- **Canvas Manipulation**: Direct canvas API usage for signature capture
+- **Canvas Manipulation**: Direct canvas API usage for signature capture and 3D textures
 - **Color Theory**: Advanced color calculations and harmony analysis
 - **Social Interactions**: Like functionality with animations and state management
 - **API Integration**: Real-time data fetching with error handling
@@ -405,19 +452,32 @@ src/
         │   └── Disclaimer.jsx
         └── services/
             └── currencyService.js
-    └── 05-road-builder-puzzle/
-        ├── RoadBuilderPuzzleApp.jsx
-        ├── RoadBuilderPuzzleApp.css
-        ├── assets/
-        │   ├── f1.png
-        │   ├── explosion.gif
-        │   ├── road_tile_connections_with_sides.json
-        │   └── [road tile images]
-        └── components/
-            ├── PuzzleBoard.jsx      # Game board rendering
-            ├── PuzzleTile.jsx       # Individual puzzle tiles
-            ├── ConnectionEditor.jsx # Visual connection editor
-            ├── AnimationOverlay.jsx # Success/failure animations
-            ├── GameOverlay.jsx      # Victory screens
-            └── GameInstructions.jsx # Game instructions
+    ├── 05-road-builder-puzzle/
+    │   ├── RoadBuilderPuzzleApp.jsx
+    │   ├── RoadBuilderPuzzleApp.css
+    │   ├── assets/
+    │   │   ├── f1.png
+    │   │   ├── explosion.gif
+    │   │   ├── road_tile_connections_with_sides.json
+    │   │   └── [road tile images]
+    │   └── components/
+    │       ├── PuzzleBoard.jsx      # Game board rendering
+    │       ├── PuzzleTile.jsx       # Individual puzzle tiles
+    │       ├── ConnectionEditor.jsx # Visual connection editor
+    │       ├── AnimationOverlay.jsx # Success/failure animations
+    │       ├── GameOverlay.jsx      # Victory screens
+    │       └── GameInstructions.jsx # Game instructions
+    └── 06-react-threejs/
+        ├── ReactThreejsApp.jsx      # Main 3D application component
+        ├── classes/
+        │   ├── ColorPalette.js      # 3D color sphere management
+        │   └── ShapeChallenge.js    # Game logic for shape drawing
+        ├── components/
+        │   ├── CameraController.js  # 3D camera rotation controls
+        │   ├── PaintingSystem.js    # Real-time 3D texture painting
+        │   ├── GameUI.js           # Traditional DOM-based game UI
+        │   ├── GameUIComponent.jsx  # Modern React component UI
+        │   └── DevControls.js      # Developer debugging tools
+        └── config/
+            └── settings.js         # Configuration and constants
 ```

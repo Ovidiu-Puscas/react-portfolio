@@ -1,22 +1,24 @@
 .road-builder-container {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background: linear-gradient(135deg, #2d5016 0%, #1a3d0f 50%, #0f2a0a 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  justify-content: flex-start;
+  overflow: auto;
   position: relative;
   padding: 20px;
+  min-height: 100%;
 }
 
 /* Game Header */
 .game-header {
   text-align: center;
   color: white;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   z-index: 10;
+  flex-shrink: 0;
 }
 
 .game-header h2 {
@@ -107,6 +109,8 @@
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin: 20px auto;
 }
 
 .puzzle-row {
@@ -541,6 +545,7 @@
 @media (max-width: 768px) {
   .road-builder-container {
     padding: 10px;
+    justify-content: flex-start;
   }
 
   .game-header h2 {
