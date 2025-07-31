@@ -23,9 +23,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "firebase:build": "npm run build",
+    "firebase:build": "chmod +x build.sh && ./build.sh",
     "firebase:deploy": "firebase deploy",
-    "firebase:serve": "firebase serve"
+    "firebase:serve": "firebase serve",
+    "build:verify": "npm run build && ls -la build/ && test -f build/index.html && echo '✅ Build successful' || echo '❌ Build failed'"
   },
   "eslintConfig": {
     "extends": [

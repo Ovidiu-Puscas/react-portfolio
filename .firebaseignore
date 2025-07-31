@@ -1,0 +1,40 @@
+# Don't ignore the public directory - it's needed for the build
+!public/
+!public/index.html
+!public/manifest.json
+!public/favicon.ico
+!public/logo*.png
+!public/robots.txt
+!public/sitemap.xml
+
+# Don't ignore source files
+!src/
+
+# Don't ignore package files
+!package.json
+!package-lock.json
+
+# Don't ignore config files
+!tailwind.config.js
+!postcss.config.js
+
+# Don't ignore Firebase config files
+!firebase.json
+!.firebaserc
+
+# Ignore build artifacts (they'll be generated)
+build/
+node_modules/
+.git/
+.claude/
+
+# Ignore development files
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore other unnecessary files
+.DS_Store
+Thumbs.db 
