@@ -8,6 +8,7 @@ import ComplementaryColorApp from './02-complementary-colors/ComplementaryColors
 import LikePhotoApp from './03-like-my-photo/LikePhotoApp';
 import TaxCalculatorApp from './04-tax-calculator/TaxCalculatorApp';
 import RoadBuilderPuzzleApp from './05-road-builder-puzzle/RoadBuilderPuzzleApp';
+import ReactThreejsApp from './06-react-threejs/ReactThreejsApp';
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -16,7 +17,7 @@ const AppLibrary = () => {
     {
       id: 'e-signature',
       title: 'E-Signature App',
-      description: 'Create and sign documents electronically with real-time PDF preview. Features digital signature capture, document editing, and PDF generation.',
+      description: 'Create and sign documents electronically with real-time PDF preview. Features digital signature capture, document editing, and secure PDF generation.',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -26,10 +27,9 @@ const AppLibrary = () => {
       component: EsignatureApp
     },
     {
-      //Complementary Color Generator
       id: 'complementary-color',
-      title: 'Complementary Color Generator',
-      description: 'Generate complementary colors for any given color. Features a color picker and a color palette.',
+      title: 'Color Harmony Generator',
+      description: 'Discover perfect color combinations with an interactive color wheel. Features complementary, triadic, and analogous color schemes with live preview.',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.636-1.636a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -40,8 +40,8 @@ const AppLibrary = () => {
     },
     {
       id: 'like-my-photo',
-      title: 'Like My Photo',
-      description: 'Like My Photo',
+      title: 'Interactive Photo Gallery',
+      description: 'Engaging photo interaction app with animated hearts, like counters, and smooth transitions. Features responsive grid layout and gesture-based interactions.',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -52,8 +52,8 @@ const AppLibrary = () => {
     },
     {
       id: 'tax-calculator',
-      title: 'Tax Calculator',
-      description: 'Calculate monthly income and taxes for Micro SRL in Romania. Features exchange rate conversion and tax calculations for 2025-2026.',
+      title: 'Romanian Tax Calculator',
+      description: 'Calculate monthly income and taxes for Micro SRL in Romania. Features real-time exchange rates, detailed breakdowns, and 2025-2026 tax compliance.',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -65,7 +65,7 @@ const AppLibrary = () => {
     {
       id: 'road-builder-puzzle',
       title: 'Road Builder Puzzle',
-      description: 'Interactive sliding puzzle game where you arrange road tiles to create a path for the car to reach the checkered flag. Features pathfinding validation and dynamic car rotation.',
+      description: 'Strategic sliding puzzle game where you arrange road tiles to create paths. Features intelligent pathfinding validation, dynamic animations, and progressive difficulty.',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -73,6 +73,18 @@ const AppLibrary = () => {
       ),
       color: 'orange',
       component: RoadBuilderPuzzleApp
+    },
+    {
+      id: 'react-threejs',
+      title: '3D Canvas Painter',
+      description: 'Paint and draw in immersive 3D space using Three.js. Features dynamic lighting, color palette selection, brush controls, and shape-drawing challenges.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+        </svg>
+      ),
+      color: 'indigo',
+      component: ReactThreejsApp
     },
     // Add more apps here as you create them
   ];
@@ -122,7 +134,7 @@ const AppLibrary = () => {
         </div>
 
         {/* App Content */}
-        <div className="h-[calc(100vh-65px)]">
+        <div className="h-[calc(100vh-65px)] overflow-hidden flex flex-col">
           <selectedApp.component />
         </div>
       </div>
@@ -131,7 +143,7 @@ const AppLibrary = () => {
 
   // Render the library view
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       <SEO
         title="React Portfolio - Interactive Web Applications"
         description="Explore my collection of React applications including E-Signature tools, color generators, and interactive web projects. Built with modern React technologies."
@@ -140,25 +152,27 @@ const AppLibrary = () => {
         type="website"
       />
 
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <Title title={{ heading: 'h1', text: 'Project Library', class: 'text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4' }} />
-          <Description description={{ text: 'Explore my collection of React applications. Each project demonstrates different skills and technologies.', class: 'text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4' }} />
+        <div className="text-center mb-12 sm:mb-16">
+          <Title title={{ heading: 'h1', text: 'Project Library', class: 'text-4xl sm:text-5xl font-bold text-gray-900 mb-4 sm:mb-6' }} />
+          <Description description={{ text: 'Explore my collection of React applications. Each project demonstrates different skills and technologies.', class: 'text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto px-4 leading-relaxed' }} />
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-6 rounded-full"></div>
         </div>
 
         {/* Apps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {apps.map((app) => (
-            <ProjectCard
-              key={app.id}
-              title={app.title}
-              description={app.description}
-              icon={app.icon}
-              color={app.color}
-              onClick={() => handleAppSelect(app)}
-              isActive={false}
-            />
+            <div key={app.id} className="min-h-[320px]">
+              <ProjectCard
+                title={app.title}
+                description={app.description}
+                icon={app.icon}
+                color={app.color}
+                onClick={() => handleAppSelect(app)}
+                isActive={false}
+              />
+            </div>
           ))}
         </div>
 

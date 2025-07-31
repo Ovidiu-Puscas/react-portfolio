@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import f1Car from './assets/f1.png';
-import explosion from './assets/explosion.gif';
 import roadTopEndBottom from './assets/roadsTopEndBottom.jpg';
 import roadHorizontalStraight from './assets/roadsHorizontalStraight.jpg';
 import roadVerticalStraight from './assets/roadsVerticalStraight.jpg';

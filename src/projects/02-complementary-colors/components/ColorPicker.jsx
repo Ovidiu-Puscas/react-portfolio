@@ -38,21 +38,22 @@ const ColorPicker = ({ selectedColor, onColorChange, onHarmonyChange, selectedHa
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
       <Title title={{ heading: 'h2', text: 'Color Picker', class: 'text-xl font-semibold mb-6 text-gray-700' }} />
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Column - Color Wheel and Harmony */}
         <div className="space-y-6">
           {/* Color Harmony Selector */}
           <div>
             <Title title={{ heading: 'h3', text: 'Color Harmony', class: 'text-lg font-medium text-gray-700 mb-3' }} />
-            <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden" role="radiogroup" aria-label="Color harmony options">
               {harmonyOptions.map((option) => (
                 <button
                   key={option.value}
-                  className={`w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-100 transition-colors ${
-                    selectedHarmony === option.value ? 'bg-blue-50 border-l-4 border-blue-500' : ''
-                  }`}
+                  className={`w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-100 transition-colors ${selectedHarmony === option.value ? 'bg-blue-50 border-l-4 border-blue-500' : ''
+                    }`}
                   onClick={() => onHarmonyChange(option.value)}
+                  role="radio"
+                  aria-checked={selectedHarmony === option.value}
                 >
                   <span className="text-gray-700">{option.label}</span>
                   {selectedHarmony === option.value && (
@@ -67,7 +68,7 @@ const ColorPicker = ({ selectedColor, onColorChange, onHarmonyChange, selectedHa
 
           {/* Color Wheel */}
           <div className="flex justify-center">
-            <ColorWheel 
+            <ColorWheel
               selectedColor={selectedColor}
               onColorChange={onColorChange}
               size={220}
@@ -81,7 +82,7 @@ const ColorPicker = ({ selectedColor, onColorChange, onHarmonyChange, selectedHa
           <div>
             <Title title={{ heading: 'h3', text: 'Custom Color', class: 'text-lg font-medium text-gray-700 mb-3' }} />
             <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-              <div 
+              <div
                 className="w-12 h-12 rounded-lg border-2 border-gray-300 shadow-sm"
                 style={{ backgroundColor: customHex }}
               ></div>
@@ -119,4 +120,4 @@ const ColorPicker = ({ selectedColor, onColorChange, onHarmonyChange, selectedHa
   );
 };
 
-export default ColorPicker; 
+export default ColorPicker;
