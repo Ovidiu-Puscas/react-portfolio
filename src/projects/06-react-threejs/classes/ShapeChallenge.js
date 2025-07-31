@@ -1,4 +1,3 @@
-import * as THREE from 'three';
 import { log, CHALLENGE_CONFIG } from '../config/settings.js';
 
 export class ShapeChallenge {
@@ -94,6 +93,9 @@ export class ShapeChallenge {
         break;
       case 'star':
         this.generateStarPath(centerX, centerY, centerZ, radius, points);
+        break;
+      default:
+        log('shapeChallenge', 'generateTargetDrawing', 'Unknown shape type:', shape);
         break;
     }
 

@@ -9,6 +9,15 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
   const [feedback, setFeedback] = useState({ message: '', type: 'info', visible: false });
   const [challenges, setChallenges] = useState([]);
 
+  // Define showFeedback first to avoid circular dependencies
+  const showFeedback = useCallback((message, type = 'info') => {
+    setFeedback({ message, type, visible: true });
+    // Hide after 3 seconds
+    setTimeout(() => {
+      setFeedback(prev => ({ ...prev, visible: false }));
+    }, 3000);
+  }, []);
+
   // Update state from game systems
   useEffect(() => {
     if (!shapeChallenge) return;
@@ -77,7 +86,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
 
       showFeedback(`Started ${challenge.name} challenge! Watch the dots, then replicate!`, 'info');
     }
-  }, [shapeChallenge, paintingSystem]);
+  }, [shapeChallenge, paintingSystem, showFeedback]);
 
   const finishDrawing = useCallback(() => {
     if (!shapeChallenge) return;
@@ -110,7 +119,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     }
 
     setScore(shapeChallenge.getScore());
-  }, [shapeChallenge]);
+  }, [shapeChallenge, showFeedback]);
 
   const showDotConnectionAnalysis = useCallback(() => {
     if (!shapeChallenge) return;
@@ -140,7 +149,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     }
 
     showFeedback(analysisMessage, 'info');
-  }, [shapeChallenge]);
+  }, [shapeChallenge, showFeedback]);
 
   const resetCanvas = useCallback(() => {
     if (!shapeChallenge || !paintingSystem) return;
@@ -151,26 +160,11 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     shapeChallenge.clearTargetShape(paintingSystem);
     setCurrentChallenge(null);
     showFeedback('Canvas reset! Start a new challenge.', 'info');
-  }, [shapeChallenge, paintingSystem]);
-
-  const showFeedback = useCallback((message, type = 'info') => {
-    setFeedback({ message, type, visible: true });
-    // Hide after 3 seconds
-    setTimeout(() => {
-      setFeedback(prev => ({ ...prev, visible: false }));
-    }, 3000);
-  }, []);
+  }, [shapeChallenge, paintingSystem, showFeedback]);
 
   if (!isVisible) return null;
 
-  const getBackgroundColor = (type) => {
-    switch (type) {
-      case 'success': return 'rgba(76, 175, 80, 0.9)';
-      case 'warning': return 'rgba(255, 152, 0, 0.9)';
-      case 'error': return 'rgba(244, 67, 54, 0.9)';
-      default: return 'rgba(33, 150, 243, 0.9)';
-    }
-  };
+  // Removed unused getBackgroundColor function
 
   return (
     <div className="game-ui-container">
