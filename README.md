@@ -28,11 +28,14 @@ Each project maintains specialized components in its own folder for unique funct
 
 ## Features
 
-- **Modern Card-Based Library**: Browse projects through an elegant card-based interface with hover effects and smooth animations
-- **Responsive Design**: Mobile-first approach that works seamlessly on desktop, tablet, and mobile devices
+- **Liquid Glass Design System**: Apple-inspired interface with sophisticated glass morphism effects, backdrop blur, and premium visual aesthetics
+- **Dynamic Parallax Background**: Multi-layered animated blob system with depth-based motion simulation and smooth scroll parallax effects
+- **Enhanced Interactive Cards**: Premium glass-styled project cards with subtle shine animations, hover transformations, and refined visual feedback
+- **App-Style Navigation Panel**: Fixed side panel with square navigation buttons for home and GitHub access
+- **Responsive Design**: Mobile-first approach with optimized layouts for desktop, tablet, and mobile devices with adaptive blob positioning
 - **Component-Based Architecture**: Modular React components with proper separation of concerns
 - **State Management**: Modern React hooks for efficient state management
-- **Interactive UI**: Smooth transitions, hover effects, and modern design patterns
+- **Advanced Visual Effects**: Sophisticated animations, smooth transitions, and modern design patterns
 - **Project Isolation**: Each app runs independently with its own navigation and state
 
 ## Current Projects
@@ -346,6 +349,13 @@ An interactive sliding puzzle game showcasing **component-driven development** a
 - **CurrencyAPI**: Real-time exchange rate data
 - **Custom Currency Service**: Fallback handling and rate management
 
+### UI/UX Design System
+
+- **Liquid Glass Components**: Custom glass morphism design system inspired by Apple's aesthetic
+- **Advanced CSS Effects**: Backdrop filters, blur effects, and sophisticated visual layering
+- **Parallax Animation System**: Multi-layered blob backgrounds with depth-based motion simulation
+- **Interactive Visual Feedback**: Subtle shine effects, hover transformations, and smooth transitions
+
 ### Development Tools
 
 - **Create React App 5.0.1**: Modern React development environment
@@ -372,10 +382,13 @@ This project demonstrates proficiency in:
 
 ### UI/UX Development
 
-- **Responsive Design**: Mobile-first approach with Tailwind breakpoints
-- **Modern Animations**: Smooth transitions and hover effects
-- **Accessibility**: Proper form labels and semantic HTML
-- **User Experience**: Intuitive navigation and feedback systems
+- **Advanced Design Systems**: Liquid glass morphism with Apple-inspired aesthetics and sophisticated visual effects
+- **Parallax Animation Systems**: Multi-layered background animations with depth-based motion simulation and smooth scroll interactions
+- **Premium Interactive Design**: Enhanced card interfaces with subtle shine effects, hover transformations, and refined visual feedback
+- **Responsive Design**: Mobile-first approach with adaptive layouts and optimized blob positioning across all devices
+- **Modern Animations**: Smooth transitions, hover effects, and sophisticated animation choreography
+- **Accessibility**: Proper form labels, semantic HTML, and reduced motion support
+- **User Experience**: Intuitive navigation, app-style interface panels, and polished feedback systems
 
 ### Technical Implementation
 
