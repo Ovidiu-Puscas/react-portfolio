@@ -20,6 +20,7 @@ export class PaintingSystem {
     this.raycaster = new THREE.Raycaster();
     this.isDrawing = false;
     this.autoDetectionRun = false; // Flag to track if auto-detection has run
+    this.lastPaintPoint = null; // Store last paint point for interpolation
 
     // Use the imported configuration
     this.config = { ...PAINTING_CONFIG };
@@ -356,6 +357,7 @@ export class PaintingSystem {
 
     if (!this.canvasMesh) return; // Only proceed if canvasMesh is ready
     this.isPainting = true;
+    this.lastPaintPoint = null; // Reset last point when starting new stroke
     this.paintFromEvent(event);
   }
 
@@ -365,6 +367,7 @@ export class PaintingSystem {
 
   onPointerUp() {
     this.isPainting = false;
+    this.lastPaintPoint = null; // Reset last point when stopping painting
   }
 
   paintFromEvent(event) {
@@ -398,15 +401,41 @@ export class PaintingSystem {
     // Paint anywhere on the canvas
     const x = u * this.paintCanvas.width;
     const y = (1 - v) * this.paintCanvas.height;
-    console.log('Painting at UV:', u, v, 'with brush size:', this.config.brushSize, 'and alpha:', this.config.brushAlpha);
+    const currentPoint = { x, y, u, v };
 
     this.paintCtx.save();
-    this.paintCtx.globalAlpha = this.config.brushAlpha; // Use config alpha
-    this.paintCtx.beginPath();
-    this.paintCtx.arc(x, y, this.config.brushSize, 0, 2 * Math.PI); // Use config brush size
+    this.paintCtx.globalAlpha = this.config.brushAlpha;
     this.paintCtx.fillStyle = this.colorPalette ? this.colorPalette.getSelectedColor() : '#ff0000';
-    this.paintCtx.fill();
+
+    if (this.lastPaintPoint && this.isPainting) {
+      // Interpolate between last point and current point to create smooth strokes
+      const distance = Math.sqrt(
+        Math.pow(x - this.lastPaintPoint.x, 2) + 
+        Math.pow(y - this.lastPaintPoint.y, 2)
+      );
+      
+      // Calculate number of intermediate points based on distance
+      const steps = Math.max(1, Math.ceil(distance / (this.config.brushSize * 0.5)));
+      
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const interpX = this.lastPaintPoint.x + (x - this.lastPaintPoint.x) * t;
+        const interpY = this.lastPaintPoint.y + (y - this.lastPaintPoint.y) * t;
+        
+        // Draw circle at each interpolated point
+        this.paintCtx.beginPath();
+        this.paintCtx.arc(interpX, interpY, this.config.brushSize, 0, 2 * Math.PI);
+        this.paintCtx.fill();
+      }
+    } else {
+      // Draw a circle for the first point or single clicks
+      this.paintCtx.beginPath();
+      this.paintCtx.arc(x, y, this.config.brushSize, 0, 2 * Math.PI);
+      this.paintCtx.fill();
+    }
+
     this.paintCtx.restore();
+    this.lastPaintPoint = currentPoint;
     this.updateCombinedCanvas();
   }
 

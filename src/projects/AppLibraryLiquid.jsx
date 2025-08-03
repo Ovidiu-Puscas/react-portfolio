@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import EsignatureApp from './01-e-signature-app/EsignatureApp';
+import React, { useState, Suspense } from 'react';
 import SEO from '../components/SEO';
-import ComplementaryColorApp from './02-complementary-colors/ComplementaryColorsApp';
-import LikePhotoApp from './03-like-my-photo/LikePhotoApp';
-import TaxCalculatorApp from './04-tax-calculator/TaxCalculatorApp';
-import RoadBuilderPuzzleApp from './05-road-builder-puzzle/RoadBuilderPuzzleApp';
-import ReactThreejsApp from './06-react-threejs/ReactThreejsApp';
-import TaskManagerApp from './07-fullstack-task-manager/TaskManagerApp';
 import { LiquidGlassCard, LiquidGlassButton, LiquidGlassNav } from '../components/LiquidGlass';
 import LiquidBlob from '../components/LiquidBlob/LiquidBlob';
 import './AppLibraryLiquid.css';
+
+// Lazy load all project components for code splitting
+const EsignatureApp = React.lazy(() => import('./01-e-signature-app/EsignatureApp'));
+const ComplementaryColorApp = React.lazy(() => import('./02-complementary-colors/ComplementaryColorsApp'));
+const LikePhotoApp = React.lazy(() => import('./03-like-my-photo/LikePhotoApp'));
+const TaxCalculatorApp = React.lazy(() => import('./04-tax-calculator/TaxCalculatorApp'));
+const RoadBuilderPuzzleApp = React.lazy(() => import('./05-road-builder-puzzle/RoadBuilderPuzzleApp'));
+const ReactThreejsApp = React.lazy(() => import('./06-react-threejs/ReactThreejsApp'));
+const TaskManagerApp = React.lazy(() => import('./07-fullstack-task-manager/TaskManagerApp'));
+
+// Loading component for lazy-loaded apps
+const AppLoadingFallback = () => (
+  <div className="liquid-loading-container">
+    <div className="liquid-loading-spinner">
+      <div className="liquid-spinner"></div>
+    </div>
+    <p className="liquid-loading-text">Loading application...</p>
+  </div>
+);
 
 const AppLibraryLiquid = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -171,7 +183,9 @@ const AppLibraryLiquid = () => {
           <span className="liquid-nav-title">{selectedApp.title}</span>
         </LiquidGlassNav>
         <div className="liquid-app-content">
-          <AppComponent />
+          <Suspense fallback={<AppLoadingFallback />}>
+            <AppComponent />
+          </Suspense>
         </div>
       </div>
     );

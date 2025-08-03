@@ -21,11 +21,12 @@ const ReactThreejsApp = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!mountRef.current) return;
+    const mountElement = mountRef.current;
+    if (!mountElement) return;
 
     // Clean up any existing renderer/canvas
-    while (mountRef.current.firstChild) {
-      mountRef.current.removeChild(mountRef.current.firstChild);
+    while (mountElement.firstChild) {
+      mountElement.removeChild(mountElement.firstChild);
     }
 
     // React GameUI component will clean up automatically
@@ -134,13 +135,13 @@ const ReactThreejsApp = () => {
     );
 
     // Attach renderer to DOM and set initial size
-    mountRef.current.appendChild(renderer.domElement);
+    mountElement.appendChild(renderer.domElement);
 
     // Responsive resize
     const handleResize = () => {
-      if (!mountRef.current) return;
-      const width = mountRef.current.clientWidth;
-      const height = mountRef.current.clientHeight;
+      if (!mountElement) return;
+      const width = mountElement.clientWidth;
+      const height = mountElement.clientHeight;
 
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
@@ -187,8 +188,6 @@ const ReactThreejsApp = () => {
 
       // React GameUI component will clean up automatically
 
-      // Store mountRef.current in a variable to avoid the ref warning
-      const mountElement = mountRef.current;
       if (mountElement && renderer.domElement) {
         mountElement.removeChild(renderer.domElement);
       }

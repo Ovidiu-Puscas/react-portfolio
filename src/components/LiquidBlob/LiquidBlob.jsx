@@ -14,7 +14,6 @@ const LiquidBlob = ({
 
   useEffect(() => {
     let animationFrameId;
-    let lastScrollY = 0;
     let lastMouseX = 0;
     let lastMouseY = 0;
     
@@ -57,7 +56,6 @@ const LiquidBlob = ({
       
       blobRef.current.style.transform = finalTransform;
       
-      lastScrollY = currentScrollY;
       animationFrameId = requestAnimationFrame(updateBlob);
     };
     
