@@ -179,3 +179,21 @@
 .game-ui-button.warning:hover {
   background: #F57C00;
 }
+
+@media (max-width: 767px) {
+  .game-ui-container {
+    display: none;
+  }
+
+  .brush-ui-container {
+    display: none !important;
+  }
+
+  #rotate-left-btn {
+    white-space: nowrap;
+  }
+
+  #rotate-right-btn {
+    white-space: nowrap;
+  }
+}

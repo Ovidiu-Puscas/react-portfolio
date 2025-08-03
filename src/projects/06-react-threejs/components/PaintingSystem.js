@@ -99,6 +99,7 @@ export class PaintingSystem {
   createBrushUI() {
     // Create brush size control container
     this.brushUIContainer = document.createElement('div');
+    this.brushUIContainer.className = 'brush-ui-container';
     this.brushUIContainer.style.position = 'fixed';
     this.brushUIContainer.style.right = '20px';
     this.brushUIContainer.style.top = '50%';

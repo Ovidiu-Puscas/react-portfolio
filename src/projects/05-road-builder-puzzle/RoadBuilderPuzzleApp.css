@@ -10,6 +10,8 @@
   position: relative;
   padding: 20px;
   min-height: 100%;
+  border-radius: 16px;
+  backdrop-filter: blur(20px) saturate(180%);
 }
 
 /* Game Header */

@@ -7,7 +7,7 @@ export class CameraController {
     this.targetRotationY = 0;
     this.currentRotationY = 0;
     this.rotationStep = Math.PI / 4; // 45 degrees
-    
+
     // Set initial camera position as requested
     this.cameraRadius = Math.sqrt((-8) * (-8) + (0.6) * (0.6));
     this.cameraHeight = 11;
@@ -28,7 +28,7 @@ export class CameraController {
     if (this.buttonContainer) {
       this.buttonContainer.remove();
     }
-    
+
     // Create container for rotation buttons
     this.buttonContainer = document.createElement('div');
     this.buttonContainer.style.position = 'fixed';
@@ -38,9 +38,10 @@ export class CameraController {
     this.buttonContainer.style.zIndex = '1001';
     this.buttonContainer.style.display = 'flex';
     this.buttonContainer.style.gap = '10px';
-    
+
     // Add UI buttons for rotation
     this.rotateLeftBtn = document.createElement('button');
+    this.rotateLeftBtn.id = 'rotate-left-btn';
     this.rotateLeftBtn.textContent = '← Rotate Left';
     this.rotateLeftBtn.style.padding = '10px 20px';
     this.rotateLeftBtn.style.border = 'none';
@@ -52,6 +53,7 @@ export class CameraController {
     this.rotateLeftBtn.style.fontWeight = 'bold';
 
     this.rotateRightBtn = document.createElement('button');
+    this.rotateRightBtn.id = 'rotate-right-btn';
     this.rotateRightBtn.textContent = 'Rotate Right →';
     this.rotateRightBtn.style.padding = '10px 20px';
     this.rotateRightBtn.style.border = 'none';
@@ -61,7 +63,7 @@ export class CameraController {
     this.rotateRightBtn.style.cursor = 'pointer';
     this.rotateRightBtn.style.fontSize = '14px';
     this.rotateRightBtn.style.fontWeight = 'bold';
-    
+
     this.buttonContainer.appendChild(this.rotateLeftBtn);
     this.buttonContainer.appendChild(this.rotateRightBtn);
     document.body.appendChild(this.buttonContainer);
@@ -102,7 +104,7 @@ export class CameraController {
     if (this.rotateRightBtn && this.boundRotateRight) {
       this.rotateRightBtn.removeEventListener('click', this.boundRotateRight);
     }
-    
+
     // Remove DOM elements
     if (this.buttonContainer) {
       this.buttonContainer.remove();
@@ -116,9 +118,9 @@ export class CameraController {
       this.rotateRightBtn.remove();
       this.rotateRightBtn = null;
     }
-    
+
     // Clear bound handlers
     this.boundRotateLeft = null;
     this.boundRotateRight = null;
   }
-} 
+}

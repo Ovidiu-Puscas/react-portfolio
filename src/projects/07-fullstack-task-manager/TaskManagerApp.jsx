@@ -107,8 +107,8 @@ const Dashboard = () => {
         <Typography variant="h4" component="h1">
           My Projects
         </Typography>
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setFormOpen(true)}
         >
@@ -127,8 +127,8 @@ const Dashboard = () => {
             <Typography color="text.secondary" sx={{ mb: 2 }}>
               Create your first project to get started!
             </Typography>
-            <Button 
-              variant="outlined" 
+            <Button
+              variant="outlined"
               onClick={handleCreateSampleData}
               disabled={creatingDemoData}
               sx={{ mr: 2 }}
@@ -144,7 +144,7 @@ const Dashboard = () => {
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
           {projects.map((project) => (
             <Box key={project.id} sx={{ width: { xs: '100%', md: 'calc(50% - 12px)', lg: 'calc(33.333% - 16px)' } }}>
-              <Card 
+              <Card
                 sx={{ height: '100%', cursor: 'pointer', '&:hover': { boxShadow: 3 } }}
                 onClick={() => handleProjectClick(project)}
               >
@@ -154,13 +154,13 @@ const Dashboard = () => {
                       {project.name}
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                      <Chip 
-                        label={project.status} 
+                      <Chip
+                        label={project.status}
                         size="small"
                         color={project.status === 'active' ? 'success' : 'default'}
                       />
-                      <IconButton 
-                        size="small" 
+                      <IconButton
+                        size="small"
                         onClick={(e) => handleMenuOpen(e, project)}
                       >
                         <MoreVertIcon fontSize="small" />
@@ -242,7 +242,7 @@ const TaskManagerApp = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+        <Box sx={{ height: '100%', bgcolor: 'rgb(249 250 251 / 0.65)', borderRadius: '16px', overflow: 'hidden', backdropFilter: 'blur(20px) saturate(180%)' }}>
           <AppContent />
         </Box>
       </AuthProvider>

@@ -69,7 +69,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
+        height: '100%',
         padding: 2
       }}
     >
@@ -84,7 +84,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         <Typography variant="h4" component="h1" align="center" gutterBottom>
           Sign Up
         </Typography>
-        
+
         <Typography variant="body2" color="text.secondary" align="center" sx={{ mb: 3 }}>
           Create your Task Manager account
         </Typography>
@@ -119,7 +119,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             required
             autoComplete="email"
           />
-          
+
           <TextField
             fullWidth
             label="Password"
@@ -157,9 +157,9 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           <Box textAlign="center">
             <Typography variant="body2">
               Already have an account?{' '}
-              <Link 
-                component="button" 
-                variant="body2" 
+              <Link
+                component="button"
+                variant="body2"
                 onClick={onSwitchToLogin}
                 sx={{ cursor: 'pointer' }}
               >

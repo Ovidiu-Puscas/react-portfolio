@@ -209,7 +209,7 @@ const ReactThreejsApp = () => {
   }, []);
 
   return (
-    <div className="w-full h-full overflow-hidden flex flex-col">
+    <div className="w-full h-full overflow-hidden flex flex-col rounded-xl">
       {isLoading && (
         <div className="absolute inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
           <div className="text-center text-white">

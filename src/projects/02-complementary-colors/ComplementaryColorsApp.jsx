@@ -37,7 +37,7 @@ const ComplementaryColorsApp = () => {
         author="Ovidiu Alexandru Pușcaș"
       />
 
-      <div className="bg-gray-50 py-8 px-4">
+      <div className="bg-gray-50/65 backdrop-blur-sm py-8 px-4 rounded-xl h-full">
         <div className="max-w-6xl mx-auto">
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

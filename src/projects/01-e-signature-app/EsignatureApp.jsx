@@ -16,7 +16,7 @@ export default function EsignatureApp() {
       alert('Please provide a signature first!');
       return;
     }
-    
+
     const signatureDataUrl = sigPadRef.current.toDataURL();
     setSignatureData(signatureDataUrl);
   };
@@ -27,14 +27,14 @@ export default function EsignatureApp() {
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100">
-      
+    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl">
+
       {/* Mobile-first responsive layout */}
       <div className="flex flex-col lg:grid lg:grid-cols-10 lg:gap-0 h-full">
         {/* Left Column - Signature Form (30% on desktop, full width on mobile) */}
-        <div className="lg:col-span-3 bg-white p-4 sm:p-6 lg:p-8 overflow-y-auto order-2 lg:order-1">
+        <div className="lg:col-span-3 p-4 sm:p-6 lg:p-8 overflow-y-auto order-2 lg:order-1">
           <Title title={{ heading: 'h2', text: 'Document Details', class: 'text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6' }} />
-          
+
           {/* Document Form */}
           <div className="space-y-4 mb-6 sm:mb-8">
             <div>
@@ -47,7 +47,7 @@ export default function EsignatureApp() {
                 className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-base"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Document Content</label>
               <textarea
@@ -57,7 +57,7 @@ export default function EsignatureApp() {
                 className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all h-24 sm:h-32 resize-none text-sm sm:text-base"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Signer Name</label>
               <input
@@ -74,25 +74,25 @@ export default function EsignatureApp() {
           <div>
             <Title title={{ heading: 'h3', text: 'Digital Signature', class: 'text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4' }} />
             <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-4">
-              <SignatureCanvas 
+              <SignatureCanvas
                 ref={sigPadRef}
                 penColor='#1f2937'
                 canvasProps={{
-                  width: 300, 
-                  height: 120, 
-                  className: 'sigCanvas border-2 border-gray-300 rounded-lg mx-auto bg-white w-full max-w-[300px] h-[100px] sm:h-[120px]'
-                }} 
+                  width: 300,
+                  height: 120,
+                  className: 'sigCanvas border-2 border-gray-300 rounded-lg mx-auto w-full max-w-[300px] h-[100px] sm:h-[120px]'
+                }}
               />
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-              <button 
+              <button
                 onClick={handleSaveSignature}
                 className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
               >
                 Save Signature
               </button>
-              <button 
+              <button
                 onClick={handleClearSignature}
                 className="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
               >
@@ -103,9 +103,9 @@ export default function EsignatureApp() {
         </div>
 
         {/* Right Column - PDF Preview (70% on desktop, full width on mobile) */}
-        <div className="lg:col-span-7 bg-white p-4 sm:p-6 lg:p-8 overflow-y-auto order-1 lg:order-2">
+        <div className="lg:col-span-7 p-4 sm:p-6 lg:p-8 overflow-y-auto order-1 lg:order-2">
           <Title title={{ heading: 'h2', text: 'PDF Preview', class: 'text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6' }} />
-          
+
           {signatureData ? (
             <div className="space-y-4">
               <PDFGenerator
