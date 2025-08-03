@@ -1,10 +1,10 @@
 import './App.css';
-import AppLibrary from './projects/AppLibrary';
+import AppLibraryLiquid from './projects/AppLibraryLiquid';
 
 function App() {
   return (
     <div className="App">
-      <AppLibrary />
+      <AppLibraryLiquid />
     </div>
   );
 }

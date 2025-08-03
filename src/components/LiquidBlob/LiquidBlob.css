@@ -1,0 +1,166 @@
+/* Liquid Blob Styles */
+
+.liquid-blob-container {
+  position: absolute;
+  width: var(--blob-size, 400px);
+  height: var(--blob-size, 400px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.liquid-blob {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  filter: url(#gooey);
+  transform-origin: center;
+  transform: translate(0, 0) rotate(0deg);
+  /* Transform will be controlled by JavaScript for smooth parallax */
+}
+
+.blob-gradient {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  filter: blur(40px);
+  opacity: 0.8;
+}
+
+.blob-gradient-1 {
+  background: radial-gradient(circle at 30% 30%, 
+    var(--color-1, #667eea), 
+    transparent 70%);
+  animation: 
+    blob-rotate var(--animation-duration, 20s) ease-in-out infinite,
+    blob-scale-1 var(--animation-duration, 20s) ease-in-out infinite;
+}
+
+.blob-gradient-2 {
+  background: radial-gradient(circle at 70% 30%, 
+    var(--color-2, #764ba2), 
+    transparent 70%);
+  animation: 
+    blob-rotate var(--animation-duration, 20s) ease-in-out infinite reverse,
+    blob-scale-2 var(--animation-duration, 20s) ease-in-out infinite;
+}
+
+.blob-gradient-3 {
+  background: radial-gradient(circle at 30% 70%, 
+    var(--color-3, #f093fb), 
+    transparent 70%);
+  animation: 
+    blob-rotate var(--animation-duration, 20s) ease-in-out infinite,
+    blob-scale-3 var(--animation-duration, 20s) ease-in-out infinite;
+}
+
+.blob-gradient-4 {
+  background: radial-gradient(circle at 70% 70%, 
+    var(--color-4, #f5576c), 
+    transparent 70%);
+  animation: 
+    blob-rotate var(--animation-duration, 20s) ease-in-out infinite reverse,
+    blob-scale-4 var(--animation-duration, 20s) ease-in-out infinite;
+}
+
+/* Rotation animation */
+@keyframes blob-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Individual scaling animations for organic movement */
+@keyframes blob-scale-1 {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  25% {
+    transform: scale(1.1) translate(10%, -10%);
+  }
+  50% {
+    transform: scale(0.9) translate(-10%, 10%);
+  }
+  75% {
+    transform: scale(1.05) translate(5%, 5%);
+  }
+}
+
+@keyframes blob-scale-2 {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  25% {
+    transform: scale(0.95) translate(-10%, 10%);
+  }
+  50% {
+    transform: scale(1.1) translate(10%, -10%);
+  }
+  75% {
+    transform: scale(0.9) translate(-5%, -5%);
+  }
+}
+
+@keyframes blob-scale-3 {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  25% {
+    transform: scale(1.05) translate(-5%, -5%);
+  }
+  50% {
+    transform: scale(0.95) translate(5%, 5%);
+  }
+  75% {
+    transform: scale(1.1) translate(-10%, 10%);
+  }
+}
+
+@keyframes blob-scale-4 {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  25% {
+    transform: scale(0.9) translate(5%, -5%);
+  }
+  50% {
+    transform: scale(1.05) translate(-5%, 5%);
+  }
+  75% {
+    transform: scale(0.95) translate(10%, -10%);
+  }
+}
+
+/* SVG Filter (hidden) */
+.liquid-blob-filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+/* Performance optimization for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .blob-gradient {
+    animation: none;
+  }
+  
+  .liquid-blob {
+    transition: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .liquid-blob-container {
+    --blob-size: 300px !important;
+  }
+  
+  .blob-gradient {
+    filter: blur(30px);
+  }
+}
