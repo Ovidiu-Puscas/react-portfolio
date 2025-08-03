@@ -37,6 +37,8 @@ Each project maintains specialized components in its own folder for unique funct
 - **State Management**: Modern React hooks for efficient state management
 - **Advanced Visual Effects**: Sophisticated animations, smooth transitions, and modern design patterns
 - **Project Isolation**: Each app runs independently with its own navigation and state
+- **⚡ Performance Optimized**: Code splitting reduces main bundle from 977KB to 51KB (94.7% reduction) with lazy loading
+- **📦 Smart Bundle Management**: Large dependencies (Three.js, Firebase, Material-UI) load only when needed
 
 ## Current Projects
 
@@ -211,13 +213,14 @@ A comprehensive financial calculator for Romanian Micro SRL tax calculations wit
 - **Responsive Design**: Mobile-optimized with horizontal scrolling
 - **Error Resilience**: Fallback rates when API is unavailable
 
-### React Three.js 3D Painting App ⭐ **New Interactive 3D Experience**
+### React Three.js 3D Painting App ⭐ **Interactive 3D Experience with Advanced Brush System**
 
 An immersive 3D painting application built with Three.js and React, demonstrating advanced 3D graphics programming and interactive media techniques:
 
 **Core Features:**
 
 - Interactive 3D canvas painting on a virtual easel using real GLB model
+- **Advanced Brush System**: Smooth continuous strokes with interpolation for fast mouse movements
 - Real-time brush system with adjustable size and opacity controls
 - Dynamic color palette with 3D color spheres for selection
 - Shape challenge game system with target drawing replication
@@ -239,7 +242,8 @@ An immersive 3D painting application built with Three.js and React, demonstratin
 **Technical Implementation:**
 
 - **Three.js Scene Management**: Professional 3D scene setup with proper lighting and camera systems
-- **Real-time Texture Painting**: Canvas-based painting system mapped to 3D mesh textures
+- **Real-time Texture Painting**: Canvas-based painting system mapped to 3D mesh textures with stroke interpolation
+- **Brush Stroke Interpolation**: Advanced algorithm that fills gaps between mouse positions for smooth continuous strokes during fast movements
 - **Interactive 3D UI**: Color palette implemented as interactive 3D spheres in scene
 - **Advanced Lighting**: Multi-light setup with directional, spot, and point lights positioned behind camera
 - **GLB Model Loading**: Production-ready 3D model loading with proper error handling
@@ -397,8 +401,11 @@ This project demonstrates proficiency in:
 - **Drag-and-Drop Interfaces**: Advanced kanban boards with @hello-pangea/dnd integration
 - **Authentication Systems**: Firebase Auth with protected routes and user session management
 - **Database Design**: Firestore data modeling and real-time synchronization patterns
+- **Performance Optimization**: Code splitting with React.lazy() reduces main bundle by 94.7% (977KB → 51KB)
+- **Smart Loading**: Large dependencies (Three.js, Firebase, Material-UI) load only when accessed
+- **Bundle Management**: Separate chunks for each major feature (3D: 489KB, Task Manager: 221KB)
 - **3D Graphics Programming**: Three.js integration with React for immersive 3D experiences
-- **Real-time Texture Painting**: Canvas-based painting systems mapped to 3D mesh surfaces
+- **Real-time Texture Painting**: Canvas-based painting systems with stroke interpolation for smooth brush strokes
 - **3D Scene Management**: Professional lighting setups, camera controls, and model loading
 - **WebGL Optimization**: Efficient 3D rendering with proper memory management
 - **PDF Generation**: Real-time PDF creation with custom styling
@@ -418,6 +425,10 @@ This project demonstrates proficiency in:
 - **Modern JavaScript**: ES6+ features and async patterns
 - **CSS Architecture**: Utility-first styling with Tailwind
 - **Error Handling**: Graceful fallbacks and user feedback
+
+## 🚀 Live Demo
+
+The portfolio is deployed and available at: **https://react-portfolio-9f9fd.web.app**
 
 ## Getting Started
 
@@ -467,6 +478,14 @@ Launches the test runner in interactive watch mode.
 ### `npm run build`
 
 Builds the app for production with optimization and minification.
+
+### `npm run deploy`
+
+Builds the application and deploys to Firebase Hosting (both functions and hosting).
+
+### `npm run deploy:hosting`
+
+Deploys only the hosting portion to Firebase (recommended for most updates).
 
 ### `npm run eject`
 
