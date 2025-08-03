@@ -187,6 +187,7 @@ package-lock.json.bak
 
 # Claude AI assistant files
 .claude/
+CLAUDE.md
 
 # Firebase
 .firebase/
@@ -194,3 +195,5 @@ package-lock.json.bak
 firebase-debug.log
 .firebase*.log
 functions/node_modules/
+apphosting.yaml
+apphosting.*.yaml

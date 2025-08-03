@@ -9,11 +9,24 @@ import LikePhotoApp from './03-like-my-photo/LikePhotoApp';
 import TaxCalculatorApp from './04-tax-calculator/TaxCalculatorApp';
 import RoadBuilderPuzzleApp from './05-road-builder-puzzle/RoadBuilderPuzzleApp';
 import ReactThreejsApp from './06-react-threejs/ReactThreejsApp';
+import TaskManagerApp from './07-fullstack-task-manager/TaskManagerApp';
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
 
   const apps = [
+    {
+      id: 'task-manager',
+      title: 'Full-Stack Task Manager',
+      description: 'Complete enterprise-grade task management with Firebase backend, real-time collaboration, drag-and-drop kanban boards, user authentication, and project management. Demonstrates full-stack development skills.',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg>
+      ),
+      color: 'blue',
+      component: TaskManagerApp
+    },
     {
       id: 'e-signature',
       title: 'E-Signature App',
@@ -23,7 +36,7 @@ const AppLibrary = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
         </svg>
       ),
-      color: 'blue',
+      color: 'green',
       component: EsignatureApp
     },
     {
@@ -35,20 +48,20 @@ const AppLibrary = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.636-1.636a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
         </svg>
       ),
-      color: 'green',
+      color: 'purple',
       component: ComplementaryColorApp
     },
     {
-      id: 'like-my-photo',
-      title: 'Interactive Photo Gallery',
-      description: 'Engaging photo interaction app with animated hearts, like counters, and smooth transitions. Features responsive grid layout and gesture-based interactions.',
+      id: 'react-threejs',
+      title: '3D Canvas Painter',
+      description: 'Paint and draw in immersive 3D space using Three.js. Features dynamic lighting, color palette selection, brush controls, and shape-drawing challenges.',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
         </svg>
       ),
-      color: 'purple',
-      component: LikePhotoApp
+      color: 'indigo',
+      component: ReactThreejsApp
     },
     {
       id: 'tax-calculator',
@@ -75,16 +88,16 @@ const AppLibrary = () => {
       component: RoadBuilderPuzzleApp
     },
     {
-      id: 'react-threejs',
-      title: '3D Canvas Painter',
-      description: 'Paint and draw in immersive 3D space using Three.js. Features dynamic lighting, color palette selection, brush controls, and shape-drawing challenges.',
+      id: 'like-my-photo',
+      title: 'Interactive Photo Gallery',
+      description: 'Engaging photo interaction app with animated hearts, like counters, and smooth transitions. Features responsive grid layout and gesture-based interactions.',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
       ),
-      color: 'indigo',
-      component: ReactThreejsApp
+      color: 'blue',
+      component: LikePhotoApp
     },
     // Add more apps here as you create them
   ];

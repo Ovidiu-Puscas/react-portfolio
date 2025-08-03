@@ -37,6 +37,49 @@ Each project maintains specialized components in its own folder for unique funct
 
 ## Current Projects
 
+### ⭐ Full-Stack Task Manager **New Enterprise-Grade Application**
+
+A complete enterprise-grade task management application demonstrating modern full-stack development with React and Firebase:
+
+**Core Features:**
+
+- Full user authentication system with Firebase Auth (email/password)
+- Real-time collaborative project management with Firestore
+- Drag-and-drop kanban board with @hello-pangea/dnd library
+- Complete CRUD operations for projects and tasks
+- Real-time updates and live synchronization across browser sessions
+- Professional Material-UI design system with responsive layout
+- Sample data system for immediate demo functionality
+
+**React + Firebase Skills Demonstrated:**
+
+- **Full-Stack Architecture**: Complete React frontend with Firebase backend integration
+- **Real-time Database**: Firestore listeners for live data synchronization
+- **Authentication System**: Firebase Auth with protected routes and user management
+- **State Management**: Complex state coordination with custom React hooks
+- **Drag-and-Drop**: Advanced kanban board with @hello-pangea/dnd integration
+- **Component Architecture**: Enterprise-level component organization and reusability
+- **Material-UI Integration**: Professional design system with consistent theming
+
+**Technical Implementation:**
+
+- **Firebase Integration**: Authentication, Firestore database, and real-time listeners
+- **Drag-and-Drop System**: Clean implementation following @hello-pangea/dnd best practices
+- **Custom Hooks**: useAuth, useProjects, useTasks for state management and API integration
+- **Real-time Collaboration**: Live updates when multiple users work on the same project
+- **Error Handling**: Comprehensive error handling with LocalStorage fallback
+- **Responsive Design**: Mobile-first Material-UI components with proper responsive behavior
+- **Security**: Firestore security rules and proper authentication flow
+
+**Key Technical Achievements:**
+
+- **Enterprise Architecture**: Modular component structure following React best practices
+- **Performance Optimization**: Efficient real-time updates without unnecessary re-renders
+- **Library Integration**: Successfully resolved complex drag-and-drop compatibility issues
+- **Data Management**: Sophisticated task and project relationship management
+- **User Experience**: Intuitive kanban board with smooth drag-and-drop interactions
+- **Production Ready**: Comprehensive error handling and graceful degradation
+
 ### E-Signature App
 
 A comprehensive digital signature application demonstrating advanced React skills:
@@ -260,7 +303,6 @@ An interactive sliding puzzle game showcasing **component-driven development** a
 
 ### Coming Soon
 
-- Task Manager with drag-and-drop functionality
 - Weather Dashboard with real-time data
 - Chat Application with real-time messaging
 - E-Commerce Store with full shopping features
@@ -274,6 +316,13 @@ An interactive sliding puzzle game showcasing **component-driven development** a
 - **React DOM 18.2.0**: Stable DOM rendering capabilities
 - **Tailwind CSS 3.4.17**: Utility-first CSS framework for responsive design
 
+### Full-Stack & Backend
+
+- **Firebase 10.x**: Complete backend-as-a-service platform
+- **Firebase Authentication**: User authentication with email/password
+- **Firestore**: NoSQL real-time database with live listeners
+- **Material-UI (MUI) 5.x**: Professional React component library with theming system
+
 ### Signature & PDF Functionality
 
 - **react-signature-canvas 1.1.0-alpha.2**: Digital signature capture and manipulation
@@ -286,8 +335,9 @@ An interactive sliding puzzle game showcasing **component-driven development** a
 - **Canvas API**: Real-time texture painting and manipulation
 - **WebGL**: Hardware-accelerated 3D rendering
 
-### Color & UI Components
+### Interactive UI Components
 
+- **@hello-pangea/dnd**: Modern drag-and-drop library for React 18 compatibility
 - **@uiw/react-color-wheel 2.7.1**: Interactive color wheel component
 - **@tailwindcss/line-clamp 0.4.4**: Text truncation utilities
 
@@ -329,6 +379,11 @@ This project demonstrates proficiency in:
 
 ### Technical Implementation
 
+- **Full-Stack Development**: Complete React + Firebase applications with authentication and real-time data
+- **Real-time Systems**: Live collaboration with Firestore listeners and optimistic updates
+- **Drag-and-Drop Interfaces**: Advanced kanban boards with @hello-pangea/dnd integration
+- **Authentication Systems**: Firebase Auth with protected routes and user session management
+- **Database Design**: Firestore data modeling and real-time synchronization patterns
 - **3D Graphics Programming**: Three.js integration with React for immersive 3D experiences
 - **Real-time Texture Painting**: Canvas-based painting systems mapped to 3D mesh surfaces
 - **3D Scene Management**: Professional lighting setups, camera controls, and model loading
@@ -477,17 +532,47 @@ src/
     │       ├── AnimationOverlay.jsx # Success/failure animations
     │       ├── GameOverlay.jsx      # Victory screens
     │       └── GameInstructions.jsx # Game instructions
-    └── 06-react-threejs/
-        ├── ReactThreejsApp.jsx      # Main 3D application component
-        ├── classes/
-        │   ├── ColorPalette.js      # 3D color sphere management
-        │   └── ShapeChallenge.js    # Game logic for shape drawing
+    ├── 06-react-threejs/
+    │   ├── ReactThreejsApp.jsx      # Main 3D application component
+    │   ├── classes/
+    │   │   ├── ColorPalette.js      # 3D color sphere management
+    │   │   └── ShapeChallenge.js    # Game logic for shape drawing
+    │   ├── components/
+    │   │   ├── CameraController.js  # 3D camera rotation controls
+    │   │   ├── PaintingSystem.js    # Real-time 3D texture painting
+    │   │   ├── GameUI.js           # Traditional DOM-based game UI
+    │   │   ├── GameUIComponent.jsx  # Modern React component UI
+    │   │   └── DevControls.js      # Developer debugging tools
+    │   └── config/
+    │       └── settings.js         # Configuration and constants
+    └── 07-fullstack-task-manager/
+        ├── TaskManagerApp.jsx       # Main task manager application
         ├── components/
-        │   ├── CameraController.js  # 3D camera rotation controls
-        │   ├── PaintingSystem.js    # Real-time 3D texture painting
-        │   ├── GameUI.js           # Traditional DOM-based game UI
-        │   ├── GameUIComponent.jsx  # Modern React component UI
-        │   └── DevControls.js      # Developer debugging tools
-        └── config/
-            └── settings.js         # Configuration and constants
+        │   ├── auth/               # Authentication components
+        │   │   ├── AuthPage.jsx    # Login/Register page
+        │   │   ├── LoginForm.jsx   # Login form component
+        │   │   ├── RegisterForm.jsx # Registration form
+        │   │   └── ProtectedRoute.jsx # Route protection
+        │   ├── common/
+        │   │   └── Header.jsx      # Application header
+        │   ├── projects/
+        │   │   ├── ProjectDetail.jsx # Project detail with kanban board
+        │   │   └── ProjectForm.jsx  # Create/edit project form
+        │   └── tasks/
+        │       ├── KanbanBoard.jsx  # Drag-and-drop kanban board
+        │       ├── TaskCard.jsx     # Individual task card
+        │       └── TaskForm.jsx     # Create/edit task form
+        ├── hooks/
+        │   ├── useAuth.jsx         # Authentication state management
+        │   ├── useProjects.js      # Project CRUD operations
+        │   └── useTasks.js         # Task CRUD and kanban logic
+        ├── services/
+        │   ├── firebase.js         # Firebase configuration
+        │   ├── auth.service.js     # Authentication service
+        │   └── firestore.service.js # Firestore CRUD operations
+        ├── types/
+        │   └── index.js           # Type definitions
+        └── utils/
+            ├── mockData.js        # Mock data for development
+            └── sampleData.js      # Sample data creation
 ```
