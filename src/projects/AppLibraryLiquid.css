@@ -1,5 +1,45 @@
 /* Liquid Glass Portfolio Styles */
 
+/* Loading styles for lazy-loaded components */
+.liquid-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 2rem;
+}
+
+.liquid-loading-spinner {
+  margin-bottom: 1rem;
+}
+
+.liquid-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: liquidSpin 1s linear infinite;
+}
+
+@keyframes liquidSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.liquid-loading-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  margin: 0;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .liquid-library-container {
   min-height: 100vh;
   background: transparent;
