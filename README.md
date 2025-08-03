@@ -2,6 +2,10 @@
 
 A modern React portfolio showcasing various applications and projects with a **modular component architecture**. This repository contains a collection of React applications, each demonstrating different skills and technologies using reusable, maintainable component patterns.
 
+## 🚀 Live Demo
+
+The portfolio is deployed and available at: **https://react.xtreemedigital.com**
+
 ## 🏗️ Modular Architecture
 
 This portfolio follows a **component-driven development** approach with three levels of reusability:
@@ -426,10 +430,6 @@ This project demonstrates proficiency in:
 - **CSS Architecture**: Utility-first styling with Tailwind
 - **Error Handling**: Graceful fallbacks and user feedback
 
-## 🚀 Live Demo
-
-The portfolio is deployed and available at: **https://react-portfolio-9f9fd.web.app**
-
 ## Getting Started
 
 ### Prerequisites
@@ -608,3 +608,4 @@ src/
             ├── mockData.js        # Mock data for development
             └── sampleData.js      # Sample data creation
 ```
+
