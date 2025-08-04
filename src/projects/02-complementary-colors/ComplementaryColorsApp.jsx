@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import ColorPicker from './components/ColorPicker';
 import HarmonyDisplay from './components/HarmonyDisplay';
 import { calculateHarmony } from './utils/colorUtils';
 import SEO from '../../components/SEO';
+import ErrorFallback from '../../components/ErrorFallback';
+import { logError } from '../../utils/errorLogger';
 
 const ComplementaryColorsApp = () => {
   const [selectedColor, setSelectedColor] = useState('#ff0000');
@@ -28,16 +31,23 @@ const ComplementaryColorsApp = () => {
   };
 
   return (
-    <>
-      <SEO
-        title="Complementary Colors Tool - Color Harmony Generator"
-        description="Explore color harmonies with our interactive complementary colors tool. Generate complementary, monochromatic, analogous, triadic, and tetradic color schemes."
-        keywords="color harmony, complementary colors, color theory, color wheel, color schemes, design tools"
-        type="website"
-        author="Ovidiu Alexandru Pușcaș"
-      />
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => window.location.reload()}
+      onError={(error, errorInfo) => {
+        logError(error, errorInfo, { component: 'ComplementaryColorsApp' });
+      }}
+    >
+      <>
+        <SEO
+          title="Complementary Colors Tool - Color Harmony Generator"
+          description="Explore color harmonies with our interactive complementary colors tool. Generate complementary, monochromatic, analogous, triadic, and tetradic color schemes."
+          keywords="color harmony, complementary colors, color theory, color wheel, color schemes, design tools"
+          type="website"
+          author="Ovidiu Alexandru Pușcaș"
+        />
 
-      <div className="bg-gray-50/65 backdrop-blur-sm py-8 px-4 rounded-xl h-full">
+        <div className="bg-gray-50/65 backdrop-blur-sm py-8 px-4 rounded-xl h-full">
         <div className="max-w-6xl mx-auto">
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -61,8 +71,9 @@ const ComplementaryColorsApp = () => {
             </div>
           </div>
         </div>
-      </div>
-    </>
+        </div>
+      </>
+    </ErrorBoundary>
   );
 };
 

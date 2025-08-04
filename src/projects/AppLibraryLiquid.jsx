@@ -2,6 +2,8 @@ import React, { useState, Suspense } from 'react';
 import SEO from '../components/SEO';
 import { LiquidGlassCard, LiquidGlassButton, LiquidGlassNav } from '../components/LiquidGlass';
 import LiquidBlob from '../components/LiquidBlob/LiquidBlob';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from '../components/ErrorFallback';
 import './AppLibraryLiquid.css';
 
 // Lazy load all project components for code splitting
@@ -183,9 +185,15 @@ const AppLibraryLiquid = () => {
           <span className="liquid-nav-title">{selectedApp.title}</span>
         </LiquidGlassNav>
         <div className="liquid-app-content">
-          <Suspense fallback={<AppLoadingFallback />}>
-            <AppComponent />
-          </Suspense>
+          <ErrorBoundary
+            FallbackComponent={ErrorFallback}
+            onReset={() => setSelectedApp(null)}
+            resetKeys={[selectedApp.id]}
+          >
+            <Suspense fallback={<AppLoadingFallback />}>
+              <AppComponent />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </div>
     );

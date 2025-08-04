@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import roadTopEndBottom from './assets/roadsTopEndBottom.jpg';
 import roadHorizontalStraight from './assets/roadsHorizontalStraight.jpg';
 import roadVerticalStraight from './assets/roadsVerticalStraight.jpg';
@@ -10,6 +11,8 @@ import roadRightEndLeft from './assets/roadsRightEndLeft.jpg';
 import roadLeftEndRight from './assets/roadsLeftEndRight.jpg';
 import roadBottomTopEnd from './assets/roadsBottomTopEnd.jpg';
 import roadConnectionsData from './assets/road_tile_connections_with_sides.json';
+import ErrorFallback from '../../components/ErrorFallback';
+import { logError } from '../../utils/errorLogger';
 import './RoadBuilderPuzzleApp.css';
 
 // Global Components
@@ -440,12 +443,19 @@ const RoadBuilderPuzzleApp = () => {
   };
 
   return (
-    <div className="road-builder-container">
-      <SEO
-        title="Road Builder Puzzle - React Portfolio"
-        description="Slide tiles to create a road path for the car to reach the checkered flag in this interactive puzzle game!"
-        keywords="puzzle game, road builder, sliding puzzle, react game, interactive"
-      />
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => window.location.reload()}
+      onError={(error, errorInfo) => {
+        logError(error, errorInfo, { component: 'RoadBuilderPuzzleApp' });
+      }}
+    >
+      <div className="road-builder-container">
+        <SEO
+          title="Road Builder Puzzle - React Portfolio"
+          description="Slide tiles to create a road path for the car to reach the checkered flag in this interactive puzzle game!"
+          keywords="puzzle game, road builder, sliding puzzle, react game, interactive"
+        />
 
       <div className="game-header">
         <Title title={{ heading: 'h2', text: 'Road Builder Puzzle', class: 'text-white' }} />
@@ -498,7 +508,8 @@ const RoadBuilderPuzzleApp = () => {
 
       {/* Game Instructions */}
       <GameInstructions />
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 };
 
