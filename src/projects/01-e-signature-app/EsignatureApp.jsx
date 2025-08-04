@@ -1,8 +1,11 @@
 import React, { useRef, useState } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
+import { ErrorBoundary } from 'react-error-boundary';
 import PDFGenerator from './components/PDFGenerator';
 import Title from '../components/Title';
 import Description from '../components/Description';
+import ErrorFallback from '../../components/ErrorFallback';
+import { logError } from '../../utils/errorLogger';
 
 export default function EsignatureApp() {
   const sigPadRef = useRef();
@@ -27,10 +30,17 @@ export default function EsignatureApp() {
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl">
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => window.location.reload()}
+      onError={(error, errorInfo) => {
+        logError(error, errorInfo, { component: 'EsignatureApp' });
+      }}
+    >
+      <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl">
 
-      {/* Mobile-first responsive layout */}
-      <div className="flex flex-col lg:grid lg:grid-cols-10 lg:gap-0 h-full">
+        {/* Mobile-first responsive layout */}
+        <div className="flex flex-col lg:grid lg:grid-cols-10 lg:gap-0 h-full">
         {/* Left Column - Signature Form (30% on desktop, full width on mobile) */}
         <div className="lg:col-span-3 p-4 sm:p-6 lg:p-8 overflow-y-auto order-2 lg:order-1">
           <Title title={{ heading: 'h2', text: 'Document Details', class: 'text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6' }} />
@@ -128,6 +138,7 @@ export default function EsignatureApp() {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import SEO from '../../components/SEO';
 import Description from '../components/Description';
 import PhotoGrid from './components/PhotoGrid';
+import ErrorFallback from '../../components/ErrorFallback';
+import { logError } from '../../utils/errorLogger';
 
 export default function LikePhotoApp() {
   // Dummy data
@@ -126,19 +129,27 @@ export default function LikePhotoApp() {
   };
 
   return (
-    <>
-      <SEO
-        title="Like My Photo"
-        description="Like My Photo"
-        keywords="like my photo, photo, like, react, web development"
-        type="website"
-        author="Ovidiu Alexandru Pușcaș"
-      />
-      <div className="container mx-auto px-4 overflow-y-auto">
-        <Description description={{ text: 'Pictures are pulled from picsum.photos - Double-click on images to like them! ❤️', class: 'text-lg pt-4 text-white' }} />
-        <PhotoGrid photos={photos} onLikesChange={handleLikesChange} />
-      </div>
-    </>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => window.location.reload()}
+      onError={(error, errorInfo) => {
+        logError(error, errorInfo, { component: 'LikePhotoApp' });
+      }}
+    >
+      <>
+        <SEO
+          title="Like My Photo"
+          description="Like My Photo"
+          keywords="like my photo, photo, like, react, web development"
+          type="website"
+          author="Ovidiu Alexandru Pușcaș"
+        />
+        <div className="container mx-auto px-4 overflow-y-auto">
+          <Description description={{ text: 'Pictures are pulled from picsum.photos - Double-click on images to like them! ❤️', class: 'text-lg pt-4 text-white' }} />
+          <PhotoGrid photos={photos} onLikesChange={handleLikesChange} />
+        </div>
+      </>
+    </ErrorBoundary>
   );
 }
 

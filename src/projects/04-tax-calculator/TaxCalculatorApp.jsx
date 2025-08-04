@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import InputForm from './components/InputForm';
 import SelectionOptions from './components/SelectionOptions';
 import ResultsTable from './components/ResultsTable';
 import Disclaimer from './components/Disclaimer';
 import { fetchExchangeRates, getDefaultRates } from './services/currencyService';
+import ErrorFallback from '../../components/ErrorFallback';
+import { logError } from '../../utils/errorLogger';
 import './TaxCalculator.css';
 
 const TaxCalculatorApp = () => {
@@ -175,8 +178,15 @@ const TaxCalculatorApp = () => {
   };
 
   return (
-    <div className="tax-calculator-container">
-      <div className="container">
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => window.location.reload()}
+      onError={(error, errorInfo) => {
+        logError(error, errorInfo, { component: 'TaxCalculatorApp' });
+      }}
+    >
+      <div className="tax-calculator-container">
+        <div className="container">
         {/* Exchange Rate Status */}
         <div className="py-4 mb-6">
           {isLoadingRates && (
@@ -243,8 +253,9 @@ const TaxCalculatorApp = () => {
         />
 
         <Disclaimer />
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 

@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Typography, Container, Card, CardContent, Button, Chip, IconButton, Menu, MenuItem } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ErrorBoundary } from 'react-error-boundary';
 import { AuthProvider } from './hooks/useAuth';
 import AuthPage from './components/auth/AuthPage';
 import Header from './components/common/Header';
@@ -12,6 +13,7 @@ import { useProjects } from './hooks/useProjects';
 import ProjectForm from './components/projects/ProjectForm';
 import ProjectDetail from './components/projects/ProjectDetail';
 import { createSampleDataForUser } from './utils/sampleData';
+import TaskManagerErrorFallback from './components/common/TaskManagerErrorFallback';
 
 const theme = createTheme({
   palette: {
@@ -239,14 +241,19 @@ const AppContent = () => {
 
 const TaskManagerApp = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AuthProvider>
-        <Box sx={{ height: '100%', bgcolor: 'rgb(249 250 251 / 0.65)', borderRadius: '16px', overflow: 'hidden', backdropFilter: 'blur(20px) saturate(180%)' }}>
-          <AppContent />
-        </Box>
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary
+      FallbackComponent={TaskManagerErrorFallback}
+      onReset={() => window.location.reload()}
+    >
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AuthProvider>
+          <Box sx={{ height: '100%', bgcolor: 'rgb(249 250 251 / 0.65)', borderRadius: '16px', overflow: 'hidden', backdropFilter: 'blur(20px) saturate(180%)' }}>
+            <AppContent />
+          </Box>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 

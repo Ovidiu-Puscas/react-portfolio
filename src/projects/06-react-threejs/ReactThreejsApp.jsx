@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // Import the GLB file as a URL
@@ -10,6 +11,8 @@ import { PaintingSystem } from './components/PaintingSystem';
 import { ShapeChallenge } from './classes/ShapeChallenge';
 import GameUIComponent from './components/GameUIComponent';
 import { SCENE_CONFIG } from './config/settings';
+import ErrorFallback from '../../components/ErrorFallback';
+import { logError } from '../../utils/errorLogger';
 
 const ReactThreejsApp = () => {
   const mountRef = useRef(null);
@@ -208,27 +211,35 @@ const ReactThreejsApp = () => {
   }, []);
 
   return (
-    <div className="w-full h-full overflow-hidden flex flex-col rounded-xl">
-      {isLoading && (
-        <div className="absolute inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="text-center text-white">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
-            <p className="text-lg font-semibold">Loading 3D Scene...</p>
-            <p className="text-sm opacity-75">Please wait while we load the canvas</p>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => window.location.reload()}
+      onError={(error, errorInfo) => {
+        logError(error, errorInfo, { component: 'ReactThreejsApp' });
+      }}
+    >
+      <div className="w-full h-full overflow-hidden flex flex-col rounded-xl">
+        {isLoading && (
+          <div className="absolute inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+            <div className="text-center text-white">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+              <p className="text-lg font-semibold">Loading 3D Scene...</p>
+              <p className="text-sm opacity-75">Please wait while we load the canvas</p>
+            </div>
           </div>
-        </div>
-      )}
-      <div
-        ref={mountRef}
-        className="flex-grow w-full overflow-hidden relative"
-        style={{ minHeight: 0 }}
-      />
-      <GameUIComponent
-        shapeChallenge={shapeChallenge}
-        paintingSystem={paintingSystem}
-        isVisible={!isLoading}
-      />
-    </div>
+        )}
+        <div
+          ref={mountRef}
+          className="flex-grow w-full overflow-hidden relative"
+          style={{ minHeight: 0 }}
+        />
+        <GameUIComponent
+          shapeChallenge={shapeChallenge}
+          paintingSystem={paintingSystem}
+          isVisible={!isLoading}
+        />
+      </div>
+    </ErrorBoundary>
   );
 };
 
