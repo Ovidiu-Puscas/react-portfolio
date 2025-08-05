@@ -1,4 +1,10 @@
-import * as THREE from 'three';
+import {
+  AxesHelper,
+  GridHelper,
+  DirectionalLightHelper,
+  SpotLightHelper,
+  PointLightHelper,
+} from 'three';
 
 // Debounce utility function
 function debounce(func, wait) {
@@ -524,7 +530,7 @@ export class DevControls {
   toggleAxesHelper(show) {
     const existing = this.scene.children.find((child) => child.type === 'AxesHelper');
     if (show && !existing) {
-      this.axesHelper = new THREE.AxesHelper(5);
+      this.axesHelper = new AxesHelper(5);
       this.scene.add(this.axesHelper);
     } else if (!show && existing) {
       this.scene.remove(existing);
@@ -534,7 +540,7 @@ export class DevControls {
   toggleGridHelper(show) {
     const existing = this.scene.children.find((child) => child.type === 'GridHelper');
     if (show && !existing) {
-      this.gridHelper = new THREE.GridHelper(20, 20);
+      this.gridHelper = new GridHelper(20, 20);
       this.scene.add(this.gridHelper);
     } else if (!show && existing) {
       this.scene.remove(existing);
@@ -546,15 +552,15 @@ export class DevControls {
       // Add helpers for all lights
       this.scene.children.forEach((child) => {
         if (child.type === 'DirectionalLight') {
-          const helper = new THREE.DirectionalLightHelper(child, 2);
+          const helper = new DirectionalLightHelper(child, 2);
           this.scene.add(helper);
           this.lightHelpers.push(helper);
         } else if (child.type === 'SpotLight') {
-          const helper = new THREE.SpotLightHelper(child);
+          const helper = new SpotLightHelper(child);
           this.scene.add(helper);
           this.lightHelpers.push(helper);
         } else if (child.type === 'PointLight') {
-          const helper = new THREE.PointLightHelper(child, 1);
+          const helper = new PointLightHelper(child, 1);
           this.scene.add(helper);
           this.lightHelpers.push(helper);
         }

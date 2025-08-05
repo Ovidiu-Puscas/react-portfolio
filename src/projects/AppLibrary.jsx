@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import ProjectCard from './components/ProjectCard';
-import EsignatureApp from './01-e-signature-app/EsignatureApp';
 import Title from './components/Title';
 import Description from './components/Description';
 import SEO from '../components/SEO';
-import ComplementaryColorApp from './02-complementary-colors/ComplementaryColorsApp';
-import LikePhotoApp from './03-like-my-photo/LikePhotoApp';
-import TaxCalculatorApp from './04-tax-calculator/TaxCalculatorApp';
-import RoadBuilderPuzzleApp from './05-road-builder-puzzle/RoadBuilderPuzzleApp';
-import ReactThreejsApp from './06-react-threejs/ReactThreejsApp';
-import TaskManagerApp from './07-fullstack-task-manager/TaskManagerApp';
+
+// Lazy load all project components to reduce initial bundle size
+const EsignatureApp = lazy(() => import('./01-e-signature-app/EsignatureApp'));
+const ComplementaryColorApp = lazy(
+  () => import('./02-complementary-colors/ComplementaryColorsApp')
+);
+const LikePhotoApp = lazy(() => import('./03-like-my-photo/LikePhotoApp'));
+const TaxCalculatorApp = lazy(() => import('./04-tax-calculator/TaxCalculatorApp'));
+const RoadBuilderPuzzleApp = lazy(() => import('./05-road-builder-puzzle/RoadBuilderPuzzleApp'));
+const ReactThreejsApp = lazy(() => import('./06-react-threejs/ReactThreejsApp'));
+const TaskManagerApp = lazy(() => import('./07-fullstack-task-manager/TaskManagerApp'));
 
 const AppLibrary = () => {
   const [selectedApp, setSelectedApp] = useState(null);
@@ -234,7 +238,18 @@ const AppLibrary = () => {
 
         {/* App Content */}
         <div className="h-[calc(100vh-65px)] overflow-hidden flex flex-col">
-          <selectedApp.component />
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading {selectedApp.title}...</p>
+                </div>
+              </div>
+            }
+          >
+            <selectedApp.component />
+          </Suspense>
         </div>
       </div>
     );

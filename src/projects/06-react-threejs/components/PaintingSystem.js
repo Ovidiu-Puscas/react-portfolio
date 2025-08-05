@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { Vector2, Raycaster, CanvasTexture, MeshStandardMaterial } from 'three';
 import { PAINTING_CONFIG, CHALLENGE_CONFIG, log } from '../config/settings.js';
 
 export class PaintingSystem {
@@ -16,8 +16,8 @@ export class PaintingSystem {
     this.renderer = null;
     this.colorPalette = null;
     this.shapeChallenge = null;
-    this.mouse = new THREE.Vector2();
-    this.raycaster = new THREE.Raycaster();
+    this.mouse = new Vector2();
+    this.raycaster = new Raycaster();
     this.isDrawing = false;
     this.autoDetectionRun = false; // Flag to track if auto-detection has run
     this.lastPaintPoint = null; // Store last paint point for interpolation
@@ -55,7 +55,7 @@ export class PaintingSystem {
     this.combinedCtx = this.combinedCanvas.getContext('2d');
 
     // Create texture from combined canvas
-    this.paintTexture = new THREE.CanvasTexture(this.combinedCanvas);
+    this.paintTexture = new CanvasTexture(this.combinedCanvas);
     this.paintTexture.needsUpdate = true;
 
     // Set initial background - make it more visible
@@ -238,14 +238,14 @@ export class PaintingSystem {
     }
 
     // Create paint texture
-    this.paintTexture = new THREE.CanvasTexture(this.combinedCanvas);
+    this.paintTexture = new CanvasTexture(this.combinedCanvas);
     this.paintTexture.needsUpdate = true;
 
     // Apply paint texture to mesh
     if (Array.isArray(this.canvasMesh.material)) {
       const canvasMaterialIndex = 0; // Change this if needed after inspecting debug output
       const origMat = this.canvasMesh.material[canvasMaterialIndex];
-      this.canvasMesh.material[canvasMaterialIndex] = new THREE.MeshStandardMaterial({
+      this.canvasMesh.material[canvasMaterialIndex] = new MeshStandardMaterial({
         map: this.paintTexture,
         metalness: origMat.metalness,
         roughness: origMat.roughness,
@@ -256,7 +256,7 @@ export class PaintingSystem {
       // Other materials (e.g., for brush, tip) are left unchanged
     } else {
       // Single material mesh
-      this.canvasMesh.material = new THREE.MeshStandardMaterial({
+      this.canvasMesh.material = new MeshStandardMaterial({
         map: this.paintTexture,
         metalness: this.canvasMesh.material.metalness,
         roughness: this.canvasMesh.material.roughness,
@@ -482,7 +482,7 @@ export class PaintingSystem {
     // Restore the original material properties
     if (this.originalMaterial) {
       // Create a new material with the original properties but our paint texture
-      const newMaterial = new THREE.MeshStandardMaterial({
+      const newMaterial = new MeshStandardMaterial({
         map: this.paintTexture,
         metalness: this.originalMaterial.metalness,
         roughness: this.originalMaterial.roughness,

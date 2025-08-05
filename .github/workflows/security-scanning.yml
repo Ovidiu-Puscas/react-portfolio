@@ -1,0 +1,235 @@
+name: Security Scanning
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run security scan weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+
+jobs:
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          # Fail on critical and high vulnerabilities
+          fail-on-severity: high
+          # Allow certain licenses
+          allow-licenses: MIT, ISC, Apache-2.0, BSD-2-Clause, BSD-3-Clause
+          # Deny GPL licenses for commercial use
+          deny-licenses: GPL-2.0, GPL-3.0, AGPL-1.0, AGPL-3.0
+
+  codeql-analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        # Add custom queries for React/Firebase security
+        queries: +security-and-quality
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build application
+      run: npm run build
+      env:
+        CI: true
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
+
+  npm-audit:
+    name: NPM Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run npm audit
+      run: |
+        # Run npm audit and save results
+        npm audit --audit-level=moderate --json > audit-results.json || true
+        
+        # Display human-readable results
+        echo "📋 NPM Security Audit Results:"
+        npm audit --audit-level=moderate || true
+        
+        # Check for high/critical vulnerabilities
+        HIGH_VULNS=$(cat audit-results.json | jq -r '.vulnerabilities | to_entries[] | select(.value.severity == "high" or .value.severity == "critical") | .key' | wc -l)
+        
+        echo "🔍 Found $HIGH_VULNS high/critical vulnerabilities"
+        
+        if [ $HIGH_VULNS -gt 0 ]; then
+          echo "❌ High or critical vulnerabilities found!"
+          echo "Run 'npm audit fix' to resolve automatically fixable issues"
+          exit 1
+        else
+          echo "✅ No high or critical vulnerabilities found"
+        fi
+
+    - name: Upload audit results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: npm-audit-results
+        path: audit-results.json
+
+  security-checklist:
+    name: Security Configuration Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check security configurations
+      run: |
+        echo "🔒 Security Configuration Checklist:"
+        
+        # Check for sensitive files that shouldn't be committed
+        echo "📄 Checking for sensitive files..."
+        SENSITIVE_FOUND=false
+        
+        if [ -f .env ]; then
+          echo "❌ .env file found in repository (should be in .gitignore)"
+          SENSITIVE_FOUND=true
+        fi
+        
+        if find . -name "*.key" -o -name "*.pem" -o -name "*.p12" -o -name "*.keystore" | grep -q .; then
+          echo "❌ Key files found in repository"
+          SENSITIVE_FOUND=true
+        fi
+        
+        if [ "$SENSITIVE_FOUND" = true ]; then
+          echo "❌ Sensitive files detected!"
+          exit 1
+        else
+          echo "✅ No sensitive files found"
+        fi
+        
+        # Check .gitignore contains security patterns
+        echo "📋 Checking .gitignore security patterns..."
+        if grep -q "\.env" .gitignore && grep -q "node_modules" .gitignore; then
+          echo "✅ .gitignore contains security patterns"
+        else
+          echo "⚠️ .gitignore missing security patterns"
+        fi
+        
+        # Check Firebase security rules exist
+        echo "🔥 Checking Firebase configuration..."
+        if [ -f firebase.json ]; then
+          echo "✅ Firebase configuration found"
+        else
+          echo "⚠️ Firebase configuration not found"
+        fi
+        
+        # Check for hardcoded secrets in code
+        echo "🔍 Scanning for potential hardcoded secrets..."
+        if grep -r -i -E "(password|secret|key|token|api_key)\s*[:=]\s*['\"][^'\"]{8,}" src/ --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" | grep -v "placeholder\|example\|test\|demo"; then
+          echo "❌ Potential hardcoded secrets found!"
+          exit 1
+        else
+          echo "✅ No hardcoded secrets detected"
+        fi
+        
+        echo "🎯 Security check completed successfully!"
+
+  firebase-security:
+    name: Firebase Security Rules Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+
+    - name: Check Firebase Security Rules
+      run: |
+        echo "🔥 Firebase Security Rules Analysis:"
+        
+        # Check if firestore rules exist
+        if [ -f firestore.rules ]; then
+          echo "✅ Firestore security rules found"
+          
+          # Basic security checks
+          echo "🔍 Analyzing Firestore rules..."
+          
+          if grep -q "allow read, write: if true" firestore.rules; then
+            echo "❌ CRITICAL: Open read/write access detected!"
+            echo "This allows anyone to read/write your database"
+            exit 1
+          fi
+          
+          if grep -q "request.auth != null" firestore.rules; then
+            echo "✅ Authentication checks found"
+          else
+            echo "⚠️ No authentication checks detected"
+          fi
+          
+          echo "📋 Firestore rules summary:"
+          wc -l firestore.rules
+          
+        else
+          echo "⚠️ No Firestore security rules found"
+        fi
+        
+        # Check Firebase Storage rules if they exist
+        if [ -f storage.rules ]; then
+          echo "✅ Storage security rules found"
+        else
+          echo "ℹ️ No Storage security rules found"
+        fi
+        
+        echo "🔒 Firebase security check completed"

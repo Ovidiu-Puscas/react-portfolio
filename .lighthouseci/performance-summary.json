@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-08-05T11:49:53.853Z",
+  "timestamp": "2025-08-05T12:08:44.832Z",
   "bundleSize": {
-    "totalKB": 16577,
+    "totalKB": 16578,
     "totalMB": "16.19"
   },
   "js": {
@@ -73,7 +73,7 @@
       },
       {
         "name": "516.402c17e9.chunk.js.map",
-        "size": 152183,
+        "size": 152535,
         "sizeKB": 149
       },
       {
@@ -137,7 +137,7 @@
         "sizeKB": 415
       }
     ],
-    "totalSize": 16844997
+    "totalSize": 16845349
   },
   "css": {
     "files": [
@@ -172,17 +172,17 @@
         "sizeKB": 4
       },
       {
-        "name": "main.ed7a38f3.css",
-        "size": 48787,
+        "name": "main.abe9b064.css",
+        "size": 48832,
         "sizeKB": 48
       },
       {
-        "name": "main.ed7a38f3.css.map",
-        "size": 42670,
+        "name": "main.abe9b064.css.map",
+        "size": 42683,
         "sizeKB": 42
       }
     ],
-    "totalSize": 130021
+    "totalSize": 130079
   },
   "rating": "❌ Needs Improvement",
   "recommendations": [

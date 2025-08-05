@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { Vector3 } from 'three';
 
 export class CameraController {
   constructor(camera, renderer) {
@@ -12,7 +12,7 @@ export class CameraController {
     this.cameraRadius = Math.sqrt(-8 * -8 + 0.6 * 0.6);
     this.cameraHeight = 11;
     this.camera.position.set(-8, 11, 0.6);
-    this.cameraTarget = new THREE.Vector3(0, 1, 0);
+    this.cameraTarget = new Vector3(0, 1, 0);
     this.camera.lookAt(this.cameraTarget);
 
     // Calculate initial rotation angle from desired position
