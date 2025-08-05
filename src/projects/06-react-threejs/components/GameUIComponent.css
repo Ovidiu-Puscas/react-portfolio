@@ -81,7 +81,7 @@
 
 .game-ui-challenge-item.active {
   background: rgba(76, 175, 80, 0.3);
-  border-left: 3px solid #4CAF50;
+  border-left: 3px solid #4caf50;
 }
 
 .game-ui-challenge-name {
@@ -145,7 +145,7 @@
 }
 
 .game-ui-button.primary {
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
 }
 
@@ -154,12 +154,12 @@
 }
 
 .game-ui-button.secondary {
-  background: #2196F3;
+  background: #2196f3;
   color: white;
 }
 
 .game-ui-button.secondary:hover {
-  background: #1976D2;
+  background: #1976d2;
 }
 
 .game-ui-button.danger {
@@ -172,12 +172,12 @@
 }
 
 .game-ui-button.warning {
-  background: #FF9800;
+  background: #ff9800;
   color: white;
 }
 
 .game-ui-button.warning:hover {
-  background: #F57C00;
+  background: #f57c00;
 }
 
 @media (max-width: 767px) {

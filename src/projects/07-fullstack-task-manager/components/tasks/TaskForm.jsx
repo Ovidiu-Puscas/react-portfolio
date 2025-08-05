@@ -11,7 +11,7 @@ import {
   Select,
   FormControl,
   InputLabel,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 
 const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
@@ -20,7 +20,7 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
     description: '',
     priority: 'medium',
     status: 'todo',
-    dueDate: ''
+    dueDate: '',
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -35,7 +35,10 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
         description: task.description || '',
         priority: task.priority || 'medium',
         status: task.status || 'todo',
-        dueDate: task.dueDate && !isNaN(new Date(task.dueDate).getTime()) ? new Date(task.dueDate).toISOString().split('T')[0] : ''
+        dueDate:
+          task.dueDate && !isNaN(new Date(task.dueDate).getTime())
+            ? new Date(task.dueDate).toISOString().split('T')[0]
+            : '',
       });
     } else {
       setFormData({
@@ -43,53 +46,56 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
         description: '',
         priority: 'medium',
         status: 'todo',
-        dueDate: ''
+        dueDate: '',
       });
     }
   }, [task]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
     // Clear error for this field
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: '',
       }));
     }
   };
 
   const validate = () => {
     const newErrors = {};
-    
+
     if (!formData.title.trim()) {
       newErrors.title = 'Task title is required';
     } else if (formData.title.length < 3) {
       newErrors.title = 'Task title must be at least 3 characters';
     }
-    
+
     if (!formData.description.trim()) {
       newErrors.description = 'Description is required';
     } else if (formData.description.length < 5) {
       newErrors.description = 'Description must be at least 5 characters';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validate()) return;
-    
+
     setLoading(true);
     try {
       const submitData = {
         ...formData,
-        dueDate: formData.dueDate && !isNaN(new Date(formData.dueDate).getTime()) ? new Date(formData.dueDate).toISOString() : null
+        dueDate:
+          formData.dueDate && !isNaN(new Date(formData.dueDate).getTime())
+            ? new Date(formData.dueDate).toISOString()
+            : null,
       };
       await onSubmit(submitData);
       handleClose();
@@ -107,16 +113,9 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
   };
 
   return (
-    <Dialog 
-      open={open} 
-      onClose={handleClose}
-      maxWidth="sm"
-      fullWidth
-    >
-      <DialogTitle>
-        {isEdit ? 'Edit Task' : 'Create New Task'}
-      </DialogTitle>
-      
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{isEdit ? 'Edit Task' : 'Create New Task'}</DialogTitle>
+
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
           <TextField
@@ -128,9 +127,8 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
             error={!!errors.title}
             helperText={errors.title}
             disabled={loading}
-            autoFocus
           />
-          
+
           <TextField
             name="description"
             label="Description"
@@ -143,7 +141,7 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
             helperText={errors.description}
             disabled={loading}
           />
-          
+
           <Box sx={{ display: 'flex', gap: 2 }}>
             <FormControl fullWidth>
               <InputLabel>Priority</InputLabel>
@@ -159,7 +157,7 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
                 <MenuItem value="high">High</MenuItem>
               </Select>
             </FormControl>
-            
+
             <FormControl fullWidth>
               <InputLabel>Status</InputLabel>
               <Select
@@ -175,7 +173,7 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
               </Select>
             </FormControl>
           </Box>
-          
+
           <TextField
             name="dueDate"
             label="Due Date"
@@ -188,29 +186,19 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
             }}
             disabled={loading}
           />
-          
+
           {errors.submit && (
-            <Box sx={{ color: 'error.main', fontSize: '0.875rem' }}>
-              {errors.submit}
-            </Box>
+            <Box sx={{ color: 'error.main', fontSize: '0.875rem' }}>{errors.submit}</Box>
           )}
         </Box>
       </DialogContent>
-      
+
       <DialogActions>
         <Button onClick={handleClose} disabled={loading}>
           Cancel
         </Button>
-        <Button 
-          onClick={handleSubmit} 
-          variant="contained"
-          disabled={loading}
-        >
-          {loading ? (
-            <CircularProgress size={24} />
-          ) : (
-            isEdit ? 'Update' : 'Create'
-          )}
+        <Button onClick={handleSubmit} variant="contained" disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : isEdit ? 'Update' : 'Create'}
         </Button>
       </DialogActions>
     </Dialog>

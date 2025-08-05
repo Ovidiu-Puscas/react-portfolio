@@ -9,6 +9,11 @@
 /coverage
 *.lcov
 
+# Cypress test artifacts
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+
 # Production
 /build
 /dist
@@ -85,7 +90,7 @@ dist
 
 # Gatsby files
 .cache/
-public
+# public - Removed: needed for React build process
 
 # Storybook build outputs
 .out

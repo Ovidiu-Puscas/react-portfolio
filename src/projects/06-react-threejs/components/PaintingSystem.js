@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { Vector2, Raycaster, CanvasTexture, MeshStandardMaterial } from 'three';
 import { PAINTING_CONFIG, CHALLENGE_CONFIG, log } from '../config/settings.js';
 
 export class PaintingSystem {
@@ -16,8 +16,8 @@ export class PaintingSystem {
     this.renderer = null;
     this.colorPalette = null;
     this.shapeChallenge = null;
-    this.mouse = new THREE.Vector2();
-    this.raycaster = new THREE.Raycaster();
+    this.mouse = new Vector2();
+    this.raycaster = new Raycaster();
     this.isDrawing = false;
     this.autoDetectionRun = false; // Flag to track if auto-detection has run
     this.lastPaintPoint = null; // Store last paint point for interpolation
@@ -55,7 +55,7 @@ export class PaintingSystem {
     this.combinedCtx = this.combinedCanvas.getContext('2d');
 
     // Create texture from combined canvas
-    this.paintTexture = new THREE.CanvasTexture(this.combinedCanvas);
+    this.paintTexture = new CanvasTexture(this.combinedCanvas);
     this.paintTexture.needsUpdate = true;
 
     // Set initial background - make it more visible
@@ -83,7 +83,11 @@ export class PaintingSystem {
 
     // Update texture
     this.paintTexture.needsUpdate = true;
-    log('painting', 'updateCombinedCanvas', 'Combined canvas updated, texture needsUpdate set to true');
+    log(
+      'painting',
+      'updateCombinedCanvas',
+      'Combined canvas updated, texture needsUpdate set to true'
+    );
   }
 
   setupEventListeners() {
@@ -101,6 +105,7 @@ export class PaintingSystem {
     // Create brush size control container
     this.brushUIContainer = document.createElement('div');
     this.brushUIContainer.className = 'brush-ui-container';
+    this.brushUIContainer.setAttribute('data-testid', 'brush-size');
     this.brushUIContainer.style.position = 'fixed';
     this.brushUIContainer.style.right = '20px';
     this.brushUIContainer.style.top = '50%';
@@ -109,9 +114,10 @@ export class PaintingSystem {
     this.brushUIContainer.style.color = 'white';
     this.brushUIContainer.style.padding = '20px';
     this.brushUIContainer.style.borderRadius = '10px';
-    this.brushUIContainer.style.zIndex = '1000';
+    this.brushUIContainer.style.zIndex = '10';
     this.brushUIContainer.style.fontFamily = 'Arial, sans-serif';
     this.brushUIContainer.style.minWidth = '200px';
+    this.brushUIContainer.style.pointerEvents = 'auto';
 
     // Title
     const title = document.createElement('h3');
@@ -170,7 +176,8 @@ export class PaintingSystem {
     opacitySlider.style.marginBottom = '20px';
     opacitySlider.addEventListener('input', (e) => {
       this.config.brushAlpha = parseInt(e.target.value) / 100;
-      document.getElementById('brush-opacity-value').textContent = `${Math.round(this.config.brushAlpha * 100)}%`;
+      document.getElementById('brush-opacity-value').textContent =
+        `${Math.round(this.config.brushAlpha * 100)}%`;
       this.updateBrushPreview();
     });
     this.brushUIContainer.appendChild(opacitySlider);
@@ -210,7 +217,9 @@ export class PaintingSystem {
       this.brushPreview.style.width = `${Math.min(this.config.brushSize * 2, 50)}px`;
       this.brushPreview.style.height = `${Math.min(this.config.brushSize * 2, 50)}px`;
       this.brushPreview.style.opacity = this.config.brushAlpha;
-      this.brushPreview.style.background = this.colorPalette ? this.colorPalette.getSelectedColor() : '#ff0000';
+      this.brushPreview.style.background = this.colorPalette
+        ? this.colorPalette.getSelectedColor()
+        : '#ff0000';
     }
   }
 
@@ -231,14 +240,14 @@ export class PaintingSystem {
     }
 
     // Create paint texture
-    this.paintTexture = new THREE.CanvasTexture(this.combinedCanvas);
+    this.paintTexture = new CanvasTexture(this.combinedCanvas);
     this.paintTexture.needsUpdate = true;
 
     // Apply paint texture to mesh
     if (Array.isArray(this.canvasMesh.material)) {
       const canvasMaterialIndex = 0; // Change this if needed after inspecting debug output
       const origMat = this.canvasMesh.material[canvasMaterialIndex];
-      this.canvasMesh.material[canvasMaterialIndex] = new THREE.MeshStandardMaterial({
+      this.canvasMesh.material[canvasMaterialIndex] = new MeshStandardMaterial({
         map: this.paintTexture,
         metalness: origMat.metalness,
         roughness: origMat.roughness,
@@ -249,7 +258,7 @@ export class PaintingSystem {
       // Other materials (e.g., for brush, tip) are left unchanged
     } else {
       // Single material mesh
-      this.canvasMesh.material = new THREE.MeshStandardMaterial({
+      this.canvasMesh.material = new MeshStandardMaterial({
         map: this.paintTexture,
         metalness: this.canvasMesh.material.metalness,
         roughness: this.canvasMesh.material.roughness,
@@ -293,30 +302,46 @@ export class PaintingSystem {
 
     // Only run auto-detection once
     if (this.autoDetectionRun) {
-      log('painting', 'autoDetectPaintingArea', 'Auto-detection already run, skipping to respect user settings');
+      log(
+        'painting',
+        'autoDetectPaintingArea',
+        'Auto-detection already run, skipping to respect user settings'
+      );
       return;
     }
 
     if (this.shapeChallenge) {
       // Check if user has manually set coordinates (not at defaults)
       const currentConfig = this.shapeChallenge.getChallengeConfig();
-      const isUserModified = Math.abs(currentConfig.centerX - CHALLENGE_CONFIG.defaultCenterX) > CHALLENGE_CONFIG.tolerance ||
-                            Math.abs(currentConfig.centerY - CHALLENGE_CONFIG.defaultCenterY) > CHALLENGE_CONFIG.tolerance ||
-                            Math.abs(currentConfig.size - CHALLENGE_CONFIG.defaultSize) > CHALLENGE_CONFIG.tolerance;
+      const isUserModified =
+        Math.abs(currentConfig.centerX - CHALLENGE_CONFIG.defaultCenterX) >
+          CHALLENGE_CONFIG.tolerance ||
+        Math.abs(currentConfig.centerY - CHALLENGE_CONFIG.defaultCenterY) >
+          CHALLENGE_CONFIG.tolerance ||
+        Math.abs(currentConfig.size - CHALLENGE_CONFIG.defaultSize) > CHALLENGE_CONFIG.tolerance;
 
       if (isUserModified) {
-        log('painting', 'autoDetectPaintingArea', 'User has modified settings, respecting their choices');
+        log(
+          'painting',
+          'autoDetectPaintingArea',
+          'User has modified settings, respecting their choices'
+        );
         this.autoDetectionRun = true;
         return;
       }
 
       // Only auto-detect if user hasn't modified settings
       const paintingCenter = CHALLENGE_CONFIG.paintingAreaCenter;
-      log('painting', 'autoDetectPaintingArea', 'Auto-updating shape challenge to use painting area coordinates:', paintingCenter);
+      log(
+        'painting',
+        'autoDetectPaintingArea',
+        'Auto-updating shape challenge to use painting area coordinates:',
+        paintingCenter
+      );
       this.shapeChallenge.updateChallengeConfig({
         centerX: paintingCenter.u,
         centerY: paintingCenter.v,
-        size: CHALLENGE_CONFIG.autoDetectionSize
+        size: CHALLENGE_CONFIG.autoDetectionSize,
       });
 
       // Mark auto-detection as complete
@@ -344,7 +369,9 @@ export class PaintingSystem {
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
     if (this.colorPalette) {
-      const blobIntersects = this.raycaster.intersectObjects(this.colorPalette.getBlobsForRaycasting());
+      const blobIntersects = this.raycaster.intersectObjects(
+        this.colorPalette.getBlobsForRaycasting()
+      );
       if (blobIntersects.length > 0) {
         const blob = this.colorPalette.findBlobByMesh(blobIntersects[0].object);
         if (blob) {
@@ -410,18 +437,17 @@ export class PaintingSystem {
     if (this.lastPaintPoint && this.isPainting) {
       // Interpolate between last point and current point to create smooth strokes
       const distance = Math.sqrt(
-        Math.pow(x - this.lastPaintPoint.x, 2) + 
-        Math.pow(y - this.lastPaintPoint.y, 2)
+        Math.pow(x - this.lastPaintPoint.x, 2) + Math.pow(y - this.lastPaintPoint.y, 2)
       );
-      
+
       // Calculate number of intermediate points based on distance
       const steps = Math.max(1, Math.ceil(distance / (this.config.brushSize * 0.5)));
-      
+
       for (let i = 0; i <= steps; i++) {
         const t = i / steps;
         const interpX = this.lastPaintPoint.x + (x - this.lastPaintPoint.x) * t;
         const interpY = this.lastPaintPoint.y + (y - this.lastPaintPoint.y) * t;
-        
+
         // Draw circle at each interpolated point
         this.paintCtx.beginPath();
         this.paintCtx.arc(interpX, interpY, this.config.brushSize, 0, 2 * Math.PI);
@@ -438,7 +464,6 @@ export class PaintingSystem {
     this.lastPaintPoint = currentPoint;
     this.updateCombinedCanvas();
   }
-
 
   setCamera(camera) {
     this.camera = camera;
@@ -459,7 +484,7 @@ export class PaintingSystem {
     // Restore the original material properties
     if (this.originalMaterial) {
       // Create a new material with the original properties but our paint texture
-      const newMaterial = new THREE.MeshStandardMaterial({
+      const newMaterial = new MeshStandardMaterial({
         map: this.paintTexture,
         metalness: this.originalMaterial.metalness,
         roughness: this.originalMaterial.roughness,
@@ -496,7 +521,19 @@ export class PaintingSystem {
     // Paint a target point (for showing the shape to replicate)
     const x = u * this.paintCanvas.width;
     const y = (1 - v) * this.paintCanvas.height;
-    log('painting', 'paintTargetPoint', 'Drawing target point at canvas coordinates:', x, y, 'Z:', z, 'on canvas size:', this.paintCanvas.width, 'x', this.paintCanvas.height);
+    log(
+      'painting',
+      'paintTargetPoint',
+      'Drawing target point at canvas coordinates:',
+      x,
+      y,
+      'Z:',
+      z,
+      'on canvas size:',
+      this.paintCanvas.width,
+      'x',
+      this.paintCanvas.height
+    );
 
     // Draw target dots with smaller size
     this.targetCtx.save();
@@ -530,7 +567,7 @@ export class PaintingSystem {
       { u: 0.9, v: 0.1, label: 'Top-right' },
       { u: 0.1, v: 0.9, label: 'Bottom-left' },
       { u: 0.9, v: 0.9, label: 'Bottom-right' },
-      { u: 0.5, v: 0.5, label: 'Center' }
+      { u: 0.5, v: 0.5, label: 'Center' },
     ];
 
     testPoints.forEach((point, index) => {
@@ -553,7 +590,7 @@ export class PaintingSystem {
       { u: 0.5, v: 0.5, label: 'Original Center' },
       { u: 0.5, v: 0.5, label: 'Flipped V' },
       { u: 0.5, v: 0.5, label: 'Flipped U' },
-      { u: 0.5, v: 0.5, label: 'Both Flipped' }
+      { u: 0.5, v: 0.5, label: 'Both Flipped' },
     ];
 
     testMappings.forEach((mapping, index) => {
@@ -593,11 +630,36 @@ export class PaintingSystem {
 
     // Test coordinates around where the user is painting (from the logs)
     const paintingAreaTests = [
-      { u: CHALLENGE_CONFIG.paintingAreaCenter.u, v: CHALLENGE_CONFIG.paintingAreaCenter.v, label: 'User Painting Area 1', color: '#ff0000' },
-      { u: CHALLENGE_CONFIG.paintingAreaCenter.u - 0.01, v: CHALLENGE_CONFIG.paintingAreaCenter.v - 0.01, label: 'User Painting Area 2', color: '#00ff00' },
-      { u: CHALLENGE_CONFIG.paintingAreaCenter.u + 0.01, v: CHALLENGE_CONFIG.paintingAreaCenter.v + 0.01, label: 'User Painting Area 3', color: '#0000ff' },
-      { u: CHALLENGE_CONFIG.paintingAreaCenter.u - 0.02, v: CHALLENGE_CONFIG.paintingAreaCenter.v - 0.02, label: 'User Painting Area 4', color: '#ffff00' },
-      { u: CHALLENGE_CONFIG.paintingAreaCenter.u + 0.02, v: CHALLENGE_CONFIG.paintingAreaCenter.v + 0.02, label: 'User Painting Area 5', color: '#ff00ff' }
+      {
+        u: CHALLENGE_CONFIG.paintingAreaCenter.u,
+        v: CHALLENGE_CONFIG.paintingAreaCenter.v,
+        label: 'User Painting Area 1',
+        color: '#ff0000',
+      },
+      {
+        u: CHALLENGE_CONFIG.paintingAreaCenter.u - 0.01,
+        v: CHALLENGE_CONFIG.paintingAreaCenter.v - 0.01,
+        label: 'User Painting Area 2',
+        color: '#00ff00',
+      },
+      {
+        u: CHALLENGE_CONFIG.paintingAreaCenter.u + 0.01,
+        v: CHALLENGE_CONFIG.paintingAreaCenter.v + 0.01,
+        label: 'User Painting Area 3',
+        color: '#0000ff',
+      },
+      {
+        u: CHALLENGE_CONFIG.paintingAreaCenter.u - 0.02,
+        v: CHALLENGE_CONFIG.paintingAreaCenter.v - 0.02,
+        label: 'User Painting Area 4',
+        color: '#ffff00',
+      },
+      {
+        u: CHALLENGE_CONFIG.paintingAreaCenter.u + 0.02,
+        v: CHALLENGE_CONFIG.paintingAreaCenter.v + 0.02,
+        label: 'User Painting Area 5',
+        color: '#ff00ff',
+      },
     ];
 
     paintingAreaTests.forEach((test, index) => {
@@ -624,10 +686,13 @@ export class PaintingSystem {
         const u = i * step;
         const v = j * step;
 
-        setTimeout(() => {
-          console.log(`Testing grid point at UV: ${u.toFixed(2)}, ${v.toFixed(2)}`);
-          this.paintTargetPoint(u, v, 0, '#ff0000');
-        }, (i * (gridSize + 1) + j) * 200); // Test each grid point 0.2 seconds apart
+        setTimeout(
+          () => {
+            console.log(`Testing grid point at UV: ${u.toFixed(2)}, ${v.toFixed(2)}`);
+            this.paintTargetPoint(u, v, 0, '#ff0000');
+          },
+          (i * (gridSize + 1) + j) * 200
+        ); // Test each grid point 0.2 seconds apart
       }
     }
   }
@@ -643,29 +708,64 @@ export class PaintingSystem {
     const paintingCenter = CHALLENGE_CONFIG.paintingAreaCenter;
 
     // Draw a test dot at the user's painting area
-    log('painting', 'capturePaintingArea', `Drawing test dot at user's painting area: ${paintingCenter.u}, ${paintingCenter.v}`);
+    log(
+      'painting',
+      'capturePaintingArea',
+      `Drawing test dot at user's painting area: ${paintingCenter.u}, ${paintingCenter.v}`
+    );
     this.paintTargetPoint(paintingCenter.u, paintingCenter.v, 0, '#ff0000');
 
     // Also draw a small circle around it to make it more visible
     setTimeout(() => {
-      this.paintTargetPoint(paintingCenter.u + CHALLENGE_CONFIG.testOffset, paintingCenter.v, 0, '#00ff00');
-      this.paintTargetPoint(paintingCenter.u - CHALLENGE_CONFIG.testOffset, paintingCenter.v, 0, '#00ff00');
-      this.paintTargetPoint(paintingCenter.u, paintingCenter.v + CHALLENGE_CONFIG.testOffset, 0, '#00ff00');
-      this.paintTargetPoint(paintingCenter.u, paintingCenter.v - CHALLENGE_CONFIG.testOffset, 0, '#00ff00');
+      this.paintTargetPoint(
+        paintingCenter.u + CHALLENGE_CONFIG.testOffset,
+        paintingCenter.v,
+        0,
+        '#00ff00'
+      );
+      this.paintTargetPoint(
+        paintingCenter.u - CHALLENGE_CONFIG.testOffset,
+        paintingCenter.v,
+        0,
+        '#00ff00'
+      );
+      this.paintTargetPoint(
+        paintingCenter.u,
+        paintingCenter.v + CHALLENGE_CONFIG.testOffset,
+        0,
+        '#00ff00'
+      );
+      this.paintTargetPoint(
+        paintingCenter.u,
+        paintingCenter.v - CHALLENGE_CONFIG.testOffset,
+        0,
+        '#00ff00'
+      );
     }, 1000);
 
     // Update the shape challenge to use these coordinates, but preserve manual settings
     if (this.shapeChallenge) {
       const currentConfig = this.shapeChallenge.getChallengeConfig();
-      log('painting', 'capturePaintingArea', 'Updating shape challenge to use painting area coordinates');
+      log(
+        'painting',
+        'capturePaintingArea',
+        'Updating shape challenge to use painting area coordinates'
+      );
 
       // Check if user has manually modified settings
-      const isUserModified = Math.abs(currentConfig.centerX - CHALLENGE_CONFIG.defaultCenterX) > CHALLENGE_CONFIG.tolerance ||
-                            Math.abs(currentConfig.centerY - CHALLENGE_CONFIG.defaultCenterY) > CHALLENGE_CONFIG.tolerance ||
-                            Math.abs(currentConfig.size - CHALLENGE_CONFIG.defaultSize) > CHALLENGE_CONFIG.tolerance;
+      const isUserModified =
+        Math.abs(currentConfig.centerX - CHALLENGE_CONFIG.defaultCenterX) >
+          CHALLENGE_CONFIG.tolerance ||
+        Math.abs(currentConfig.centerY - CHALLENGE_CONFIG.defaultCenterY) >
+          CHALLENGE_CONFIG.tolerance ||
+        Math.abs(currentConfig.size - CHALLENGE_CONFIG.defaultSize) > CHALLENGE_CONFIG.tolerance;
 
       if (isUserModified) {
-        log('painting', 'capturePaintingArea', 'User has modified settings, not overriding their choices');
+        log(
+          'painting',
+          'capturePaintingArea',
+          'User has modified settings, not overriding their choices'
+        );
         // Just show the target with current settings
         if (this.shapeChallenge.currentChallenge) {
           this.shapeChallenge.showTargetDrawing(this);
@@ -676,11 +776,15 @@ export class PaintingSystem {
       // Only update coordinates if they're still at defaults, preserve current size
       const updateConfig = {
         centerX: paintingCenter.u,
-        centerY: paintingCenter.v
+        centerY: paintingCenter.v,
       };
 
       // Only update size if it's still at the default value (legacy) or custom default
-      if (Math.abs(currentConfig.size - CHALLENGE_CONFIG.legacyDefaultSize) < CHALLENGE_CONFIG.tolerance || Math.abs(currentConfig.size - CHALLENGE_CONFIG.defaultSize) < CHALLENGE_CONFIG.tolerance) {
+      if (
+        Math.abs(currentConfig.size - CHALLENGE_CONFIG.legacyDefaultSize) <
+          CHALLENGE_CONFIG.tolerance ||
+        Math.abs(currentConfig.size - CHALLENGE_CONFIG.defaultSize) < CHALLENGE_CONFIG.tolerance
+      ) {
         updateConfig.size = CHALLENGE_CONFIG.autoDetectionSize;
       }
 

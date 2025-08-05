@@ -9,12 +9,10 @@ const CameraControllerReact = ({ cameraController, onRotateLeft, onRotateRight }
 
     // Store bound event handlers for proper cleanup
     const boundRotateLeft = () => {
-      cameraController.targetRotationY += cameraController.rotationStep;
       if (onRotateLeft) onRotateLeft();
     };
 
     const boundRotateRight = () => {
-      cameraController.targetRotationY -= cameraController.rotationStep;
       if (onRotateRight) onRotateRight();
     };
 
@@ -48,7 +46,6 @@ const CameraControllerReact = ({ cameraController, onRotateLeft, onRotateRight }
       <button
         className="camera-control-button"
         onClick={() => {
-          cameraController.targetRotationY += cameraController.rotationStep;
           if (onRotateLeft) onRotateLeft();
         }}
         aria-label="Rotate camera left"
@@ -59,7 +56,6 @@ const CameraControllerReact = ({ cameraController, onRotateLeft, onRotateRight }
       <button
         className="camera-control-button"
         onClick={() => {
-          cameraController.targetRotationY -= cameraController.rotationStep;
           if (onRotateRight) onRotateRight();
         }}
         aria-label="Rotate camera right"

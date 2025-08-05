@@ -7,7 +7,7 @@ import {
   Typography,
   Alert,
   Link,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -32,9 +32,9 @@ const LoginForm = ({ onSwitchToRegister }) => {
     }
 
     try {
-      console.log('Attempting login...');
+      // Attempting login with provided credentials
       await login(email, password);
-      console.log('Login successful! Should redirect to dashboard now.');
+      // Login successful - should redirect to dashboard
     } catch (err) {
       console.error('Login failed:', err);
       setLocalError(err.message);
@@ -50,7 +50,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        padding: 2
+        padding: 2,
       }}
     >
       <Paper
@@ -58,7 +58,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
         sx={{
           padding: 4,
           width: '100%',
-          maxWidth: 400
+          maxWidth: 400,
         }}
       >
         <Typography variant="h4" component="h1" align="center" gutterBottom>
@@ -85,7 +85,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
             margin="normal"
             required
             autoComplete="email"
-            autoFocus
+            data-testid="email-input"
           />
 
           <TextField
@@ -97,6 +97,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
             margin="normal"
             required
             autoComplete="current-password"
+            data-testid="password-input"
           />
 
           <Button
@@ -109,9 +110,22 @@ const LoginForm = ({ onSwitchToRegister }) => {
             {loading ? <CircularProgress size={24} /> : 'Sign In'}
           </Button>
 
+          <Button
+            fullWidth
+            variant="outlined"
+            disabled={loading}
+            onClick={() => {
+              setEmail('test@test.com');
+              setPassword('test123');
+            }}
+            sx={{ mb: 2 }}
+          >
+            Try Demo
+          </Button>
+
           <Box textAlign="center">
             <Typography variant="body2">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link
                 component="button"
                 variant="body2"

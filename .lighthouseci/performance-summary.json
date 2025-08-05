@@ -1,0 +1,192 @@
+{
+  "timestamp": "2025-08-05T12:08:44.832Z",
+  "bundleSize": {
+    "totalKB": 16578,
+    "totalMB": "16.19"
+  },
+  "js": {
+    "files": [
+      {
+        "name": "23.f4495bca.chunk.js",
+        "size": 730864,
+        "sizeKB": 714
+      },
+      {
+        "name": "23.f4495bca.chunk.js.LICENSE.txt",
+        "size": 9677,
+        "sizeKB": 9
+      },
+      {
+        "name": "23.f4495bca.chunk.js.map",
+        "size": 4408713,
+        "sizeKB": 4305
+      },
+      {
+        "name": "259.50cc6711.chunk.js",
+        "size": 17285,
+        "sizeKB": 17
+      },
+      {
+        "name": "259.50cc6711.chunk.js.map",
+        "size": 71217,
+        "sizeKB": 70
+      },
+      {
+        "name": "344.dc400617.chunk.js",
+        "size": 35066,
+        "sizeKB": 34
+      },
+      {
+        "name": "344.dc400617.chunk.js.map",
+        "size": 122234,
+        "sizeKB": 119
+      },
+      {
+        "name": "381.d09c6b32.chunk.js",
+        "size": 7629,
+        "sizeKB": 7
+      },
+      {
+        "name": "381.d09c6b32.chunk.js.map",
+        "size": 19563,
+        "sizeKB": 19
+      },
+      {
+        "name": "492.7006a5c1.chunk.js",
+        "size": 1498315,
+        "sizeKB": 1463
+      },
+      {
+        "name": "492.7006a5c1.chunk.js.LICENSE.txt",
+        "size": 2821,
+        "sizeKB": 3
+      },
+      {
+        "name": "492.7006a5c1.chunk.js.map",
+        "size": 5289094,
+        "sizeKB": 5165
+      },
+      {
+        "name": "516.402c17e9.chunk.js",
+        "size": 44587,
+        "sizeKB": 44
+      },
+      {
+        "name": "516.402c17e9.chunk.js.map",
+        "size": 152535,
+        "sizeKB": 149
+      },
+      {
+        "name": "721.53aa069c.chunk.js",
+        "size": 9061,
+        "sizeKB": 9
+      },
+      {
+        "name": "721.53aa069c.chunk.js.map",
+        "size": 23350,
+        "sizeKB": 23
+      },
+      {
+        "name": "75.63feabfe.chunk.js",
+        "size": 87681,
+        "sizeKB": 86
+      },
+      {
+        "name": "75.63feabfe.chunk.js.map",
+        "size": 54943,
+        "sizeKB": 54
+      },
+      {
+        "name": "821.0606fbf5.chunk.js",
+        "size": 16020,
+        "sizeKB": 16
+      },
+      {
+        "name": "821.0606fbf5.chunk.js.map",
+        "size": 44428,
+        "sizeKB": 43
+      },
+      {
+        "name": "871.27c4e379.chunk.js",
+        "size": 594465,
+        "sizeKB": 581
+      },
+      {
+        "name": "871.27c4e379.chunk.js.LICENSE.txt",
+        "size": 92,
+        "sizeKB": 0
+      },
+      {
+        "name": "871.27c4e379.chunk.js.map",
+        "size": 3015172,
+        "sizeKB": 2945
+      },
+      {
+        "name": "main.dac2a4f2.js",
+        "size": 164224,
+        "sizeKB": 160
+      },
+      {
+        "name": "main.dac2a4f2.js.LICENSE.txt",
+        "size": 971,
+        "sizeKB": 1
+      },
+      {
+        "name": "main.dac2a4f2.js.map",
+        "size": 425342,
+        "sizeKB": 415
+      }
+    ],
+    "totalSize": 16845349
+  },
+  "css": {
+    "files": [
+      {
+        "name": "516.dc127a34.chunk.css",
+        "size": 2414,
+        "sizeKB": 2
+      },
+      {
+        "name": "516.dc127a34.chunk.css.map",
+        "size": 5168,
+        "sizeKB": 5
+      },
+      {
+        "name": "75.fac7f85f.chunk.css",
+        "size": 7777,
+        "sizeKB": 8
+      },
+      {
+        "name": "75.fac7f85f.chunk.css.map",
+        "size": 16881,
+        "sizeKB": 16
+      },
+      {
+        "name": "821.58c12b9c.chunk.css",
+        "size": 1999,
+        "sizeKB": 2
+      },
+      {
+        "name": "821.58c12b9c.chunk.css.map",
+        "size": 4325,
+        "sizeKB": 4
+      },
+      {
+        "name": "main.abe9b064.css",
+        "size": 48832,
+        "sizeKB": 48
+      },
+      {
+        "name": "main.abe9b064.css.map",
+        "size": 42683,
+        "sizeKB": 42
+      }
+    ],
+    "totalSize": 130079
+  },
+  "rating": "❌ Needs Improvement",
+  "recommendations": [
+    "⚠️  Bundle size > 1MB - consider code splitting",
+    "⚠️  Large JS chunks detected - implement lazy loading"
+  ]
+}

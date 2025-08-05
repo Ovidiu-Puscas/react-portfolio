@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { Group, SphereGeometry, MeshStandardMaterial, Mesh, TorusGeometry } from 'three';
 
 export class ColorBlob {
   constructor(color, name, index, config) {
@@ -6,56 +6,57 @@ export class ColorBlob {
     this.name = name;
     this.index = index;
     this.config = config;
-    this.group = new THREE.Group();
+    this.group = new Group();
     this.isSelected = false;
     this.createGeometry();
   }
 
   createGeometry() {
     // Main sphere (blob)
-    const geometry = new THREE.SphereGeometry(this.config.radius, 32, 32);
-    const material = new THREE.MeshStandardMaterial({ 
-      color: this.color, 
-      metalness: 0.2, 
-      roughness: 0.5 
+    const geometry = new SphereGeometry(this.config.radius, 32, 32);
+    const material = new MeshStandardMaterial({
+      color: this.color,
+      metalness: 0.2,
+      roughness: 0.5,
     });
-    this.mainSphere = new THREE.Mesh(geometry, material);
+    this.mainSphere = new Mesh(geometry, material);
     this.mainSphere.name = 'ColorBlob_' + this.name;
+    this.mainSphere.userData.testId = 'color-palette';
     this.group.add(this.mainSphere);
 
     // Drip (ellipsoid)
-    const dripGeometry = new THREE.SphereGeometry(this.config.radius * 0.35, 24, 24);
+    const dripGeometry = new SphereGeometry(this.config.radius * 0.35, 24, 24);
     dripGeometry.scale(1, 1.8, 1);
-    const dripMaterial = new THREE.MeshStandardMaterial({ 
-      color: this.color, 
-      metalness: 0.2, 
-      roughness: 0.5 
+    const dripMaterial = new MeshStandardMaterial({
+      color: this.color,
+      metalness: 0.2,
+      roughness: 0.5,
     });
-    this.drip = new THREE.Mesh(dripGeometry, dripMaterial);
+    this.drip = new Mesh(dripGeometry, dripMaterial);
     this.drip.position.y = -this.config.radius * 1.3;
     this.drip.name = 'Drip';
     this.group.add(this.drip);
 
     // Drip tip (small sphere)
-    const tipGeometry = new THREE.SphereGeometry(this.config.radius * 0.18, 16, 16);
-    this.tip = new THREE.Mesh(tipGeometry, dripMaterial);
+    const tipGeometry = new SphereGeometry(this.config.radius * 0.18, 16, 16);
+    this.tip = new Mesh(tipGeometry, dripMaterial);
     this.tip.position.y = -this.config.radius * 2.1;
     this.tip.name = 'DripTip';
     this.group.add(this.tip);
 
     // Overflow (torus/cap) - only visible for selected blob
-    const overflowGeometry = new THREE.TorusGeometry(
-      this.config.radius * 0.7, 
-      this.config.radius * 0.13, 
-      16, 
+    const overflowGeometry = new TorusGeometry(
+      this.config.radius * 0.7,
+      this.config.radius * 0.13,
+      16,
       32
     );
-    const overflowMaterial = new THREE.MeshStandardMaterial({ 
-      color: this.color, 
-      metalness: 0.3, 
-      roughness: 0.3 
+    const overflowMaterial = new MeshStandardMaterial({
+      color: this.color,
+      metalness: 0.3,
+      roughness: 0.3,
     });
-    this.overflow = new THREE.Mesh(overflowGeometry, overflowMaterial);
+    this.overflow = new Mesh(overflowGeometry, overflowMaterial);
     this.overflow.position.y = this.config.radius * 0.95;
     this.overflow.rotation.x = Math.PI / 2;
     this.overflow.visible = false;
@@ -99,4 +100,4 @@ export class ColorBlob {
   destroy() {
     this.group.removeFromParent();
   }
-} 
+}

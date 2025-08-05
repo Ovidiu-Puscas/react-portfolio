@@ -18,11 +18,7 @@ const GameOverlay = ({ gameState, moves, onNewGame }) => {
           <span className="stat-value">Road Complete!</span>
         </div>
       </div>
-      <Button
-        onClick={onNewGame}
-        variant="primary"
-        size="large"
-      >
+      <Button onClick={onNewGame} variant="primary" size="large">
         Play Again
       </Button>
     </div>

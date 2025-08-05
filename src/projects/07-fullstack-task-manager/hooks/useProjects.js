@@ -20,11 +20,13 @@ export const useProjects = () => {
     const initializeUser = async () => {
       try {
         setLoading(true);
-        
+
         // Check if user needs sample data and create it
         const sampleDataResult = await initializeSampleDataIfNeeded(user.uid, user.displayName);
         if (sampleDataResult) {
-          console.log(`Created ${sampleDataResult.projects} projects and ${sampleDataResult.tasks} tasks for new user`);
+          console.log(
+            `Created ${sampleDataResult.projects} projects and ${sampleDataResult.tasks} tasks for new user`
+          );
         }
 
         // Fetch projects (including any newly created sample data)
@@ -54,12 +56,12 @@ export const useProjects = () => {
       const projectId = await firestoreService.createProject({
         ...projectData,
         owner: user.uid,
-        members: [user.uid]
+        members: [user.uid],
       });
-      
+
       console.log('useProjects: Project created with ID:', projectId);
       // Real-time listener will handle the update
-      
+
       return projectId;
     } catch (err) {
       console.error('Error in createProject hook:', err);
@@ -93,6 +95,6 @@ export const useProjects = () => {
     error,
     createProject,
     updateProject,
-    deleteProject
+    deleteProject,
   };
 };

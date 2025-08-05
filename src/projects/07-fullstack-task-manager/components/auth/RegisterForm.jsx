@@ -7,7 +7,7 @@ import {
   Typography,
   Alert,
   Link,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -16,7 +16,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     displayName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
   const [localError, setLocalError] = useState('');
   const { register, loading, error } = useAuth();
@@ -24,7 +24,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -70,7 +70,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        padding: 2
+        padding: 2,
       }}
     >
       <Paper
@@ -78,7 +78,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         sx={{
           padding: 4,
           width: '100%',
-          maxWidth: 400
+          maxWidth: 400,
         }}
       >
         <Typography variant="h4" component="h1" align="center" gutterBottom>
@@ -105,7 +105,6 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             margin="normal"
             required
             autoComplete="name"
-            autoFocus
           />
 
           <TextField

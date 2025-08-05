@@ -1,14 +1,7 @@
 import React from 'react';
 import f1Car from '../assets/f1.png';
 
-const PuzzleTile = ({
-  tile,
-  rowIndex,
-  colIndex,
-  onTileClick,
-  canMoveTile,
-  gameState
-}) => {
+const PuzzleTile = ({ tile, rowIndex, colIndex, onTileClick, canMoveTile, gameState }) => {
   const getTileStyle = (tile) => {
     if (tile.type === 'empty') return {};
 
@@ -17,7 +10,7 @@ const PuzzleTile = ({
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
-      imageRendering: 'pixelated'
+      imageRendering: 'pixelated',
     };
   };
 
@@ -28,13 +21,21 @@ const PuzzleTile = ({
         ${tile.type === 'empty' ? 'empty' : 'filled'}
         ${canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? 'movable' : ''}
       `}
+      data-testid="puzzle-tile"
+      role="button"
+      tabIndex={canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? 0 : -1}
+      aria-label={`Puzzle tile at row ${rowIndex + 1}, column ${colIndex + 1}${canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? ', clickable' : ''}`}
       onClick={() => onTileClick(rowIndex, colIndex)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onTileClick(rowIndex, colIndex);
+        }
+      }}
       style={getTileStyle(tile)}
     >
       {/* Static checkered flag background for finish position */}
-      {rowIndex === 3 && colIndex === 3 && (
-        <div className="flag-marker">🏁</div>
-      )}
+      {rowIndex === 3 && colIndex === 3 && <div className="flag-marker">🏁</div>}
 
       {/* F1 car only shows on top-left position */}
       {rowIndex === 0 && colIndex === 0 && (

@@ -14,7 +14,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     setFeedback({ message, type, visible: true });
     // Hide after 3 seconds
     setTimeout(() => {
-      setFeedback(prev => ({ ...prev, visible: false }));
+      setFeedback((prev) => ({ ...prev, visible: false }));
     }, 3000);
   }, []);
 
@@ -61,32 +61,39 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
     };
   }, [shapeChallenge]);
 
-  const startChallenge = useCallback((shapeId) => {
-    if (!shapeChallenge) return;
+  const startChallenge = useCallback(
+    (shapeId) => {
+      if (!shapeChallenge) return;
 
-    const challenge = shapeChallenge.startChallenge(shapeId);
-    if (challenge) {
-      setCurrentChallenge(challenge);
+      const challenge = shapeChallenge.startChallenge(shapeId);
+      if (challenge) {
+        setCurrentChallenge(challenge);
 
-      // Get current config to check if using custom coordinates
-      const config = shapeChallenge.getChallengeConfig();
-      const isCustomCoordinates = Math.abs(config.centerX - CHALLENGE_CONFIG.defaultCenterX) > CHALLENGE_CONFIG.tolerance ||
-        Math.abs(config.centerY - CHALLENGE_CONFIG.defaultCenterY) > CHALLENGE_CONFIG.tolerance;
+        // Get current config to check if using custom coordinates
+        const config = shapeChallenge.getChallengeConfig();
+        const isCustomCoordinates =
+          Math.abs(config.centerX - CHALLENGE_CONFIG.defaultCenterX) > CHALLENGE_CONFIG.tolerance ||
+          Math.abs(config.centerY - CHALLENGE_CONFIG.defaultCenterY) > CHALLENGE_CONFIG.tolerance;
 
-      // Show target shape immediately if using custom coordinates, otherwise with delay
-      if (isCustomCoordinates) {
-        console.log('Using custom coordinates, showing target immediately');
-        shapeChallenge.showTargetDrawing(paintingSystem);
-      } else {
-        // Show target shape on the mesh for memorization with delay
-        setTimeout(() => {
+        // Show target shape immediately if using custom coordinates, otherwise with delay
+        if (isCustomCoordinates) {
+          // Using custom coordinates, showing target immediately
           shapeChallenge.showTargetDrawing(paintingSystem);
-        }, 500);
-      }
+        } else {
+          // Show target shape on the mesh for memorization with delay
+          setTimeout(() => {
+            shapeChallenge.showTargetDrawing(paintingSystem);
+          }, 500);
+        }
 
-      showFeedback(`Started ${challenge.name} challenge! Watch the dots, then replicate!`, 'info');
-    }
-  }, [shapeChallenge, paintingSystem, showFeedback]);
+        showFeedback(
+          `Started ${challenge.name} challenge! Watch the dots, then replicate!`,
+          'info'
+        );
+      }
+    },
+    [shapeChallenge, paintingSystem, showFeedback]
+  );
 
   const finishDrawing = useCallback(() => {
     if (!shapeChallenge) return;
@@ -110,10 +117,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
         feedbackMessage += '\n💡 Good progress! Connect a few more dots for better score!';
       }
 
-      showFeedback(
-        feedbackMessage,
-        result.accuracy >= 0.7 ? 'success' : 'warning'
-      );
+      showFeedback(feedbackMessage, result.accuracy >= 0.7 ? 'success' : 'warning');
     } else {
       showFeedback(result.message, 'error');
     }
@@ -135,8 +139,8 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
       return;
     }
 
-    const connectedDots = dotDetails.details.filter(d => d.connected).map(d => d.index + 1);
-    const missedDots = dotDetails.details.filter(d => !d.connected).map(d => d.index + 1);
+    const connectedDots = dotDetails.details.filter((d) => d.connected).map((d) => d.index + 1);
+    const missedDots = dotDetails.details.filter((d) => !d.connected).map((d) => d.index + 1);
 
     let analysisMessage = `Dot Connection Analysis:\nConnected: ${dotDetails.connected}/${dotDetails.total} (${Math.round(dotDetails.percentage * 100)}%)`;
 
@@ -167,12 +171,10 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
   // Removed unused getBackgroundColor function
 
   return (
-    <div className="game-ui-container">
+    <div className="game-ui-container" data-testid="painting-controls">
       {/* Title and Score */}
       <div className="game-ui-header">
-        <h3 className="game-ui-title">
-          🎯 Shape Drawing Game
-        </h3>
+        <h3 className="game-ui-title">🎯 Shape Drawing Game</h3>
         <div className="game-ui-stat">
           <span className="game-ui-stat-label">Score:</span>
           <span className="game-ui-stat-value">{score}</span>
@@ -198,11 +200,19 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
       <div className="game-ui-section">
         <div className="game-ui-section-title">Available Challenges:</div>
         <div className="game-ui-challenge-list">
-          {challenges.map(challenge => (
+          {challenges.map((challenge) => (
             <div
               key={challenge.id}
               className={`game-ui-challenge-item ${currentChallenge?.id === challenge.id ? 'active' : ''}`}
+              role="button"
+              tabIndex={0}
               onClick={() => startChallenge(challenge.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  startChallenge(challenge.id);
+                }
+              }}
             >
               <div className="game-ui-challenge-name">{challenge.name}</div>
               <div className="game-ui-challenge-desc">{challenge.description}</div>
@@ -213,31 +223,20 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
 
       {/* Control Buttons */}
       <div className="game-ui-controls">
-        <button
-          onClick={finishDrawing}
-          className="game-ui-button secondary"
-        >
+        <button onClick={finishDrawing} className="game-ui-button secondary">
           Finish Drawing
         </button>
-        <button
-          onClick={resetCanvas}
-          className="game-ui-button danger"
-        >
+        <button onClick={resetCanvas} className="game-ui-button danger">
           Reset Canvas
         </button>
-        <button
-          onClick={showDotConnectionAnalysis}
-          className="game-ui-button warning"
-        >
+        <button onClick={showDotConnectionAnalysis} className="game-ui-button warning">
           Analyze Dots
         </button>
       </div>
 
       {/* Feedback Display */}
       {feedback.visible && (
-        <div className={`game-ui-feedback ${feedback.type}`}>
-          {feedback.message}
-        </div>
+        <div className={`game-ui-feedback ${feedback.type}`}>{feedback.message}</div>
       )}
     </div>
   );

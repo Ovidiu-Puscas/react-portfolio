@@ -7,7 +7,7 @@ import {
   Chip,
   Breadcrumbs,
   Link,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
@@ -16,16 +16,9 @@ import TaskForm from '../tasks/TaskForm';
 import { useTasks } from '../../hooks/useTasks';
 
 const ProjectDetail = ({ project, onBack }) => {
-  const { 
-    tasks, 
-    loading, 
-    createTask, 
-    updateTask, 
-    deleteTask, 
-    getTasksByStatus, 
-    moveTask
-  } = useTasks(project.id);
-  
+  const { tasks, loading, createTask, updateTask, deleteTask, getTasksByStatus, moveTask } =
+    useTasks(project.id);
+
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
@@ -68,13 +61,13 @@ const ProjectDetail = ({ project, onBack }) => {
             component="button"
             variant="body2"
             onClick={onBack}
-            sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
               gap: 0.5,
               textDecoration: 'none',
               color: 'primary.main',
-              '&:hover': { textDecoration: 'underline' }
+              '&:hover': { textDecoration: 'underline' },
             }}
           >
             <ArrowBackIcon fontSize="small" />
@@ -89,8 +82,8 @@ const ProjectDetail = ({ project, onBack }) => {
           <Typography variant="h4" component="h1">
             {project.name}
           </Typography>
-          <Chip 
-            label={project.status} 
+          <Chip
+            label={project.status}
             color={project.status === 'active' ? 'success' : 'default'}
           />
         </Box>
@@ -103,11 +96,7 @@ const ProjectDetail = ({ project, onBack }) => {
           <Typography variant="h6" component="h2">
             Tasks ({tasks.length})
           </Typography>
-          <Button
-            variant="contained"
-            onClick={() => setTaskFormOpen(true)}
-            startIcon={<AddIcon />}
-          >
+          <Button variant="contained" onClick={() => setTaskFormOpen(true)} startIcon={<AddIcon />}>
             Add Task
           </Button>
         </Box>
@@ -120,6 +109,7 @@ const ProjectDetail = ({ project, onBack }) => {
         onEditTask={handleEditTaskClick}
         onDeleteTask={handleDeleteTask}
         onMoveTask={handleMoveTask}
+        data-testid="kanban-board"
       />
 
       {/* Create Task Dialog */}

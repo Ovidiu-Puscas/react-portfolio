@@ -1,0 +1,82 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "npm"
+    reviewers:
+      - "Ovidiu-Puscas"
+    assignees:
+      - "Ovidiu-Puscas"
+    groups:
+      development-dependencies:
+        patterns:
+          - "@testing-library/*"
+          - "eslint*"
+          - "prettier*"
+          - "husky"
+          - "lint-staged"
+        update-types:
+          - "minor"
+          - "patch"
+      production-dependencies:
+        patterns:
+          - "react*"
+          - "@mui/*"
+          - "firebase"
+        update-types:
+          - "patch"
+    ignore:
+      # Ignore major React updates to avoid breaking changes
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      # Ignore major Firebase updates
+      - dependency-name: "firebase"
+        update-types: ["version-update:semver-major"]
+
+  # Enable security updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 20
+    pull-request-branch-name:
+      separator: "-"
+    commit-message:
+      prefix: "security"
+    labels:
+      - "security"
+      - "npm"
+      - "high-priority"
+    reviewers:
+      - "Ovidiu-Puscas"
+    assignees:
+      - "Ovidiu-Puscas"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "github-actions"
+      - "ci"
+    reviewers:
+      - "Ovidiu-Puscas"

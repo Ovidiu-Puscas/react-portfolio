@@ -4,15 +4,13 @@ const SelectionOptions = ({
   selectedYear,
   setSelectedYear,
   selectedCurrency,
-  setSelectedCurrency
-}) => {
-  return (
-    <div className="flex flex-wrap justify-between gap-4 mb-6">
-      <div className="input-item">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Select Year:
-        </label>
-        <div className="radio-group">
+  setSelectedCurrency,
+}) => (
+  <div className="flex flex-wrap justify-between gap-4 mb-6">
+    <div className="input-item">
+      <fieldset>
+        <legend className="block text-gray-700 text-sm font-bold mb-2">Select Year:</legend>
+        <div className="radio-group" data-testid="year-select">
           <label>
             <input
               type="radio"
@@ -34,12 +32,14 @@ const SelectionOptions = ({
             2026
           </label>
         </div>
-      </div>
-      <div className="input-item">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
+      </fieldset>
+    </div>
+    <div className="input-item">
+      <fieldset>
+        <legend className="block text-gray-700 text-sm font-bold mb-2">
           Select Currency for All Values:
-        </label>
-        <div className="radio-group">
+        </legend>
+        <div className="radio-group" data-testid="currency-select">
           <label>
             <input
               type="radio"
@@ -71,9 +71,9 @@ const SelectionOptions = ({
             EUR
           </label>
         </div>
-      </div>
+      </fieldset>
     </div>
-  );
-};
+  </div>
+);
 
 export default SelectionOptions;

@@ -48,29 +48,28 @@ const ComplementaryColorsApp = () => {
         />
 
         <div className="bg-gray-50/65 backdrop-blur-sm py-8 px-4 rounded-xl h-full">
-        <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Color Picker Section */}
+              <div className="space-y-6">
+                <ColorPicker
+                  selectedColor={selectedColor}
+                  onColorChange={handleColorChange}
+                  onHarmonyChange={handleHarmonyChange}
+                  selectedHarmony={selectedHarmony}
+                />
+              </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Color Picker Section */}
-            <div className="space-y-6">
-              <ColorPicker
-                selectedColor={selectedColor}
-                onColorChange={handleColorChange}
-                onHarmonyChange={handleHarmonyChange}
-                selectedHarmony={selectedHarmony}
-              />
-            </div>
-
-            {/* Harmony Display Section */}
-            <div className="space-y-6">
-              <HarmonyDisplay
-                colors={harmonyColors}
-                harmonyType={selectedHarmony}
-                selectedColor={selectedColor}
-              />
+              {/* Harmony Display Section */}
+              <div className="space-y-6">
+                <HarmonyDisplay
+                  colors={harmonyColors}
+                  harmonyType={selectedHarmony}
+                  selectedColor={selectedColor}
+                />
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </>
     </ErrorBoundary>

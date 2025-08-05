@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -7,9 +7,8 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  IconButton
+  IconButton,
 } from '@mui/material';
-import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 
 const Header = () => {
@@ -41,7 +40,7 @@ const Header = () => {
             <Typography variant="body2" sx={{ mr: 2 }}>
               Welcome, {user.displayName || user.email}
             </Typography>
-            
+
             <IconButton
               size="large"
               aria-label="account menu"
@@ -50,15 +49,15 @@ const Header = () => {
               onClick={handleMenu}
               color="inherit"
             >
-              <Avatar 
-                src={user.photoURL} 
+              <Avatar
+                src={user.photoURL}
                 alt={user.displayName || 'User'}
                 sx={{ width: 32, height: 32 }}
               >
                 {user.displayName?.charAt(0)?.toUpperCase() || 'U'}
               </Avatar>
             </IconButton>
-            
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}

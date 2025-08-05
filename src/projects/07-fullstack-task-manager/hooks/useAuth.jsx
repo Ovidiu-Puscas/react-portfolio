@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
       await authService.login(email, password);
     } catch (error) {
       setError(error.message);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       setLoading(true);
       const userData = await authService.register(email, password, displayName);
-      
+
       // Manually update the user state with the new profile data
       setUser(userData);
     } catch (error) {
@@ -59,14 +60,10 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    error
+    error,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

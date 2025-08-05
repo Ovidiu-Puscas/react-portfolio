@@ -46,10 +46,10 @@ export const useTasks = (projectId) => {
       const taskId = await firestoreService.createTask({
         ...taskData,
         projectId,
-        createdBy: user.uid
+        createdBy: user.uid,
       });
       // Real-time listener will handle the update
-      
+
       return taskId;
     } catch (err) {
       console.error('Error creating task:', err);
@@ -80,12 +80,12 @@ export const useTasks = (projectId) => {
   // Helper functions for kanban board
   const getTasksByStatus = () => {
     // Ensure tasks is always an array and filter out invalid tasks
-    const validTasks = (tasks || []).filter(task => task && task.id && task.status);
-    
+    const validTasks = (tasks || []).filter((task) => task && task.id && task.status);
+
     return {
-      todo: validTasks.filter(task => task.status === 'todo'),
-      'in-progress': validTasks.filter(task => task.status === 'in-progress'),
-      completed: validTasks.filter(task => task.status === 'completed')
+      todo: validTasks.filter((task) => task.status === 'todo'),
+      'in-progress': validTasks.filter((task) => task.status === 'in-progress'),
+      completed: validTasks.filter((task) => task.status === 'completed'),
     };
   };
 
@@ -108,6 +108,6 @@ export const useTasks = (projectId) => {
     updateTask,
     deleteTask,
     getTasksByStatus,
-    moveTask
+    moveTask,
   };
 };

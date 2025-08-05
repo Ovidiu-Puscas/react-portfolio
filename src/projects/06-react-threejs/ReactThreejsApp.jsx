@@ -1,6 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import * as THREE from 'three';
+// Import only needed Three.js modules instead of entire library
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Color,
+  AmbientLight,
+  DirectionalLight,
+  SpotLight,
+  PointLight,
+  AxesHelper,
+  GridHelper,
+} from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // Import the GLB file as a URL
 
@@ -35,22 +47,22 @@ const ReactThreejsApp = () => {
     // React GameUI component will clean up automatically
 
     // Scene setup
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x87CEEB); // Sky blue background
+    const scene = new Scene();
+    scene.background = new Color(0x87ceeb); // Sky blue background
     sceneRef.current = scene;
 
     // Add visual helpers
-    const axesHelper = new THREE.AxesHelper(SCENE_CONFIG.axesSize);
+    const axesHelper = new AxesHelper(SCENE_CONFIG.axesSize);
     scene.add(axesHelper);
-    const gridHelper = new THREE.GridHelper(SCENE_CONFIG.gridSize, SCENE_CONFIG.gridDivisions);
+    const gridHelper = new GridHelper(SCENE_CONFIG.gridSize, SCENE_CONFIG.gridDivisions);
     scene.add(gridHelper);
 
     // Enhanced lighting setup - positioned behind camera
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const ambientLight = new AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
     // Main directional light from behind camera (camera is at -8, 11, 0.6)
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    const dirLight = new DirectionalLight(0xffffff, 1.5);
     dirLight.position.set(-12, 15, 8); // Behind and above camera
     dirLight.target.position.set(0, 1, 0); // Aimed at scene center
     dirLight.castShadow = true;
@@ -58,14 +70,14 @@ const ReactThreejsApp = () => {
     scene.add(dirLight.target);
 
     // Secondary directional light from camera's right side
-    const dirLight2 = new THREE.DirectionalLight(0xffffff, 1.0);
+    const dirLight2 = new DirectionalLight(0xffffff, 1.0);
     dirLight2.position.set(-15, 12, -5); // Behind camera, to the right
     dirLight2.target.position.set(0, 1, 0);
     scene.add(dirLight2);
     scene.add(dirLight2.target);
 
     // Spotlight from above-behind camera, focused on canvas
-    const spotlight = new THREE.SpotLight(0xffffff, 2.0);
+    const spotlight = new SpotLight(0xffffff, 2.0);
     spotlight.position.set(-10, 18, 5); // High behind camera
     spotlight.target.position.set(0, 1, 0); // Aimed at canvas area
     spotlight.angle = Math.PI / 4; // Wider angle
@@ -76,13 +88,13 @@ const ReactThreejsApp = () => {
     scene.add(spotlight.target);
 
     // Point light behind camera for general illumination
-    const pointLight = new THREE.PointLight(0xffffff, 1.2, 20);
+    const pointLight = new PointLight(0xffffff, 1.2, 20);
     pointLight.position.set(-10, 13, 3); // Behind camera position
     scene.add(pointLight);
 
     // Create camera and renderer with initial size
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new WebGLRenderer({ antialias: true });
     rendererRef.current = renderer;
 
     // Initialize components
@@ -128,8 +140,8 @@ const ReactThreejsApp = () => {
         // Loading complete
         setIsLoading(false);
       },
-      (xhr) => {
-        console.log(`GLB ${xhr.loaded / xhr.total * 100}% loaded`);
+      (_xhr) => {
+        // GLB loading progress
       },
       (error) => {
         console.error('An error happened loading the GLB:', error);
@@ -201,7 +213,7 @@ const ReactThreejsApp = () => {
         if (object.geometry) object.geometry.dispose();
         if (object.material) {
           if (Array.isArray(object.material)) {
-            object.material.forEach(material => material.dispose());
+            object.material.forEach((material) => material.dispose());
           } else {
             object.material.dispose();
           }

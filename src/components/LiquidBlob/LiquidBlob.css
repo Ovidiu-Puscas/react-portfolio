@@ -29,37 +29,29 @@
 }
 
 .blob-gradient-1 {
-  background: radial-gradient(circle at 30% 30%, 
-    var(--color-1, #667eea), 
-    transparent 70%);
-  animation: 
+  background: radial-gradient(circle at 30% 30%, var(--color-1, #667eea), transparent 70%);
+  animation:
     blob-rotate var(--animation-duration, 20s) ease-in-out infinite,
     blob-scale-1 var(--animation-duration, 20s) ease-in-out infinite;
 }
 
 .blob-gradient-2 {
-  background: radial-gradient(circle at 70% 30%, 
-    var(--color-2, #764ba2), 
-    transparent 70%);
-  animation: 
+  background: radial-gradient(circle at 70% 30%, var(--color-2, #764ba2), transparent 70%);
+  animation:
     blob-rotate var(--animation-duration, 20s) ease-in-out infinite reverse,
     blob-scale-2 var(--animation-duration, 20s) ease-in-out infinite;
 }
 
 .blob-gradient-3 {
-  background: radial-gradient(circle at 30% 70%, 
-    var(--color-3, #f093fb), 
-    transparent 70%);
-  animation: 
+  background: radial-gradient(circle at 30% 70%, var(--color-3, #f093fb), transparent 70%);
+  animation:
     blob-rotate var(--animation-duration, 20s) ease-in-out infinite,
     blob-scale-3 var(--animation-duration, 20s) ease-in-out infinite;
 }
 
 .blob-gradient-4 {
-  background: radial-gradient(circle at 70% 70%, 
-    var(--color-4, #f5576c), 
-    transparent 70%);
-  animation: 
+  background: radial-gradient(circle at 70% 70%, var(--color-4, #f5576c), transparent 70%);
+  animation:
     blob-rotate var(--animation-duration, 20s) ease-in-out infinite reverse,
     blob-scale-4 var(--animation-duration, 20s) ease-in-out infinite;
 }
@@ -76,7 +68,8 @@
 
 /* Individual scaling animations for organic movement */
 @keyframes blob-scale-1 {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) translate(0, 0);
   }
   25% {
@@ -91,7 +84,8 @@
 }
 
 @keyframes blob-scale-2 {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) translate(0, 0);
   }
   25% {
@@ -106,7 +100,8 @@
 }
 
 @keyframes blob-scale-3 {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) translate(0, 0);
   }
   25% {
@@ -121,7 +116,8 @@
 }
 
 @keyframes blob-scale-4 {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) translate(0, 0);
   }
   25% {
@@ -148,7 +144,7 @@
   .blob-gradient {
     animation: none;
   }
-  
+
   .liquid-blob {
     transition: none;
   }
@@ -159,7 +155,7 @@
   .liquid-blob-container {
     --blob-size: 300px !important;
   }
-  
+
   .blob-gradient {
     filter: blur(30px);
   }

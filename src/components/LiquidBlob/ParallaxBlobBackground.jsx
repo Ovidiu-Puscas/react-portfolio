@@ -11,8 +11,8 @@ const ParallaxBlobBackground = () => {
     const handleMouseMove = (e) => {
       if (!containerRef.current) return;
 
-      const x = (e.clientX / window.innerWidth) - 0.5;
-      const y = (e.clientY / window.innerHeight) - 0.5;
+      const x = e.clientX / window.innerWidth - 0.5;
+      const y = e.clientY / window.innerHeight - 0.5;
 
       // Update CSS custom properties for smooth parallax
       containerRef.current.style.setProperty('--mouse-x', x);
@@ -21,11 +21,11 @@ const ParallaxBlobBackground = () => {
 
     const handleScroll = () => {
       if (!containerRef.current) return;
-      
+
       const scrolled = window.pageYOffset;
       const windowHeight = window.innerHeight;
       const scrollProgress = scrolled / (document.body.scrollHeight - windowHeight);
-      
+
       containerRef.current.style.setProperty('--scroll-progress', scrollProgress);
       containerRef.current.style.setProperty('--scroll-y', scrolled + 'px');
     };
@@ -51,7 +51,7 @@ const ParallaxBlobBackground = () => {
   return (
     <div ref={containerRef} className="parallax-blob-background">
       {/* Large ambient blobs */}
-      <LiquidBlob 
+      <LiquidBlob
         size={800}
         color1="rgba(103, 126, 234, 0.4)"
         color2="rgba(118, 75, 162, 0.4)"
@@ -60,8 +60,8 @@ const ParallaxBlobBackground = () => {
         animationDuration="40s"
         className="parallax-blob parallax-blob-large parallax-blob-1"
       />
-      
-      <LiquidBlob 
+
+      <LiquidBlob
         size={600}
         color1="rgba(6, 182, 212, 0.3)"
         color2="rgba(59, 130, 246, 0.3)"
@@ -71,7 +71,7 @@ const ParallaxBlobBackground = () => {
         className="parallax-blob parallax-blob-large parallax-blob-2"
       />
 
-      <LiquidBlob 
+      <LiquidBlob
         size={700}
         color1="rgba(16, 185, 129, 0.25)"
         color2="rgba(245, 158, 11, 0.25)"
@@ -82,7 +82,7 @@ const ParallaxBlobBackground = () => {
       />
 
       {/* Medium floating blobs */}
-      <LiquidBlob 
+      <LiquidBlob
         size={400}
         color1="rgba(103, 126, 234, 0.2)"
         color2="rgba(240, 147, 251, 0.2)"
@@ -92,7 +92,7 @@ const ParallaxBlobBackground = () => {
         className="parallax-blob parallax-blob-medium parallax-blob-4"
       />
 
-      <LiquidBlob 
+      <LiquidBlob
         size={350}
         color1="rgba(59, 130, 246, 0.18)"
         color2="rgba(139, 92, 246, 0.18)"
@@ -102,7 +102,7 @@ const ParallaxBlobBackground = () => {
         className="parallax-blob parallax-blob-medium parallax-blob-5"
       />
 
-      <LiquidBlob 
+      <LiquidBlob
         size={300}
         color1="rgba(236, 72, 153, 0.15)"
         color2="rgba(239, 68, 68, 0.15)"
@@ -113,7 +113,7 @@ const ParallaxBlobBackground = () => {
       />
 
       {/* Small accent blobs */}
-      <LiquidBlob 
+      <LiquidBlob
         size={200}
         color1="rgba(245, 87, 108, 0.12)"
         color2="rgba(240, 147, 251, 0.12)"
@@ -123,7 +123,7 @@ const ParallaxBlobBackground = () => {
         className="parallax-blob parallax-blob-small parallax-blob-7"
       />
 
-      <LiquidBlob 
+      <LiquidBlob
         size={150}
         color1="rgba(16, 185, 129, 0.1)"
         color2="rgba(245, 158, 11, 0.1)"
@@ -133,7 +133,7 @@ const ParallaxBlobBackground = () => {
         className="parallax-blob parallax-blob-small parallax-blob-8"
       />
 
-      <LiquidBlob 
+      <LiquidBlob
         size={180}
         color1="rgba(103, 126, 234, 0.08)"
         color2="rgba(118, 75, 162, 0.08)"

@@ -28,33 +28,24 @@
 .parallax-blob-1 {
   top: -20%;
   left: -15%;
-  transform: 
-    translateX(calc(var(--mouse-x) * 80px))
-    translateY(calc(var(--mouse-y) * 60px))
-    translateY(calc(var(--scroll-progress) * -200px))
-    rotate(calc(var(--scroll-progress) * 180deg));
+  transform: translateX(calc(var(--mouse-x) * 80px)) translateY(calc(var(--mouse-y) * 60px))
+    translateY(calc(var(--scroll-progress) * -200px)) rotate(calc(var(--scroll-progress) * 180deg));
   animation: blob-float-1 50s ease-in-out infinite;
 }
 
 .parallax-blob-2 {
   top: 30%;
   right: -10%;
-  transform: 
-    translateX(calc(var(--mouse-x) * -60px))
-    translateY(calc(var(--mouse-y) * 40px))
-    translateY(calc(var(--scroll-progress) * -150px))
-    rotate(calc(var(--scroll-progress) * -120deg));
+  transform: translateX(calc(var(--mouse-x) * -60px)) translateY(calc(var(--mouse-y) * 40px))
+    translateY(calc(var(--scroll-progress) * -150px)) rotate(calc(var(--scroll-progress) * -120deg));
   animation: blob-float-2 45s ease-in-out infinite reverse;
 }
 
 .parallax-blob-3 {
   bottom: -15%;
   left: 20%;
-  transform: 
-    translateX(calc(var(--mouse-x) * 70px))
-    translateY(calc(var(--mouse-y) * -50px))
-    translateY(calc(var(--scroll-progress) * -100px))
-    rotate(calc(var(--scroll-progress) * 90deg));
+  transform: translateX(calc(var(--mouse-x) * 70px)) translateY(calc(var(--mouse-y) * -50px))
+    translateY(calc(var(--scroll-progress) * -100px)) rotate(calc(var(--scroll-progress) * 90deg));
   animation: blob-float-3 55s ease-in-out infinite;
 }
 
@@ -66,33 +57,24 @@
 .parallax-blob-4 {
   top: 10%;
   left: 60%;
-  transform: 
-    translateX(calc(var(--mouse-x) * 120px))
-    translateY(calc(var(--mouse-y) * 80px))
-    translateY(calc(var(--scroll-progress) * -250px))
-    rotate(calc(var(--scroll-progress) * 240deg));
+  transform: translateX(calc(var(--mouse-x) * 120px)) translateY(calc(var(--mouse-y) * 80px))
+    translateY(calc(var(--scroll-progress) * -250px)) rotate(calc(var(--scroll-progress) * 240deg));
   animation: blob-float-4 35s ease-in-out infinite;
 }
 
 .parallax-blob-5 {
   top: 60%;
   right: 30%;
-  transform: 
-    translateX(calc(var(--mouse-x) * -90px))
-    translateY(calc(var(--mouse-y) * -70px))
-    translateY(calc(var(--scroll-progress) * -180px))
-    rotate(calc(var(--scroll-progress) * -160deg));
+  transform: translateX(calc(var(--mouse-x) * -90px)) translateY(calc(var(--mouse-y) * -70px))
+    translateY(calc(var(--scroll-progress) * -180px)) rotate(calc(var(--scroll-progress) * -160deg));
   animation: blob-float-5 30s ease-in-out infinite reverse;
 }
 
 .parallax-blob-6 {
   bottom: 20%;
   right: -5%;
-  transform: 
-    translateX(calc(var(--mouse-x) * 100px))
-    translateY(calc(var(--mouse-y) * 90px))
-    translateY(calc(var(--scroll-progress) * -220px))
-    rotate(calc(var(--scroll-progress) * 200deg));
+  transform: translateX(calc(var(--mouse-x) * 100px)) translateY(calc(var(--mouse-y) * 90px))
+    translateY(calc(var(--scroll-progress) * -220px)) rotate(calc(var(--scroll-progress) * 200deg));
   animation: blob-float-6 40s ease-in-out infinite;
 }
 
@@ -104,93 +86,155 @@
 .parallax-blob-7 {
   top: 40%;
   left: 10%;
-  transform: 
-    translateX(calc(var(--mouse-x) * 150px))
-    translateY(calc(var(--mouse-y) * 120px))
-    translateY(calc(var(--scroll-progress) * -300px))
-    rotate(calc(var(--scroll-progress) * 360deg));
+  transform: translateX(calc(var(--mouse-x) * 150px)) translateY(calc(var(--mouse-y) * 120px))
+    translateY(calc(var(--scroll-progress) * -300px)) rotate(calc(var(--scroll-progress) * 360deg));
   animation: blob-float-7 25s ease-in-out infinite;
 }
 
 .parallax-blob-8 {
   top: 80%;
   left: 40%;
-  transform: 
-    translateX(calc(var(--mouse-x) * -130px))
-    translateY(calc(var(--mouse-y) * -100px))
-    translateY(calc(var(--scroll-progress) * -350px))
-    rotate(calc(var(--scroll-progress) * -300deg));
+  transform: translateX(calc(var(--mouse-x) * -130px)) translateY(calc(var(--mouse-y) * -100px))
+    translateY(calc(var(--scroll-progress) * -350px)) rotate(calc(var(--scroll-progress) * -300deg));
   animation: blob-float-8 20s ease-in-out infinite reverse;
 }
 
 .parallax-blob-9 {
   top: 15%;
   right: 15%;
-  transform: 
-    translateX(calc(var(--mouse-x) * 110px))
-    translateY(calc(var(--mouse-y) * 110px))
-    translateY(calc(var(--scroll-progress) * -280px))
-    rotate(calc(var(--scroll-progress) * 270deg));
+  transform: translateX(calc(var(--mouse-x) * 110px)) translateY(calc(var(--mouse-y) * 110px))
+    translateY(calc(var(--scroll-progress) * -280px)) rotate(calc(var(--scroll-progress) * 270deg));
   animation: blob-float-9 28s ease-in-out infinite;
 }
 
 /* Floating animations for organic movement */
 @keyframes blob-float-1 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  25% { transform: translate(20px, -30px) scale(1.1) rotate(90deg); }
-  50% { transform: translate(-15px, 40px) scale(0.9) rotate(180deg); }
-  75% { transform: translate(25px, 10px) scale(1.05) rotate(270deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.1) rotate(90deg);
+  }
+  50% {
+    transform: translate(-15px, 40px) scale(0.9) rotate(180deg);
+  }
+  75% {
+    transform: translate(25px, 10px) scale(1.05) rotate(270deg);
+  }
 }
 
 @keyframes blob-float-2 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  25% { transform: translate(-25px, 20px) scale(0.95) rotate(-90deg); }
-  50% { transform: translate(30px, -25px) scale(1.08) rotate(-180deg); }
-  75% { transform: translate(-10px, 35px) scale(0.92) rotate(-270deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(-25px, 20px) scale(0.95) rotate(-90deg);
+  }
+  50% {
+    transform: translate(30px, -25px) scale(1.08) rotate(-180deg);
+  }
+  75% {
+    transform: translate(-10px, 35px) scale(0.92) rotate(-270deg);
+  }
 }
 
 @keyframes blob-float-3 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  33% { transform: translate(15px, -20px) scale(1.03) rotate(120deg); }
-  66% { transform: translate(-20px, 25px) scale(0.97) rotate(240deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(15px, -20px) scale(1.03) rotate(120deg);
+  }
+  66% {
+    transform: translate(-20px, 25px) scale(0.97) rotate(240deg);
+  }
 }
 
 @keyframes blob-float-4 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  20% { transform: translate(12px, -18px) scale(1.02) rotate(72deg); }
-  40% { transform: translate(-8px, 22px) scale(0.98) rotate(144deg); }
-  60% { transform: translate(18px, 8px) scale(1.04) rotate(216deg); }
-  80% { transform: translate(-15px, -12px) scale(0.96) rotate(288deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  20% {
+    transform: translate(12px, -18px) scale(1.02) rotate(72deg);
+  }
+  40% {
+    transform: translate(-8px, 22px) scale(0.98) rotate(144deg);
+  }
+  60% {
+    transform: translate(18px, 8px) scale(1.04) rotate(216deg);
+  }
+  80% {
+    transform: translate(-15px, -12px) scale(0.96) rotate(288deg);
+  }
 }
 
 @keyframes blob-float-5 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  25% { transform: translate(-18px, 15px) scale(0.94) rotate(-108deg); }
-  50% { transform: translate(22px, -20px) scale(1.06) rotate(-216deg); }
-  75% { transform: translate(-5px, 28px) scale(0.99) rotate(-324deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(-18px, 15px) scale(0.94) rotate(-108deg);
+  }
+  50% {
+    transform: translate(22px, -20px) scale(1.06) rotate(-216deg);
+  }
+  75% {
+    transform: translate(-5px, 28px) scale(0.99) rotate(-324deg);
+  }
 }
 
 @keyframes blob-float-6 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  30% { transform: translate(10px, -25px) scale(1.01) rotate(108deg); }
-  70% { transform: translate(-22px, 18px) scale(0.95) rotate(216deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  30% {
+    transform: translate(10px, -25px) scale(1.01) rotate(108deg);
+  }
+  70% {
+    transform: translate(-22px, 18px) scale(0.95) rotate(216deg);
+  }
 }
 
 @keyframes blob-float-7 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate(25px, -30px) scale(1.1) rotate(180deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(25px, -30px) scale(1.1) rotate(180deg);
+  }
 }
 
 @keyframes blob-float-8 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  25% { transform: translate(-20px, 15px) scale(0.9) rotate(-90deg); }
-  75% { transform: translate(18px, -22px) scale(1.05) rotate(-270deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(-20px, 15px) scale(0.9) rotate(-90deg);
+  }
+  75% {
+    transform: translate(18px, -22px) scale(1.05) rotate(-270deg);
+  }
 }
 
 @keyframes blob-float-9 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  33% { transform: translate(8px, -15px) scale(1.02) rotate(120deg); }
-  66% { transform: translate(-12px, 20px) scale(0.98) rotate(240deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(8px, -15px) scale(1.02) rotate(120deg);
+  }
+  66% {
+    transform: translate(-12px, 20px) scale(0.98) rotate(240deg);
+  }
 }
 
 /* Responsive design */
@@ -198,11 +242,11 @@
   .parallax-blob-large {
     filter: blur(50px);
   }
-  
+
   .parallax-blob-medium {
     filter: blur(35px);
   }
-  
+
   .parallax-blob-small {
     filter: blur(15px);
   }
@@ -213,36 +257,30 @@
     filter: blur(40px);
     opacity: 0.5;
   }
-  
+
   .parallax-blob-medium {
     filter: blur(25px);
     opacity: 0.4;
   }
-  
+
   .parallax-blob-small {
     filter: blur(12px);
     opacity: 0.3;
   }
-  
+
   /* Reduce parallax intensity on mobile */
   .parallax-blob-1 {
-    transform: 
-      translateX(calc(var(--mouse-x) * 40px))
-      translateY(calc(var(--mouse-y) * 30px))
+    transform: translateX(calc(var(--mouse-x) * 40px)) translateY(calc(var(--mouse-y) * 30px))
       translateY(calc(var(--scroll-progress) * -100px));
   }
-  
+
   .parallax-blob-2 {
-    transform: 
-      translateX(calc(var(--mouse-x) * -30px))
-      translateY(calc(var(--mouse-y) * 20px))
+    transform: translateX(calc(var(--mouse-x) * -30px)) translateY(calc(var(--mouse-y) * 20px))
       translateY(calc(var(--scroll-progress) * -75px));
   }
-  
+
   .parallax-blob-3 {
-    transform: 
-      translateX(calc(var(--mouse-x) * 35px))
-      translateY(calc(var(--mouse-y) * -25px))
+    transform: translateX(calc(var(--mouse-x) * 35px)) translateY(calc(var(--mouse-y) * -25px))
       translateY(calc(var(--scroll-progress) * -50px));
   }
 }

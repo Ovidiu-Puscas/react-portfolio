@@ -24,8 +24,12 @@
 }
 
 @keyframes liquidSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .liquid-loading-text {
@@ -82,7 +86,8 @@
 }
 
 @keyframes liquidMove {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) rotate(0deg);
   }
   33% {
@@ -200,7 +205,8 @@
 }
 
 @keyframes shimmerText {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
@@ -268,10 +274,12 @@
   margin-bottom: 1.5rem;
   padding: 1.25rem;
   border-radius: 20px;
-  background: linear-gradient(135deg,
+  background: linear-gradient(
+    135deg,
     rgba(255, 255, 255, 0.15) 0%,
     rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.05) 100%);
+    rgba(255, 255, 255, 0.05) 100%
+  );
   backdrop-filter: blur(15px) saturate(120%);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow:
@@ -281,7 +289,6 @@
   position: relative;
 }
 
-
 .liquid-app-icon svg {
   width: 32px;
   height: 32px;
@@ -290,16 +297,17 @@
 
 .liquid-app-card:hover .liquid-app-icon {
   transform: rotate(3deg) scale(1.08);
-  background: linear-gradient(135deg,
+  background: linear-gradient(
+    135deg,
     rgba(255, 255, 255, 0.2) 0%,
     rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.08) 100%);
+    rgba(255, 255, 255, 0.08) 100%
+  );
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
-
 
 .liquid-app-card:hover .liquid-app-icon svg {
   transform: scale(1.05);
@@ -384,7 +392,19 @@
   position: relative;
   z-index: 2;
   height: 100dvh;
+  overflow: visible;
   padding-top: 100px;
+}
+
+/* Make containers inside liquid-app-content take full height and handle scrolling */
+.liquid-app-content > * {
+  height: 100%;
+  overflow: auto;
+}
+
+.liquid-app-content .container {
+  height: 100%;
+  overflow: auto;
 }
 
 /* Footer */

@@ -47,10 +47,7 @@
       "roadsTopTurnLeft",
       "roadsHorizontalStraight"
     ],
-    "top": [
-      "roadsVerticalStraight",
-      "roadsBottomTopEnd"
-    ],
+    "top": ["roadsVerticalStraight", "roadsBottomTopEnd"],
     "bottom": [
       "roadsVerticalStraight",
       "roadsTopTurnRight",
