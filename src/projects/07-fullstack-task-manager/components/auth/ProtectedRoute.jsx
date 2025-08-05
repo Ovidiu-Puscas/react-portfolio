@@ -6,7 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
-  console.log('ProtectedRoute check - User:', user, 'Loading:', loading);
+  // ProtectedRoute check - User and loading state validation
 
   if (loading) {
     return (
@@ -24,11 +24,11 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!user) {
-    console.log('No user found, redirecting to /auth');
+    // No user found, redirecting to auth page
     return <Navigate to="/auth" replace />;
   }
 
-  console.log('User authenticated, showing protected content');
+  // User authenticated, showing protected content
   return children;
 };
 
