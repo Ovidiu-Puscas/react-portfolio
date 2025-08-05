@@ -84,6 +84,19 @@ class AuthService {
         photoURL: user.photoURL || null,
       };
     } catch (error) {
+      // Provide more specific error messages for common cases
+      if (error.code === 'auth/user-not-found') {
+        throw new Error('No account found with this email address');
+      }
+      if (error.code === 'auth/wrong-password') {
+        throw new Error('Incorrect password');
+      }
+      if (error.code === 'auth/invalid-email') {
+        throw new Error('Invalid email address');
+      }
+      if (error.code === 'auth/too-many-requests') {
+        throw new Error('Too many failed attempts. Please try again later');
+      }
       throw new Error(error.message);
     }
   }

@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
       await authService.login(email, password);
     } catch (error) {
       setError(error.message);
+      throw error;
     } finally {
       setLoading(false);
     }

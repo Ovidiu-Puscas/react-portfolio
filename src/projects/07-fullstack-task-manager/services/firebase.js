@@ -2,9 +2,8 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
-// Use emulator in test/development environment
-const useEmulator =
-  process.env.REACT_APP_USE_FIREBASE_EMULATOR === 'true' || process.env.NODE_ENV === 'test';
+// Use emulator only when explicitly enabled (not in CI test environment)
+const useEmulator = process.env.REACT_APP_USE_FIREBASE_EMULATOR === 'true' && !process.env.CI;
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'demo-key',
