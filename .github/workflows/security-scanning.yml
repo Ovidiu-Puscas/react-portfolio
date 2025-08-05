@@ -23,10 +23,8 @@ jobs:
         with:
           # Fail on critical and high vulnerabilities
           fail-on-severity: high
-          # Allow certain licenses
+          # Only allow specific licenses (this will automatically deny others)
           allow-licenses: MIT, ISC, Apache-2.0, BSD-2-Clause, BSD-3-Clause
-          # Deny GPL licenses for commercial use
-          deny-licenses: GPL-2.0, GPL-3.0, AGPL-1.0, AGPL-3.0
 
   codeql-analysis:
     name: CodeQL Security Analysis
