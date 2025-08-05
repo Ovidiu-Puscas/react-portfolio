@@ -113,8 +113,25 @@ const Dashboard = () => {
   }
 
   return (
-    <Container sx={{ py: 4 }} data-testid="projects-list">
-      <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Container
+      sx={{
+        py: '30px',
+        height: 'calc(100% - 64px)',
+        marginLeft: '0',
+        marginRight: '0',
+        maxWidth: '100%!important',
+        overflowY: 'scroll',
+      }} // Use '!important' in string value for MUI sx prop
+      data-testid="projects-list"
+    >
+      <Box
+        sx={{
+          mb: 4,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="h4" component="h1">
           My Projects
         </Typography>

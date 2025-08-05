@@ -161,6 +161,7 @@ npm run cypress:run
 # Run with specific browser
 npm run cypress:run:chrome
 npm run cypress:run:firefox
+npm run cypress:run:electron
 
 # Full E2E test suite
 npm run e2e

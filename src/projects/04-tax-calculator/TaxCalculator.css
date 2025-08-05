@@ -4,13 +4,10 @@
   background-color: rgb(249 250 251 / 0.85);
   backdrop-filter: blur(20px) saturate(180%);
   border-radius: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   box-sizing: border-box;
   height: 100%;
-  overflow: visible;
-  padding-bottom: 15px;
+  overflow-y: scroll;
+  padding: 45px;
 }
 
 .header {

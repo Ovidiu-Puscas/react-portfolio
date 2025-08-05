@@ -140,11 +140,11 @@ export default function LikePhotoApp() {
           type="website"
           author="Ovidiu Alexandru Pușcaș"
         />
-        <div className="container mx-auto px-4 overflow-y-auto">
+        <div className="bg-gray-50/65 backdrop-blur-sm py-8 px-4 rounded-xl h-full">
           <Description
             description={{
               text: 'Pictures are pulled from picsum.photos - Double-click on images to like them! ❤️',
-              class: 'text-lg pt-4 text-white',
+              class: 'text-lg pt-4 text-gray-800',
             }}
           />
           <PhotoGrid photos={photos} onLikesChange={handleLikesChange} />

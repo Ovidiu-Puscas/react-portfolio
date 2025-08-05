@@ -245,12 +245,6 @@ const ReactThreejsApp = () => {
           className="flex-grow w-full overflow-hidden relative"
           style={{ minHeight: 0 }}
         />
-        <div
-          className="absolute bottom-4 left-4 text-white text-sm opacity-75 bg-black bg-opacity-50 p-2 rounded"
-          data-testid="camera-controls"
-        >
-          Use mouse to rotate camera around the scene
-        </div>
         <GameUIComponent
           shapeChallenge={shapeChallenge}
           paintingSystem={paintingSystem}

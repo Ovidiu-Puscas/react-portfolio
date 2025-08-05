@@ -9,13 +9,13 @@ on:
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-        browser: [chrome, firefox]
+        browser: [electron]
       fail-fast: false
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -70,7 +70,7 @@ jobs:
 
   mobile-e2e-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -96,7 +96,7 @@ jobs:
         start: npm start
         wait-on: 'http://localhost:3000'
         wait-on-timeout: 120
-        browser: chrome
+        browser: electron
         config: 'viewportWidth=375,viewportHeight=667'
         spec: 'cypress/e2e/**/*.cy.js'
       env:
@@ -122,7 +122,7 @@ jobs:
 
   accessibility-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -149,7 +149,7 @@ jobs:
         start: npm start
         wait-on: 'http://localhost:3000'
         wait-on-timeout: 120
-        browser: chrome
+        browser: electron
         spec: 'cypress/e2e/00-homepage.cy.js'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -165,7 +165,7 @@ jobs:
 
   performance-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4

@@ -391,10 +391,20 @@
   padding: 2rem;
   position: relative;
   z-index: 2;
-  min-height: 100dvh;
-  height: auto;
+  height: 100dvh;
   overflow: visible;
   padding-top: 100px;
+}
+
+/* Make containers inside liquid-app-content take full height and handle scrolling */
+.liquid-app-content > * {
+  height: 100%;
+  overflow: auto;
+}
+
+.liquid-app-content .container {
+  height: 100%;
+  overflow: auto;
 }
 
 /* Footer */

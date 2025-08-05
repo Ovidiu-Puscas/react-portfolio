@@ -192,74 +192,72 @@ const TaxCalculatorApp = () => {
       }}
     >
       <div className="tax-calculator-container">
-        <div className="container">
-          {/* Exchange Rate Status */}
-          <div className="py-4 mb-6">
-            {isLoadingRates && (
-              <div className="text-blue-600 text-sm mb-2" data-testid="loading">
-                🔄 Loading real-time exchange rates...
-              </div>
-            )}
-            {lastUpdated && (
-              <div className="text-green-600 text-sm mb-2">
-                ✅ Rates updated: {new Date(lastUpdated).toLocaleString()}
-              </div>
-            )}
-            {apiError && (
-              <div className="text-orange-600 text-sm mb-2">⚠️ Using default rates: {apiError}</div>
-            )}
-            <button
-              onClick={refreshRates}
-              disabled={isLoadingRates}
-              className="bg-blue-500 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded text-sm transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isLoadingRates ? 'Refreshing...' : '🔄 Refresh Rates'}
-            </button>
-          </div>
-
-          <InputForm
-            customRate={customRate}
-            setCustomRate={setCustomRate}
-            usdToRonRate={usdToRonRate}
-            setUsdToRonRate={setUsdToRonRate}
-            ronToEurRate={ronToEurRate}
-            setRonToEurRate={setRonToEurRate}
-            microSrlTaxRate={microSrlTaxRate}
-            setMicroSrlTaxRate={setMicroSrlTaxRate}
-            nextYearDividendTaxRate={nextYearDividendTaxRate}
-            setNextYearDividendTaxRate={setNextYearDividendTaxRate}
-            selectedYear={selectedYear}
-            setSelectedYear={setSelectedYear}
-            selectedCurrency={selectedCurrency}
-            setSelectedCurrency={setSelectedCurrency}
-            isLoadingRates={isLoadingRates}
-            lastUpdated={lastUpdated}
-            apiError={apiError}
-          />
-
-          <SelectionOptions
-            selectedYear={selectedYear}
-            setSelectedYear={setSelectedYear}
-            selectedCurrency={selectedCurrency}
-            setSelectedCurrency={setSelectedCurrency}
-          />
-
-          <div data-testid="tax-results" className="overflow-visible">
-            <ResultsTable
-              selectedYear={selectedYear}
-              selectedCurrency={selectedCurrency}
-              customRate={parseFloat(customRate)}
-              usdToRonRate={parseFloat(usdToRonRate)}
-              ronToEurRate={parseFloat(ronToEurRate)}
-              microSrlTaxRate={parseFloat(microSrlTaxRate)}
-              nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
-              calculateIncome={calculateIncome}
-              formatCurrency={formatCurrency}
-            />
-          </div>
-
-          <Disclaimer />
+        {/* Exchange Rate Status */}
+        <div className="py-4 mb-6">
+          {isLoadingRates && (
+            <div className="text-blue-600 text-sm mb-2" data-testid="loading">
+              🔄 Loading real-time exchange rates...
+            </div>
+          )}
+          {lastUpdated && (
+            <div className="text-green-600 text-sm mb-2">
+              ✅ Rates updated: {new Date(lastUpdated).toLocaleString()}
+            </div>
+          )}
+          {apiError && (
+            <div className="text-orange-600 text-sm mb-2">⚠️ Using default rates: {apiError}</div>
+          )}
+          <button
+            onClick={refreshRates}
+            disabled={isLoadingRates}
+            className="bg-blue-500 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded text-sm transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isLoadingRates ? 'Refreshing...' : '🔄 Refresh Rates'}
+          </button>
         </div>
+
+        <InputForm
+          customRate={customRate}
+          setCustomRate={setCustomRate}
+          usdToRonRate={usdToRonRate}
+          setUsdToRonRate={setUsdToRonRate}
+          ronToEurRate={ronToEurRate}
+          setRonToEurRate={setRonToEurRate}
+          microSrlTaxRate={microSrlTaxRate}
+          setMicroSrlTaxRate={setMicroSrlTaxRate}
+          nextYearDividendTaxRate={nextYearDividendTaxRate}
+          setNextYearDividendTaxRate={setNextYearDividendTaxRate}
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
+          selectedCurrency={selectedCurrency}
+          setSelectedCurrency={setSelectedCurrency}
+          isLoadingRates={isLoadingRates}
+          lastUpdated={lastUpdated}
+          apiError={apiError}
+        />
+
+        <SelectionOptions
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
+          selectedCurrency={selectedCurrency}
+          setSelectedCurrency={setSelectedCurrency}
+        />
+
+        <div data-testid="tax-results" className="overflow-visible">
+          <ResultsTable
+            selectedYear={selectedYear}
+            selectedCurrency={selectedCurrency}
+            customRate={parseFloat(customRate)}
+            usdToRonRate={parseFloat(usdToRonRate)}
+            ronToEurRate={parseFloat(ronToEurRate)}
+            microSrlTaxRate={parseFloat(microSrlTaxRate)}
+            nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
+            calculateIncome={calculateIncome}
+            formatCurrency={formatCurrency}
+          />
+        </div>
+
+        <Disclaimer />
       </div>
     </ErrorBoundary>
   );

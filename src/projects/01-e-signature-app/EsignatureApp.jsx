@@ -114,15 +114,13 @@ export default function EsignatureApp() {
                   class: 'text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4',
                 }}
               />
-              <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-4">
+              <div className="rounded-lg mb-4">
                 <SignatureCanvas
                   ref={sigPadRef}
                   penColor="#1f2937"
                   canvasProps={{
-                    width: 300,
-                    height: 120,
                     className:
-                      'sigCanvas border-2 border-gray-300 rounded-lg mx-auto w-full max-w-[300px] h-[100px] sm:h-[120px]',
+                      'sigCanvas bg-gray-50 border-2 border-gray-300 rounded-lg w-full max-w-[100%] h-[100px] sm:h-[120px]',
                   }}
                 />
               </div>
