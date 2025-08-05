@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {
   Box,
   Typography,
@@ -22,6 +23,18 @@ const KanbanBoard = ({
     { id: 'completed', title: 'Completed', color: '#e8f5e8' }
   ];
 
+  // Portal for drag clones to avoid padding issues
+  const portal = document.createElement('div');
+  document.body.appendChild(portal);
+
+  React.useEffect(() => {
+    return () => {
+      if (document.body.contains(portal)) {
+        document.body.removeChild(portal);
+      }
+    };
+  }, [portal]);
+
   const handleDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
@@ -40,8 +53,10 @@ const KanbanBoard = ({
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Box sx={{ display: 'flex', gap: 3, overflow: 'auto', minHeight: '70vh' }}>
+    <DragDropContext 
+      onDragEnd={handleDragEnd}
+    >
+      <Box sx={{ display: 'flex', gap: 3, overflow: 'auto' }}>
         {columns.map((column) => (
           <Paper
             key={column.id}
@@ -113,33 +128,42 @@ const KanbanBoard = ({
                         draggableId={task.id}
                         index={index}
                       >
-                        {(provided, snapshot) => (
-                          <Box
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            sx={{
-                              p: 2,
-                              mb: 1,
-                              bgcolor: 'white',
-                              borderRadius: 1,
-                              boxShadow: 1,
-                              cursor: 'grab',
-                              opacity: snapshot.isDragging ? 0.8 : 1,
-                              transform: snapshot.isDragging
-                                ? `${provided.draggableProps.style?.transform} rotate(2deg)`
-                                : provided.draggableProps.style?.transform,
-                              '&:active': { cursor: 'grabbing' }
-                            }}
-                          >
-                            <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
-                              {task.title}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem' }}>
-                              {task.priority} priority
-                            </Typography>
-                          </Box>
-                        )}
+                        {(provided, snapshot) => {
+                          const taskElement = (
+                            <Box
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              sx={{
+                                p: 2,
+                                mb: 1,
+                                bgcolor: 'white',
+                                borderRadius: 1,
+                                boxShadow: 1,
+                                cursor: 'grab',
+                                opacity: snapshot.isDragging ? 0.8 : 1,
+                                transform: snapshot.isDragging
+                                  ? `${provided.draggableProps.style?.transform} rotate(2deg)`
+                                  : provided.draggableProps.style?.transform,
+                                '&:active': { cursor: 'grabbing' }
+                              }}
+                            >
+                              <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
+                                {task.title}
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem' }}>
+                                {task.priority} priority
+                              </Typography>
+                            </Box>
+                          );
+
+                          // Render dragging clone in portal to avoid padding issues
+                          if (snapshot.isDragging) {
+                            return ReactDOM.createPortal(taskElement, portal);
+                          }
+
+                          return taskElement;
+                        }}
                       </Draggable>
                     ))
                   )}
