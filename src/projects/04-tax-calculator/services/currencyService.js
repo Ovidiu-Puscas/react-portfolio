@@ -4,7 +4,7 @@ const API_URL = 'https://api.currencyapi.com/v3/latest';
 // Default fallback rates in case API fails
 const DEFAULT_RATES = {
   USD_TO_RON: 4.37,
-  EUR_TO_RON: 5.07
+  EUR_TO_RON: 5.07,
 };
 
 export const fetchExchangeRates = async () => {
@@ -30,7 +30,7 @@ export const fetchExchangeRates = async () => {
       usdToRon: usdToRon.toFixed(4),
       eurToRon: eurToRon.toFixed(4),
       lastUpdated: data.meta.last_updated_at,
-      success: true
+      success: true,
     };
   } catch (error) {
     console.warn('Failed to fetch exchange rates from API:', error.message);
@@ -39,14 +39,12 @@ export const fetchExchangeRates = async () => {
       eurToRon: DEFAULT_RATES.EUR_TO_RON.toString(),
       lastUpdated: null,
       success: false,
-      error: error.message
+      error: error.message,
     };
   }
 };
 
-export const getDefaultRates = () => {
-  return {
-    usdToRon: DEFAULT_RATES.USD_TO_RON.toString(),
-    eurToRon: DEFAULT_RATES.EUR_TO_RON.toString()
-  };
-};
+export const getDefaultRates = () => ({
+  usdToRon: DEFAULT_RATES.USD_TO_RON.toString(),
+  eurToRon: DEFAULT_RATES.EUR_TO_RON.toString(),
+});

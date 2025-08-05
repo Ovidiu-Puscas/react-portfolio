@@ -1,14 +1,7 @@
 import React from 'react';
 import f1Car from '../assets/f1.png';
 
-const PuzzleTile = ({
-  tile,
-  rowIndex,
-  colIndex,
-  onTileClick,
-  canMoveTile,
-  gameState
-}) => {
+const PuzzleTile = ({ tile, rowIndex, colIndex, onTileClick, canMoveTile, gameState }) => {
   const getTileStyle = (tile) => {
     if (tile.type === 'empty') return {};
 
@@ -17,7 +10,7 @@ const PuzzleTile = ({
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
-      imageRendering: 'pixelated'
+      imageRendering: 'pixelated',
     };
   };
 
@@ -32,9 +25,7 @@ const PuzzleTile = ({
       style={getTileStyle(tile)}
     >
       {/* Static checkered flag background for finish position */}
-      {rowIndex === 3 && colIndex === 3 && (
-        <div className="flag-marker">🏁</div>
-      )}
+      {rowIndex === 3 && colIndex === 3 && <div className="flag-marker">🏁</div>}
 
       {/* F1 car only shows on top-left position */}
       {rowIndex === 0 && colIndex === 0 && (

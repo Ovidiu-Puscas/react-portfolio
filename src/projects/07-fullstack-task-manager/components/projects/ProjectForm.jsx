@@ -11,14 +11,14 @@ import {
   Select,
   FormControl,
   InputLabel,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 
 const ProjectForm = ({ open, onClose, onSubmit, project = null }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    status: 'active'
+    status: 'active',
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -31,54 +31,54 @@ const ProjectForm = ({ open, onClose, onSubmit, project = null }) => {
       setFormData({
         name: project.name || '',
         description: project.description || '',
-        status: project.status || 'active'
+        status: project.status || 'active',
       });
     } else {
       setFormData({
         name: '',
         description: '',
-        status: 'active'
+        status: 'active',
       });
     }
   }, [project]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
     // Clear error for this field
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: '',
       }));
     }
   };
 
   const validate = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Project name is required';
     } else if (formData.name.length < 3) {
       newErrors.name = 'Project name must be at least 3 characters';
     }
-    
+
     if (!formData.description.trim()) {
       newErrors.description = 'Description is required';
     } else if (formData.description.length < 10) {
       newErrors.description = 'Description must be at least 10 characters';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validate()) return;
-    
+
     setLoading(true);
     try {
       await onSubmit(formData);
@@ -98,16 +98,9 @@ const ProjectForm = ({ open, onClose, onSubmit, project = null }) => {
   };
 
   return (
-    <Dialog 
-      open={open} 
-      onClose={handleClose}
-      maxWidth="sm"
-      fullWidth
-    >
-      <DialogTitle>
-        {isEdit ? 'Edit Project' : 'Create New Project'}
-      </DialogTitle>
-      
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{isEdit ? 'Edit Project' : 'Create New Project'}</DialogTitle>
+
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
           <TextField
@@ -121,7 +114,7 @@ const ProjectForm = ({ open, onClose, onSubmit, project = null }) => {
             disabled={loading}
             autoFocus
           />
-          
+
           <TextField
             name="description"
             label="Description"
@@ -134,7 +127,7 @@ const ProjectForm = ({ open, onClose, onSubmit, project = null }) => {
             helperText={errors.description}
             disabled={loading}
           />
-          
+
           <FormControl fullWidth>
             <InputLabel>Status</InputLabel>
             <Select
@@ -149,29 +142,19 @@ const ProjectForm = ({ open, onClose, onSubmit, project = null }) => {
               <MenuItem value="archived">Archived</MenuItem>
             </Select>
           </FormControl>
-          
+
           {errors.submit && (
-            <Box sx={{ color: 'error.main', fontSize: '0.875rem' }}>
-              {errors.submit}
-            </Box>
+            <Box sx={{ color: 'error.main', fontSize: '0.875rem' }}>{errors.submit}</Box>
           )}
         </Box>
       </DialogContent>
-      
+
       <DialogActions>
         <Button onClick={handleClose} disabled={loading}>
           Cancel
         </Button>
-        <Button 
-          onClick={handleSubmit} 
-          variant="contained"
-          disabled={loading}
-        >
-          {loading ? (
-            <CircularProgress size={24} />
-          ) : (
-            isEdit ? 'Update' : 'Create'
-          )}
+        <Button onClick={handleSubmit} variant="contained" disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : isEdit ? 'Update' : 'Create'}
         </Button>
       </DialogActions>
     </Dialog>

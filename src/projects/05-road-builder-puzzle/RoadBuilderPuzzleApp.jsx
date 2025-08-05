@@ -38,7 +38,9 @@ const RoadBuilderPuzzleApp = () => {
   const [showAnimation, setShowAnimation] = useState(false);
   const [animationType, setAnimationType] = useState(''); // 'explosion', 'confetti'
   const [editorMode, setEditorMode] = useState(false);
-  const [selectedTileType, setSelectedTileType] = useState(Object.keys(roadConnectionsData)[0] || '');
+  const [selectedTileType, setSelectedTileType] = useState(
+    Object.keys(roadConnectionsData)[0] || ''
+  );
   const [editableConnections, setEditableConnections] = useState(roadConnectionsData);
 
   // Create puzzle tiles
@@ -57,7 +59,7 @@ const RoadBuilderPuzzleApp = () => {
     { id: 12, image: roadTopTurnRight, type: 'road', roadType: 'roadsTopTurnRight' },
     { id: 13, image: roadLeftTurnTop, type: 'road', roadType: 'roadsTopTurnLeft' },
     { id: 14, image: roadLeftTurnBottom, type: 'road', roadType: 'roadsRightTurnRight' },
-    { id: 15, image: roadRightEndLeft, type: 'road', roadType: 'roadsRightEndLeft' }
+    { id: 15, image: roadRightEndLeft, type: 'road', roadType: 'roadsRightEndLeft' },
   ];
 
   // Use the imported road connections data
@@ -103,11 +105,11 @@ const RoadBuilderPuzzleApp = () => {
     const randomStartTileType = validStartTiles[Math.floor(Math.random() * validStartTiles.length)];
 
     // Find the corresponding tile data and image
-    const startTileData = puzzleTiles.find(tile => tile.roadType === randomStartTileType);
+    const startTileData = puzzleTiles.find((tile) => tile.roadType === randomStartTileType);
     board[0][0] = {
       ...startTileData,
       row: 0,
-      col: 0
+      col: 0,
     };
 
     setGameBoard(board);
@@ -133,8 +135,10 @@ const RoadBuilderPuzzleApp = () => {
       const { row: emptyRow, col: emptyCol } = emptyPosition;
 
       // Swap tile with empty space
-      [newBoard[row][col], newBoard[emptyRow][emptyCol]] =
-        [newBoard[emptyRow][emptyCol], newBoard[row][col]];
+      [newBoard[row][col], newBoard[emptyRow][emptyCol]] = [
+        newBoard[emptyRow][emptyCol],
+        newBoard[row][col],
+      ];
 
       // Update positions
       newBoard[row][col].row = row;
@@ -168,7 +172,12 @@ const RoadBuilderPuzzleApp = () => {
 
     // Second, validate that the flag position has an appropriate end tile
     const flagTile = board[flagPosition.row][flagPosition.col];
-    const validEndTiles = ['roadsBottomTopEnd', 'roadsLeftEndRight', 'roadsTopEndBottom', 'roadsRightEndLeft'];
+    const validEndTiles = [
+      'roadsBottomTopEnd',
+      'roadsLeftEndRight',
+      'roadsTopEndBottom',
+      'roadsRightEndLeft',
+    ];
 
     if (!flagTile.roadType || !validEndTiles.includes(flagTile.roadType)) {
       return false; // Flag position must have an end tile
@@ -192,9 +201,9 @@ const RoadBuilderPuzzleApp = () => {
       // Check all adjacent positions
       const directions = [
         { row: -1, col: 0 }, // up
-        { row: 1, col: 0 },  // down
+        { row: 1, col: 0 }, // down
         { row: 0, col: -1 }, // left
-        { row: 0, col: 1 }   // right
+        { row: 0, col: 1 }, // right
       ];
 
       for (const dir of directions) {
@@ -250,23 +259,29 @@ const RoadBuilderPuzzleApp = () => {
 
     // Determine which sides should connect based on direction
     let fromSide, toSide;
-    if (direction.row === -1) { // up
+    if (direction.row === -1) {
+      // up
       fromSide = 'top';
       toSide = 'bottom';
-    } else if (direction.row === 1) { // down
+    } else if (direction.row === 1) {
+      // down
       fromSide = 'bottom';
       toSide = 'top';
-    } else if (direction.col === -1) { // left
+    } else if (direction.col === -1) {
+      // left
       fromSide = 'left';
       toSide = 'right';
-    } else if (direction.col === 1) { // right
+    } else if (direction.col === 1) {
+      // right
       fromSide = 'right';
       toSide = 'left';
     }
 
     // Check if the roads can connect
-    return fromConnections[fromSide]?.includes(toTile.roadType) &&
-      toConnections[toSide]?.includes(fromTile.roadType);
+    return (
+      fromConnections[fromSide]?.includes(toTile.roadType) &&
+      toConnections[toSide]?.includes(fromTile.roadType)
+    );
   };
 
   const testRoad = () => {
@@ -297,7 +312,12 @@ const RoadBuilderPuzzleApp = () => {
 
     // Validate that the flag position has an appropriate end tile
     const flagTile = gameBoard[flagPosition.row][flagPosition.col];
-    const validEndTiles = ['roadsBottomTopEnd', 'roadsLeftEndRight', 'roadsTopEndBottom', 'roadsRightEndLeft'];
+    const validEndTiles = [
+      'roadsBottomTopEnd',
+      'roadsLeftEndRight',
+      'roadsTopEndBottom',
+      'roadsRightEndLeft',
+    ];
 
     if (!flagTile.roadType || !validEndTiles.includes(flagTile.roadType)) {
       // Invalid end tile - show explosion
@@ -359,7 +379,7 @@ const RoadBuilderPuzzleApp = () => {
   };
 
   const toggleConnection = (fromTile, side, toTile) => {
-    setEditableConnections(prev => {
+    setEditableConnections((prev) => {
       // Create deep copy to ensure React detects the change
       const newConnections = JSON.parse(JSON.stringify(prev));
 
@@ -378,7 +398,7 @@ const RoadBuilderPuzzleApp = () => {
 
       if (connectionIndex !== -1) {
         // Remove connection
-        newConnections[fromTile][side] = sideConnections.filter(tile => tile !== toTile);
+        newConnections[fromTile][side] = sideConnections.filter((tile) => tile !== toTile);
       } else {
         // Add connection
         newConnections[fromTile][side] = [...sideConnections, toTile];
@@ -392,9 +412,7 @@ const RoadBuilderPuzzleApp = () => {
     setEditableConnections(roadConnectionsData);
   };
 
-  const getAllTileTypes = () => {
-    return Object.keys(editableConnections);
-  };
+  const getAllTileTypes = () => Object.keys(editableConnections);
 
   const getTileImage = (tileType) => {
     const imageMap = {
@@ -410,36 +428,34 @@ const RoadBuilderPuzzleApp = () => {
       roadsTopEndBottom: roadTopEndBottom,
       roadsTopTurnLeft: roadLeftTurnTop,
       roadsRightTurnRight: roadLeftTurnBottom,
-      roadsRightTurnLeft: roadBottomTurnRight
+      roadsRightTurnLeft: roadBottomTurnRight,
     };
     return imageMap[tileType];
   };
 
   // Prepare stats and buttons for GameStats component
   const gameStatsData = {
-    stats: [
-      { label: 'Moves', value: moves }
-    ],
+    stats: [{ label: 'Moves', value: moves }],
     buttons: [
       {
         text: 'Drive!',
         icon: '🏎️',
         onClick: testRoad,
         disabled: gameState !== 'playing',
-        variant: 'primary'
+        variant: 'primary',
       },
       {
         text: editorMode ? 'Game Mode' : 'Editor Mode',
         icon: editorMode ? '🎮' : '🔧',
         onClick: toggleConnectionEditor,
-        variant: 'secondary'
+        variant: 'secondary',
       },
       {
         text: 'New Game',
         onClick: initializeGame,
-        variant: 'warning'
-      }
-    ]
+        variant: 'warning',
+      },
+    ],
   };
 
   return (
@@ -457,57 +473,52 @@ const RoadBuilderPuzzleApp = () => {
           keywords="puzzle game, road builder, sliding puzzle, react game, interactive"
         />
 
-      <div className="game-header">
-        <Title title={{ heading: 'h2', text: 'Road Builder Puzzle', class: 'text-white' }} />
-        <Description description={{
-          text: 'Slide tiles to create a road path for the car to reach the checkered flag!',
-          class: ''
-        }} />
-        <GameStats
-          stats={gameStatsData.stats}
-          buttons={gameStatsData.buttons}
-          className="game-stats"
-        />
-      </div>
+        <div className="game-header">
+          <Title title={{ heading: 'h2', text: 'Road Builder Puzzle', class: 'text-white' }} />
+          <Description
+            description={{
+              text: 'Slide tiles to create a road path for the car to reach the checkered flag!',
+              class: '',
+            }}
+          />
+          <GameStats
+            stats={gameStatsData.stats}
+            buttons={gameStatsData.buttons}
+            className="game-stats"
+          />
+        </div>
 
-      {/* Visual Connection Editor */}
-      {editorMode && (
-        <ConnectionEditor
-          selectedTileType={selectedTileType}
-          setSelectedTileType={setSelectedTileType}
-          editableConnections={editableConnections}
-          toggleConnection={toggleConnection}
-          exportConnections={exportConnections}
-          resetConnections={resetConnections}
-          getTileImage={getTileImage}
-          getAllTileTypes={getAllTileTypes}
-        />
-      )}
+        {/* Visual Connection Editor */}
+        {editorMode && (
+          <ConnectionEditor
+            selectedTileType={selectedTileType}
+            setSelectedTileType={setSelectedTileType}
+            editableConnections={editableConnections}
+            toggleConnection={toggleConnection}
+            exportConnections={exportConnections}
+            resetConnections={resetConnections}
+            getTileImage={getTileImage}
+            getAllTileTypes={getAllTileTypes}
+          />
+        )}
 
-      {!editorMode && (
-        <PuzzleBoard
-          gameBoard={gameBoard}
-          onTileClick={handleTileClick}
-          canMoveTile={canMoveTile}
-          gameState={gameState}
-        />
-      )}
+        {!editorMode && (
+          <PuzzleBoard
+            gameBoard={gameBoard}
+            onTileClick={handleTileClick}
+            canMoveTile={canMoveTile}
+            gameState={gameState}
+          />
+        )}
 
-      {/* Animation Overlay */}
-      <AnimationOverlay
-        showAnimation={showAnimation}
-        animationType={animationType}
-      />
+        {/* Animation Overlay */}
+        <AnimationOverlay showAnimation={showAnimation} animationType={animationType} />
 
-      {/* Game Victory Overlay */}
-      <GameOverlay
-        gameState={gameState}
-        moves={moves}
-        onNewGame={initializeGame}
-      />
+        {/* Game Victory Overlay */}
+        <GameOverlay gameState={gameState} moves={moves} onNewGame={initializeGame} />
 
-      {/* Game Instructions */}
-      <GameInstructions />
+        {/* Game Instructions */}
+        <GameInstructions />
       </div>
     </ErrorBoundary>
   );

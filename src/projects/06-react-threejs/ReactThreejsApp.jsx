@@ -36,7 +36,7 @@ const ReactThreejsApp = () => {
 
     // Scene setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x87CEEB); // Sky blue background
+    scene.background = new THREE.Color(0x87ceeb); // Sky blue background
     sceneRef.current = scene;
 
     // Add visual helpers
@@ -81,7 +81,12 @@ const ReactThreejsApp = () => {
     scene.add(pointLight);
 
     // Create camera and renderer with initial size
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     rendererRef.current = renderer;
 
@@ -129,7 +134,7 @@ const ReactThreejsApp = () => {
         setIsLoading(false);
       },
       (xhr) => {
-        console.log(`GLB ${xhr.loaded / xhr.total * 100}% loaded`);
+        console.log(`GLB ${(xhr.loaded / xhr.total) * 100}% loaded`);
       },
       (error) => {
         console.error('An error happened loading the GLB:', error);
@@ -201,7 +206,7 @@ const ReactThreejsApp = () => {
         if (object.geometry) object.geometry.dispose();
         if (object.material) {
           if (Array.isArray(object.material)) {
-            object.material.forEach(material => material.dispose());
+            object.material.forEach((material) => material.dispose());
           } else {
             object.material.dispose();
           }

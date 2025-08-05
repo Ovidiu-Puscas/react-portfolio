@@ -8,7 +8,7 @@ import {
   query,
   where,
   Timestamp,
-  onSnapshot
+  onSnapshot,
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -20,7 +20,7 @@ class FirestoreService {
       const docRef = await addDoc(collection(db, 'projects'), {
         ...projectData,
         createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now()
+        updatedAt: Timestamp.now(),
       });
       console.log('Project created with ID:', docRef.id);
       return docRef.id;
@@ -34,36 +34,33 @@ class FirestoreService {
   async getProjects(userId) {
     try {
       console.log('Fetching projects for user:', userId);
-      
+
       // Query projects where user is owner
-      const ownerQuery = query(
-        collection(db, 'projects'),
-        where('owner', '==', userId)
-      );
-      
-      // Query projects where user is a member  
+      const ownerQuery = query(collection(db, 'projects'), where('owner', '==', userId));
+
+      // Query projects where user is a member
       const memberQuery = query(
         collection(db, 'projects'),
         where('members', 'array-contains', userId)
       );
-      
+
       // Execute both queries
       const [ownerSnapshot, memberSnapshot] = await Promise.all([
         getDocs(ownerQuery),
-        getDocs(memberQuery)
+        getDocs(memberQuery),
       ]);
-      
+
       // Combine results and remove duplicates
       const projectsMap = new Map();
-      
-      ownerSnapshot.docs.forEach(doc => {
+
+      ownerSnapshot.docs.forEach((doc) => {
         projectsMap.set(doc.id, { id: doc.id, ...doc.data() });
       });
-      
-      memberSnapshot.docs.forEach(doc => {
+
+      memberSnapshot.docs.forEach((doc) => {
         projectsMap.set(doc.id, { id: doc.id, ...doc.data() });
       });
-      
+
       const userProjects = Array.from(projectsMap.values());
       console.log('Filtered projects for user:', userProjects);
       return userProjects;
@@ -77,7 +74,7 @@ class FirestoreService {
     try {
       await updateDoc(doc(db, 'projects', projectId), {
         ...updates,
-        updatedAt: Timestamp.now()
+        updatedAt: Timestamp.now(),
       });
       return true;
     } catch (error) {
@@ -102,7 +99,7 @@ class FirestoreService {
       const docRef = await addDoc(collection(db, 'tasks'), {
         ...taskData,
         createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now()
+        updatedAt: Timestamp.now(),
       });
       return docRef.id;
     } catch (error) {
@@ -114,19 +111,16 @@ class FirestoreService {
   async getTasks(projectId) {
     try {
       console.log('Fetching tasks for project:', projectId);
-      
+
       // Use server-side filtering with where clause
-      const tasksQuery = query(
-        collection(db, 'tasks'),
-        where('projectId', '==', projectId)
-      );
-      
+      const tasksQuery = query(collection(db, 'tasks'), where('projectId', '==', projectId));
+
       const snapshot = await getDocs(tasksQuery);
-      const projectTasks = snapshot.docs.map(doc => ({
+      const projectTasks = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
-      
+
       console.log('Filtered tasks for project:', projectTasks);
       return projectTasks;
     } catch (error) {
@@ -139,7 +133,7 @@ class FirestoreService {
     try {
       await updateDoc(doc(db, 'tasks', taskId), {
         ...updates,
-        updatedAt: Timestamp.now()
+        updatedAt: Timestamp.now(),
       });
       return true;
     } catch (error) {
@@ -162,27 +156,28 @@ class FirestoreService {
   subscribeToProjects(userId, callback) {
     try {
       console.log('Setting up real-time listener for user:', userId);
-      
+
       // Listen to projects where user is owner
-      const ownerQuery = query(
-        collection(db, 'projects'),
-        where('owner', '==', userId)
+      const ownerQuery = query(collection(db, 'projects'), where('owner', '==', userId));
+
+      return onSnapshot(
+        ownerQuery,
+        (snapshot) => {
+          console.log('Firestore snapshot received, docs:', snapshot.docs.length);
+
+          const userProjects = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          console.log('Real-time projects for user:', userProjects);
+          callback(userProjects);
+        },
+        (error) => {
+          console.error('Real-time listener error:', error);
+          this.pollProjectsLocal(userId, callback);
+        }
       );
-      
-      return onSnapshot(ownerQuery, (snapshot) => {
-        console.log('Firestore snapshot received, docs:', snapshot.docs.length);
-        
-        const userProjects = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        
-        console.log('Real-time projects for user:', userProjects);
-        callback(userProjects);
-      }, (error) => {
-        console.error('Real-time listener error:', error);
-        this.pollProjectsLocal(userId, callback);
-      });
     } catch (error) {
       console.error('Error setting up projects listener:', error);
       return () => {}; // Return empty unsubscribe function
@@ -192,27 +187,28 @@ class FirestoreService {
   subscribeToTasks(projectId, callback) {
     try {
       console.log('Setting up real-time listener for tasks in project:', projectId);
-      
+
       // Use server-side filtering with where clause
-      const tasksQuery = query(
-        collection(db, 'tasks'),
-        where('projectId', '==', projectId)
+      const tasksQuery = query(collection(db, 'tasks'), where('projectId', '==', projectId));
+
+      return onSnapshot(
+        tasksQuery,
+        (snapshot) => {
+          console.log('Tasks snapshot received, docs:', snapshot.docs.length);
+
+          const projectTasks = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          console.log('Real-time tasks for project:', projectTasks);
+          callback(projectTasks);
+        },
+        (error) => {
+          console.error('Real-time tasks listener error:', error);
+          this.pollTasksLocal(projectId, callback);
+        }
       );
-      
-      return onSnapshot(tasksQuery, (snapshot) => {
-        console.log('Tasks snapshot received, docs:', snapshot.docs.length);
-        
-        const projectTasks = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        
-        console.log('Real-time tasks for project:', projectTasks);
-        callback(projectTasks);
-      }, (error) => {
-        console.error('Real-time tasks listener error:', error);
-        this.pollTasksLocal(projectId, callback);
-      });
     } catch (error) {
       console.error('Error setting up tasks listener:', error);
       return () => {};
@@ -226,7 +222,7 @@ class FirestoreService {
       ...projectData,
       id: `local_${Date.now()}`,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
     projects.push(newProject);
     localStorage.setItem('taskManager_projects', JSON.stringify(projects));
@@ -235,17 +231,17 @@ class FirestoreService {
 
   getProjectsLocal(userId) {
     const projects = JSON.parse(localStorage.getItem('taskManager_projects') || '[]');
-    return projects.filter(p => p.members?.includes(userId));
+    return projects.filter((p) => p.members?.includes(userId));
   }
 
   updateProjectLocal(projectId, updates) {
     const projects = JSON.parse(localStorage.getItem('taskManager_projects') || '[]');
-    const index = projects.findIndex(p => p.id === projectId);
+    const index = projects.findIndex((p) => p.id === projectId);
     if (index !== -1) {
       projects[index] = {
         ...projects[index],
         ...updates,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
       localStorage.setItem('taskManager_projects', JSON.stringify(projects));
       return true;
@@ -255,7 +251,7 @@ class FirestoreService {
 
   deleteProjectLocal(projectId) {
     const projects = JSON.parse(localStorage.getItem('taskManager_projects') || '[]');
-    const filtered = projects.filter(p => p.id !== projectId);
+    const filtered = projects.filter((p) => p.id !== projectId);
     localStorage.setItem('taskManager_projects', JSON.stringify(filtered));
     return true;
   }
@@ -266,7 +262,7 @@ class FirestoreService {
       ...taskData,
       id: `local_${Date.now()}`,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
     tasks.push(newTask);
     localStorage.setItem('taskManager_tasks', JSON.stringify(tasks));
@@ -275,17 +271,17 @@ class FirestoreService {
 
   getTasksLocal(projectId) {
     const tasks = JSON.parse(localStorage.getItem('taskManager_tasks') || '[]');
-    return tasks.filter(t => t.projectId === projectId);
+    return tasks.filter((t) => t.projectId === projectId);
   }
 
   updateTaskLocal(taskId, updates) {
     const tasks = JSON.parse(localStorage.getItem('taskManager_tasks') || '[]');
-    const index = tasks.findIndex(t => t.id === taskId);
+    const index = tasks.findIndex((t) => t.id === taskId);
     if (index !== -1) {
       tasks[index] = {
         ...tasks[index],
         ...updates,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
       localStorage.setItem('taskManager_tasks', JSON.stringify(tasks));
       return true;
@@ -295,7 +291,7 @@ class FirestoreService {
 
   deleteTaskLocal(taskId) {
     const tasks = JSON.parse(localStorage.getItem('taskManager_tasks') || '[]');
-    const filtered = tasks.filter(t => t.id !== taskId);
+    const filtered = tasks.filter((t) => t.id !== taskId);
     localStorage.setItem('taskManager_tasks', JSON.stringify(filtered));
     return true;
   }
@@ -318,7 +314,7 @@ class FirestoreService {
     } catch (error) {
       console.error('Error setting up projects polling:', error);
     }
-    
+
     // Return cleanup function
     return () => {
       if (intervalId) {
@@ -344,7 +340,7 @@ class FirestoreService {
     } catch (error) {
       console.error('Error setting up tasks polling:', error);
     }
-    
+
     return () => {
       if (intervalId) {
         clearInterval(intervalId);

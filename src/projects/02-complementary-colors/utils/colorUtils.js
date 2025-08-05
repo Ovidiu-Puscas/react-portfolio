@@ -2,35 +2,38 @@
 export const calculateComplementary = (hexColor) => {
   // Remove the # if present
   const hex = hexColor.replace('#', '');
-  
+
   // Convert to RGB
   const r = parseInt(hex.substr(0, 2), 16);
   const g = parseInt(hex.substr(2, 2), 16);
   const b = parseInt(hex.substr(4, 2), 16);
-  
+
   // Calculate complementary (255 - each component)
   const compR = 255 - r;
   const compG = 255 - g;
   const compB = 255 - b;
-  
+
   // Convert back to hex
-  const compHex = '#' + 
+  const compHex =
+    '#' +
     compR.toString(16).padStart(2, '0') +
     compG.toString(16).padStart(2, '0') +
     compB.toString(16).padStart(2, '0');
-  
+
   return compHex;
 };
 
 // Function to convert RGB to HSL
 export const rgbToHsl = (r, g, b) => {
-  r /= 255;
-  g /= 255;
-  b /= 255;
+  const rNorm = r / 255;
+  const gNorm = g / 255;
+  const bNorm = b / 255;
 
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
+  const max = Math.max(rNorm, gNorm, bNorm);
+  const min = Math.min(rNorm, gNorm, bNorm);
+  let h;
+  let s;
+  const l = (max + min) / 2;
 
   if (max === min) {
     h = s = 0; // achromatic
@@ -38,10 +41,18 @@ export const rgbToHsl = (r, g, b) => {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
-      default: h = 0; break;
+      case rNorm:
+        h = (gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0);
+        break;
+      case gNorm:
+        h = (bNorm - rNorm) / d + 2;
+        break;
+      case bNorm:
+        h = (rNorm - gNorm) / d + 4;
+        break;
+      default:
+        h = 0;
+        break;
     }
     h /= 6;
   }
@@ -51,29 +62,30 @@ export const rgbToHsl = (r, g, b) => {
 
 // Function to convert HSL to RGB
 export const hslToRgb = (h, s, l) => {
-  h /= 360;
-  s /= 100;
-  l /= 100;
+  const hNorm = h / 360;
+  const sNorm = s / 100;
+  const lNorm = l / 100;
 
   let r, g, b;
 
-  if (s === 0) {
-    r = g = b = l; // achromatic
+  if (sNorm === 0) {
+    r = g = b = lNorm; // achromatic
   } else {
     const hue2rgb = (p, q, t) => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      let tNorm = t;
+      if (tNorm < 0) tNorm += 1;
+      if (tNorm > 1) tNorm -= 1;
+      if (tNorm < 1 / 6) return p + (q - p) * 6 * tNorm;
+      if (tNorm < 1 / 2) return q;
+      if (tNorm < 2 / 3) return p + (q - p) * (2 / 3 - tNorm) * 6;
       return p;
     };
 
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1/3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1/3);
+    const q = lNorm < 0.5 ? lNorm * (1 + sNorm) : lNorm + sNorm - lNorm * sNorm;
+    const p = 2 * lNorm - q;
+    r = hue2rgb(p, q, hNorm + 1 / 3);
+    g = hue2rgb(p, q, hNorm);
+    b = hue2rgb(p, q, hNorm - 1 / 3);
   }
 
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
@@ -83,9 +95,9 @@ export const hslToRgb = (h, s, l) => {
 export const calculateMonochromatic = (hexColor) => {
   const rgb = hexToRgb(hexColor);
   if (!rgb) return [hexColor];
-  
+
   const [h, s, l] = rgbToHsl(rgb.r, rgb.g, rgb.b);
-  
+
   const colors = [];
   // Generate 5 monochromatic variations
   for (let i = 0; i < 5; i++) {
@@ -93,7 +105,7 @@ export const calculateMonochromatic = (hexColor) => {
     const [r, g, b] = hslToRgb(h, s, newL);
     colors.push(rgbToHex(r, g, b));
   }
-  
+
   return colors;
 };
 
@@ -101,9 +113,9 @@ export const calculateMonochromatic = (hexColor) => {
 export const calculateAnalogous = (hexColor) => {
   const rgb = hexToRgb(hexColor);
   if (!rgb) return [hexColor];
-  
+
   const [h, s, l] = rgbToHsl(rgb.r, rgb.g, rgb.b);
-  
+
   const colors = [];
   // Generate 5 analogous colors (30° apart)
   for (let i = -2; i <= 2; i++) {
@@ -111,7 +123,7 @@ export const calculateAnalogous = (hexColor) => {
     const [r, g, b] = hslToRgb(newH, s, l);
     colors.push(rgbToHex(r, g, b));
   }
-  
+
   return colors;
 };
 
@@ -119,9 +131,9 @@ export const calculateAnalogous = (hexColor) => {
 export const calculateTriadic = (hexColor) => {
   const rgb = hexToRgb(hexColor);
   if (!rgb) return [hexColor];
-  
+
   const [h, s, l] = rgbToHsl(rgb.r, rgb.g, rgb.b);
-  
+
   const colors = [];
   // Generate 3 triadic colors (120° apart)
   for (let i = 0; i < 3; i++) {
@@ -129,7 +141,7 @@ export const calculateTriadic = (hexColor) => {
     const [r, g, b] = hslToRgb(newH, s, l);
     colors.push(rgbToHex(r, g, b));
   }
-  
+
   return colors;
 };
 
@@ -137,24 +149,24 @@ export const calculateTriadic = (hexColor) => {
 export const calculateTetradic = (hexColor) => {
   const rgb = hexToRgb(hexColor);
   if (!rgb) return [hexColor];
-  
+
   const [h, s, l] = rgbToHsl(rgb.r, rgb.g, rgb.b);
-  
+
   const colors = [];
   // Generate 4 tetradic colors (2 pairs of complementary colors)
   // First pair: base color and its complement
   const [r1, g1, b1] = hslToRgb(h, s, l);
   const [r2, g2, b2] = hslToRgb((h + 180) % 360, s, l);
-  
+
   // Second pair: offset by 30° from the first pair
   const [r3, g3, b3] = hslToRgb((h + 30) % 360, s, l);
   const [r4, g4, b4] = hslToRgb((h + 210) % 360, s, l);
-  
+
   colors.push(rgbToHex(r1, g1, b1));
   colors.push(rgbToHex(r2, g2, b2));
   colors.push(rgbToHex(r3, g3, b3));
   colors.push(rgbToHex(r4, g4, b4));
-  
+
   return colors;
 };
 
@@ -162,9 +174,9 @@ export const calculateTetradic = (hexColor) => {
 export const calculateSquare = (hexColor) => {
   const rgb = hexToRgb(hexColor);
   if (!rgb) return [hexColor];
-  
+
   const [h, s, l] = rgbToHsl(rgb.r, rgb.g, rgb.b);
-  
+
   const colors = [];
   // Generate 4 square colors (90° apart, same as tetradic but different naming)
   for (let i = 0; i < 4; i++) {
@@ -172,7 +184,7 @@ export const calculateSquare = (hexColor) => {
     const [r, g, b] = hslToRgb(newH, s, l);
     colors.push(rgbToHex(r, g, b));
   }
-  
+
   return colors;
 };
 
@@ -197,26 +209,28 @@ export const calculateHarmony = (hexColor, harmonyType) => {
 };
 
 // Function to validate hex color
-export const isValidHexColor = (hex) => {
-  return /^#[0-9A-F]{6}$/i.test(hex);
-};
+export const isValidHexColor = (hex) => /^#[0-9A-F]{6}$/i.test(hex);
 
 // Function to convert RGB to Hex
-export const rgbToHex = (r, g, b) => {
-  return '#' + [r, g, b].map(x => {
-    const hex = x.toString(16);
-    return hex.length === 1 ? '0' + hex : hex;
-  }).join('');
-};
+export const rgbToHex = (r, g, b) =>
+  '#' +
+  [r, g, b]
+    .map((x) => {
+      const hex = x.toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    })
+    .join('');
 
 // Function to convert Hex to RGB
 export const hexToRgb = (hex) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
 };
 
 // Function to calculate color brightness
@@ -230,4 +244,4 @@ export const getBrightness = (hexColor) => {
 export const getContrastColor = (hexColor) => {
   const brightness = getBrightness(hexColor);
   return brightness > 128 ? '#000000' : '#FFFFFF';
-}; 
+};

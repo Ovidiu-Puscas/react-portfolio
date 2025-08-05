@@ -1,48 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Badge
-} from '@mui/material';
+import { Box, Typography, Paper, Button, Badge } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
-const KanbanBoard = ({
-  tasksByStatus,
-  onCreateTask,
-  onEditTask,
-  onDeleteTask,
-  onMoveTask
-}) => {
+const KanbanBoard = ({ tasksByStatus, onCreateTask, onMoveTask }) => {
   const columns = [
     { id: 'todo', title: 'To Do', color: '#f5f5f5' },
     { id: 'in-progress', title: 'In Progress', color: '#e3f2fd' },
-    { id: 'completed', title: 'Completed', color: '#e8f5e8' }
+    { id: 'completed', title: 'Completed', color: '#e8f5e8' },
   ];
 
   // Portal for drag clones to avoid padding issues
   const portal = document.createElement('div');
   document.body.appendChild(portal);
 
-  React.useEffect(() => {
-    return () => {
+  React.useEffect(
+    () => () => {
       if (document.body.contains(portal)) {
         document.body.removeChild(portal);
       }
-    };
-  }, [portal]);
+    },
+    [portal]
+  );
 
   const handleDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
     // If no destination or dropped in same place
-    if (!destination || (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    )) {
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId && destination.index === source.index)
+    ) {
       return;
     }
 
@@ -53,9 +42,7 @@ const KanbanBoard = ({
   };
 
   return (
-    <DragDropContext 
-      onDragEnd={handleDragEnd}
-    >
+    <DragDropContext onDragEnd={handleDragEnd}>
       <Box sx={{ display: 'flex', gap: 3, overflow: 'auto' }}>
         {columns.map((column) => (
           <Paper
@@ -66,11 +53,13 @@ const KanbanBoard = ({
               p: 2,
               backgroundColor: column.color,
               display: 'flex',
-              flexDirection: 'column'
+              flexDirection: 'column',
             }}
           >
             {/* Column Header */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}
+            >
               <Badge badgeContent={tasksByStatus[column.id]?.length || 0} color="primary">
                 <Typography variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
                   {column.title}
@@ -86,7 +75,7 @@ const KanbanBoard = ({
                   sx={{
                     minWidth: 'auto',
                     fontSize: '0.75rem',
-                    py: 0.5
+                    py: 0.5,
                   }}
                 >
                   Add
@@ -103,9 +92,11 @@ const KanbanBoard = ({
                   sx={{
                     flex: 1,
                     minHeight: 200,
-                    backgroundColor: snapshot.isDraggingOver ? 'rgba(0, 0, 0, 0.05)' : 'transparent',
+                    backgroundColor: snapshot.isDraggingOver
+                      ? 'rgba(0, 0, 0, 0.05)'
+                      : 'transparent',
                     borderRadius: 1,
-                    transition: 'background-color 0.2s ease'
+                    transition: 'background-color 0.2s ease',
                   }}
                 >
                   {tasksByStatus[column.id]?.length === 0 ? (
@@ -116,18 +107,14 @@ const KanbanBoard = ({
                         alignItems: 'center',
                         height: 100,
                         color: 'text.secondary',
-                        fontStyle: 'italic'
+                        fontStyle: 'italic',
                       }}
                     >
                       {snapshot.isDraggingOver ? 'Drop here' : 'No tasks'}
                     </Box>
                   ) : (
                     tasksByStatus[column.id]?.map((task, index) => (
-                      <Draggable
-                        key={task.id}
-                        draggableId={task.id}
-                        index={index}
-                      >
+                      <Draggable key={task.id} draggableId={task.id} index={index}>
                         {(provided, snapshot) => {
                           const taskElement = (
                             <Box
@@ -145,13 +132,17 @@ const KanbanBoard = ({
                                 transform: snapshot.isDragging
                                   ? `${provided.draggableProps.style?.transform} rotate(2deg)`
                                   : provided.draggableProps.style?.transform,
-                                '&:active': { cursor: 'grabbing' }
+                                '&:active': { cursor: 'grabbing' },
                               }}
                             >
                               <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
                                 {task.title}
                               </Typography>
-                              <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem' }}>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{ fontSize: '0.75rem' }}
+                              >
                                 {task.priority} priority
                               </Typography>
                             </Box>

@@ -18,7 +18,7 @@ class ErrorLogger {
     };
 
     this.errors.push(errorLog);
-    
+
     if (this.errors.length > this.maxErrors) {
       this.errors.shift();
     }

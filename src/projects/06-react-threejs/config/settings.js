@@ -6,50 +6,54 @@ export const LOGGING_CONFIG = {
     updateCombinedCanvas: true,
     setCanvasMesh: true,
     autoDetectPaintingArea: true,
-    capturePaintingArea: true
+    capturePaintingArea: true,
   },
-  
+
   // Shape challenge logs
   shapeChallenge: {
     generateTargetDrawing: true,
     showTargetDrawing: true,
     drawCompleteTargetShape: true,
-    updateChallengeConfig: true
+    updateChallengeConfig: true,
   },
-  
+
   // Game UI logs
   gameUI: {
     startChallenge: true,
-    showFeedback: true
+    showFeedback: true,
   },
-  
+
   // Main application logs
   main: {
     guiChanges: true,
     meshLoading: true,
-    modelTraversal: true
+    modelTraversal: true,
   },
-  
+
   // Debug logs
   debug: {
     uvCoordinates: true,
     meshNames: true,
-    materialInfo: true
-  }
+    materialInfo: true,
+  },
 };
 
 // Logging utility function
 export function log(category, type, ...args) {
   if (!LOGGING_CONFIG[category]) {
-    console.warn(`[LOGGING] Unknown category: '${category}'. Available categories: ${Object.keys(LOGGING_CONFIG).join(', ')}`);
+    console.warn(
+      `[LOGGING] Unknown category: '${category}'. Available categories: ${Object.keys(LOGGING_CONFIG).join(', ')}`
+    );
     return;
   }
-  
+
   if (!LOGGING_CONFIG[category][type]) {
-    console.warn(`[LOGGING] Unknown type '${type}' for category '${category}'. Available types: ${Object.keys(LOGGING_CONFIG[category]).join(', ')}`);
+    console.warn(
+      `[LOGGING] Unknown type '${type}' for category '${category}'. Available types: ${Object.keys(LOGGING_CONFIG[category]).join(', ')}`
+    );
     return;
   }
-  
+
   if (LOGGING_CONFIG[category][type]) {
     console.log(`[${category.toUpperCase()}:${type}]`, ...args);
   }
@@ -59,7 +63,7 @@ export const CAMERA_CONFIG = {
   initialPosition: { x: -8, y: 11, z: 0.6 },
   target: { x: 0, y: 1, z: 0 },
   rotationStep: Math.PI / 4, // 45 degrees
-  dampingFactor: 0.1
+  dampingFactor: 0.1,
 };
 
 export const COLOR_PALETTE_CONFIG = {
@@ -70,7 +74,7 @@ export const COLOR_PALETTE_CONFIG = {
     { name: 'Yellow', color: '#ffff00' },
     { name: 'Purple', color: '#8000ff' },
     { name: 'Black', color: '#000000' },
-    { name: 'White', color: '#ffffff' }
+    { name: 'White', color: '#ffffff' },
   ],
   defaultConfig: {
     y: 5,
@@ -78,21 +82,21 @@ export const COLOR_PALETTE_CONFIG = {
     x: -5.72,
     spacing: 1.2,
     radius: 0.5,
-    rotation: 1.6
-  }
+    rotation: 1.6,
+  },
 };
 
 export const PAINTING_CONFIG = {
   canvasSize: 1024,
   brushSize: 5,
   brushAlpha: 0.7,
-  backgroundColor: 'rgba(128,128,128,0.2)'
+  backgroundColor: 'rgba(128,128,128,0.2)',
 };
 
 export const SCENE_CONFIG = {
   gridSize: 20,
   gridDivisions: 20,
-  axesSize: 5
+  axesSize: 5,
 };
 
 export const CHALLENGE_CONFIG = {
@@ -134,5 +138,5 @@ export const CHALLENGE_CONFIG = {
   goodAccuracy: 0.55,
   okayAccuracy: 0.4,
   // Edge detection tolerance
-  edgeDetectionTolerance: 0.1
-}; 
+  edgeDetectionTolerance: 0.1,
+};

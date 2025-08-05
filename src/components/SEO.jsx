@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
-const SEO = ({ 
-  title, 
-  description, 
-  keywords, 
-  image, 
-  url, 
+const SEO = ({
+  title,
+  description,
+  keywords,
+  image,
+  url,
   type = 'website',
-  author = 'Ovidiu Alexandru Pușcaș'
+  author = 'Ovidiu Alexandru Pușcaș',
 }) => {
   useEffect(() => {
     // Update document title
@@ -81,10 +81,9 @@ const SEO = ({
       }
       canonical.href = url;
     }
-
   }, [title, description, keywords, image, url, type, author]);
 
   return null; // This component doesn't render anything
 };
 
-export default SEO; 
+export default SEO;

@@ -1,13 +1,12 @@
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
   onAuthStateChanged,
-  updateProfile
+  updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, Timestamp } from 'firebase/firestore';
 import { auth, db } from './firebase';
-
 
 class AuthService {
   // Register new user
@@ -18,7 +17,7 @@ class AuthService {
 
       // Update the user's display name
       await updateProfile(user, { displayName });
-      
+
       // Force refresh the user object to get updated profile
       await user.reload();
 
@@ -27,13 +26,13 @@ class AuthService {
         const userData = {
           uid: user.uid,
           email: user.email,
-          displayName: displayName,
+          displayName,
           createdAt: Timestamp.now(),
           lastLogin: Timestamp.now(),
           preferences: {
             theme: 'light',
-            notifications: true
-          }
+            notifications: true,
+          },
         };
 
         // Only add photoURL if it exists
@@ -50,8 +49,8 @@ class AuthService {
       return {
         uid: user.uid,
         email: user.email,
-        displayName: displayName,
-        photoURL: user.photoURL || null
+        displayName,
+        photoURL: user.photoURL || null,
       };
     } catch (error) {
       throw new Error(error.message);
@@ -66,9 +65,13 @@ class AuthService {
 
       // Try to update last login in Firestore (but don't fail if permissions issue)
       try {
-        await setDoc(doc(db, 'users', user.uid), {
-          lastLogin: Timestamp.now()
-        }, { merge: true });
+        await setDoc(
+          doc(db, 'users', user.uid),
+          {
+            lastLogin: Timestamp.now(),
+          },
+          { merge: true }
+        );
       } catch (firestoreError) {
         console.log('Could not update lastLogin:', firestoreError.message);
         // Continue anyway - authentication succeeded
@@ -78,7 +81,7 @@ class AuthService {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName || '',
-        photoURL: user.photoURL || null
+        photoURL: user.photoURL || null,
       };
     } catch (error) {
       throw new Error(error.message);
@@ -107,7 +110,7 @@ class AuthService {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName || '',
-          photoURL: user.photoURL || null
+          photoURL: user.photoURL || null,
         });
       } else {
         callback(null);

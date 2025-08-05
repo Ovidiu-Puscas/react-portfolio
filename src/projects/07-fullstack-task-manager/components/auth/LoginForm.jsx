@@ -7,7 +7,7 @@ import {
   Typography,
   Alert,
   Link,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -50,7 +50,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        padding: 2
+        padding: 2,
       }}
     >
       <Paper
@@ -58,7 +58,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
         sx={{
           padding: 4,
           width: '100%',
-          maxWidth: 400
+          maxWidth: 400,
         }}
       >
         <Typography variant="h4" component="h1" align="center" gutterBottom>
@@ -111,7 +111,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
 
           <Box textAlign="center">
             <Typography variant="body2">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link
                 component="button"
                 variant="body2"

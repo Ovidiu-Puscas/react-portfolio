@@ -1,16 +1,16 @@
 import React from 'react';
 import styles from '../../styles/liquidGlass.module.css';
 
-const LiquidGlassCard = ({ 
-  children, 
-  className = '', 
+const LiquidGlassCard = ({
+  children,
+  className = '',
   variant = 'default',
   animated = false,
   onClick,
-  ...props 
+  ...props
 }) => {
   const getVariantClass = () => {
-    switch(variant) {
+    switch (variant) {
       case 'primary':
         return styles.glassPrimary;
       case 'success':
@@ -23,11 +23,7 @@ const LiquidGlassCard = ({
   };
 
   return (
-    <div 
-      className={`${getVariantClass()} ${className}`}
-      onClick={onClick}
-      {...props}
-    >
+    <div className={`${getVariantClass()} ${className}`} onClick={onClick} {...props}>
       {animated && <div className={styles.gradientOverlay} />}
       {children}
     </div>

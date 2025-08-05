@@ -104,12 +104,18 @@ const TaxCalculatorApp = () => {
       taxableBaseAnnual = 0;
     }
 
-    const annualCASS = taxableBaseAnnual * 0.10; // 10% CASS rate
+    const annualCASS = taxableBaseAnnual * 0.1; // 10% CASS rate
     return annualCASS / 12; // Return monthly CASS
   };
 
   // Function to calculate income and taxes for Micro SRL
-  const calculateIncome = (hourlyRate, usdToRonRate, eurToRonRate, microSrlTaxRate, nextYearDividendTaxRate) => {
+  const calculateIncome = (
+    hourlyRate,
+    usdToRonRate,
+    eurToRonRate,
+    microSrlTaxRate,
+    nextYearDividendTaxRate
+  ) => {
     const grossMonthlyUSD = hourlyRate * HOURS_PER_MONTH;
     const grossMonthlyRON = grossMonthlyUSD * usdToRonRate;
 
@@ -121,7 +127,7 @@ const TaxCalculatorApp = () => {
     const companyNet2025Eur = companyNet2025RON / eurToRonRate;
 
     // Individual Level Taxes (on Dividends from 2025 Profit)
-    const dividendTax2025 = companyNet2025RON * 0.10; // 10% dividend tax for 2025
+    const dividendTax2025 = companyNet2025RON * 0.1; // 10% dividend tax for 2025
     const cassIndividual2025 = calculateCASS(companyNet2025RON * 12, MIN_WAGE_2025); // CASS on dividends
     const individualTaxes2025RON = dividendTax2025 + cassIndividual2025;
     const individualNet2025RON = companyNet2025RON - individualTaxes2025RON;
@@ -144,28 +150,28 @@ const TaxCalculatorApp = () => {
     const individualNet2026DividendEur = individualNet2026DividendRON / eurToRonRate;
 
     return {
-      hourlyRate: hourlyRate,
-      grossMonthlyUSD: grossMonthlyUSD,
-      grossMonthlyRON: grossMonthlyRON,
+      hourlyRate,
+      grossMonthlyUSD,
+      grossMonthlyRON,
       grossMonthlyEur: grossMonthlyRON / eurToRonRate,
 
-      companyNet2025USD: companyNet2025USD,
-      companyNet2025RON: companyNet2025RON,
-      companyNet2025Eur: companyNet2025Eur,
-      companyTax2025RON: companyTax2025RON,
-      individualNet2025USD: individualNet2025USD,
-      individualTaxes2025RON: individualTaxes2025RON,
-      individualNet2025RON: individualNet2025RON,
-      individualNet2025Eur: individualNet2025Eur,
+      companyNet2025USD,
+      companyNet2025RON,
+      companyNet2025Eur,
+      companyTax2025RON,
+      individualNet2025USD,
+      individualTaxes2025RON,
+      individualNet2025RON,
+      individualNet2025Eur,
 
-      companyNet2026USD: companyNet2026USD,
-      companyNet2026RON: companyNet2026RON,
-      companyNet2026Eur: companyNet2026Eur,
-      companyTax2026RON: companyTax2026RON,
-      individualNet2026DividendUSD: individualNet2026DividendUSD,
-      individualTaxes2026DividendRON: individualTaxes2026DividendRON,
-      individualNet2026DividendRON: individualNet2026DividendRON,
-      individualNet2026DividendEur: individualNet2026DividendEur
+      companyNet2026USD,
+      companyNet2026RON,
+      companyNet2026Eur,
+      companyTax2026RON,
+      individualNet2026DividendUSD,
+      individualTaxes2026DividendRON,
+      individualNet2026DividendRON,
+      individualNet2026DividendEur,
     };
   };
 
@@ -187,72 +193,70 @@ const TaxCalculatorApp = () => {
     >
       <div className="tax-calculator-container">
         <div className="container">
-        {/* Exchange Rate Status */}
-        <div className="py-4 mb-6">
-          {isLoadingRates && (
-            <div className="text-blue-600 text-sm mb-2">
-              🔄 Loading real-time exchange rates...
-            </div>
-          )}
-          {lastUpdated && (
-            <div className="text-green-600 text-sm mb-2">
-              ✅ Rates updated: {new Date(lastUpdated).toLocaleString()}
-            </div>
-          )}
-          {apiError && (
-            <div className="text-orange-600 text-sm mb-2">
-              ⚠️ Using default rates: {apiError}
-            </div>
-          )}
-          <button
-            onClick={refreshRates}
-            disabled={isLoadingRates}
-            className="bg-blue-500 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded text-sm transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isLoadingRates ? 'Refreshing...' : '🔄 Refresh Rates'}
-          </button>
-        </div>
+          {/* Exchange Rate Status */}
+          <div className="py-4 mb-6">
+            {isLoadingRates && (
+              <div className="text-blue-600 text-sm mb-2">
+                🔄 Loading real-time exchange rates...
+              </div>
+            )}
+            {lastUpdated && (
+              <div className="text-green-600 text-sm mb-2">
+                ✅ Rates updated: {new Date(lastUpdated).toLocaleString()}
+              </div>
+            )}
+            {apiError && (
+              <div className="text-orange-600 text-sm mb-2">⚠️ Using default rates: {apiError}</div>
+            )}
+            <button
+              onClick={refreshRates}
+              disabled={isLoadingRates}
+              className="bg-blue-500 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded text-sm transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isLoadingRates ? 'Refreshing...' : '🔄 Refresh Rates'}
+            </button>
+          </div>
 
-        <InputForm
-          customRate={customRate}
-          setCustomRate={setCustomRate}
-          usdToRonRate={usdToRonRate}
-          setUsdToRonRate={setUsdToRonRate}
-          ronToEurRate={ronToEurRate}
-          setRonToEurRate={setRonToEurRate}
-          microSrlTaxRate={microSrlTaxRate}
-          setMicroSrlTaxRate={setMicroSrlTaxRate}
-          nextYearDividendTaxRate={nextYearDividendTaxRate}
-          setNextYearDividendTaxRate={setNextYearDividendTaxRate}
-          selectedYear={selectedYear}
-          setSelectedYear={setSelectedYear}
-          selectedCurrency={selectedCurrency}
-          setSelectedCurrency={setSelectedCurrency}
-          isLoadingRates={isLoadingRates}
-          lastUpdated={lastUpdated}
-          apiError={apiError}
-        />
+          <InputForm
+            customRate={customRate}
+            setCustomRate={setCustomRate}
+            usdToRonRate={usdToRonRate}
+            setUsdToRonRate={setUsdToRonRate}
+            ronToEurRate={ronToEurRate}
+            setRonToEurRate={setRonToEurRate}
+            microSrlTaxRate={microSrlTaxRate}
+            setMicroSrlTaxRate={setMicroSrlTaxRate}
+            nextYearDividendTaxRate={nextYearDividendTaxRate}
+            setNextYearDividendTaxRate={setNextYearDividendTaxRate}
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+            selectedCurrency={selectedCurrency}
+            setSelectedCurrency={setSelectedCurrency}
+            isLoadingRates={isLoadingRates}
+            lastUpdated={lastUpdated}
+            apiError={apiError}
+          />
 
-        <SelectionOptions
-          selectedYear={selectedYear}
-          setSelectedYear={setSelectedYear}
-          selectedCurrency={selectedCurrency}
-          setSelectedCurrency={setSelectedCurrency}
-        />
+          <SelectionOptions
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+            selectedCurrency={selectedCurrency}
+            setSelectedCurrency={setSelectedCurrency}
+          />
 
-        <ResultsTable
-          selectedYear={selectedYear}
-          selectedCurrency={selectedCurrency}
-          customRate={parseFloat(customRate)}
-          usdToRonRate={parseFloat(usdToRonRate)}
-          ronToEurRate={parseFloat(ronToEurRate)}
-          microSrlTaxRate={parseFloat(microSrlTaxRate)}
-          nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
-          calculateIncome={calculateIncome}
-          formatCurrency={formatCurrency}
-        />
+          <ResultsTable
+            selectedYear={selectedYear}
+            selectedCurrency={selectedCurrency}
+            customRate={parseFloat(customRate)}
+            usdToRonRate={parseFloat(usdToRonRate)}
+            ronToEurRate={parseFloat(ronToEurRate)}
+            microSrlTaxRate={parseFloat(microSrlTaxRate)}
+            nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
+            calculateIncome={calculateIncome}
+            formatCurrency={formatCurrency}
+          />
 
-        <Disclaimer />
+          <Disclaimer />
         </div>
       </div>
     </ErrorBoundary>

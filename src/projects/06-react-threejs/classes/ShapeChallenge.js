@@ -18,7 +18,7 @@ export class ShapeChallenge {
       centerY: CHALLENGE_CONFIG.defaultCenterY,
       centerZ: CHALLENGE_CONFIG.defaultCenterZ,
       points: CHALLENGE_CONFIG.defaultPoints,
-      alwaysShow: CHALLENGE_CONFIG.defaultAlwaysShow
+      alwaysShow: CHALLENGE_CONFIG.defaultAlwaysShow,
     };
 
     this.challenges = [
@@ -29,7 +29,7 @@ export class ShapeChallenge {
         points: 100,
         description: 'Replicate the circle motion',
         targetShape: 'circle',
-        tolerance: CHALLENGE_CONFIG.circleTolerance
+        tolerance: CHALLENGE_CONFIG.circleTolerance,
       },
       {
         id: 'square',
@@ -38,7 +38,7 @@ export class ShapeChallenge {
         points: 150,
         description: 'Replicate the square motion',
         targetShape: 'square',
-        tolerance: CHALLENGE_CONFIG.squareTolerance
+        tolerance: CHALLENGE_CONFIG.squareTolerance,
       },
       {
         id: 'triangle',
@@ -47,7 +47,7 @@ export class ShapeChallenge {
         points: 200,
         description: 'Replicate the triangle motion',
         targetShape: 'triangle',
-        tolerance: CHALLENGE_CONFIG.triangleTolerance
+        tolerance: CHALLENGE_CONFIG.triangleTolerance,
       },
       {
         id: 'star',
@@ -56,20 +56,25 @@ export class ShapeChallenge {
         points: 300,
         description: 'Replicate the star motion',
         targetShape: 'star',
-        tolerance: CHALLENGE_CONFIG.starTolerance
-      }
+        tolerance: CHALLENGE_CONFIG.starTolerance,
+      },
     ];
   }
 
   startChallenge(shapeId) {
-    this.currentChallenge = this.challenges.find(c => c.id === shapeId);
+    this.currentChallenge = this.challenges.find((c) => c.id === shapeId);
     this.userDrawing = [];
     this.generateTargetDrawing();
     return this.currentChallenge;
   }
 
   generateTargetDrawing() {
-    log('shapeChallenge', 'generateTargetDrawing', 'generateTargetDrawing called, currentChallenge:', this.currentChallenge);
+    log(
+      'shapeChallenge',
+      'generateTargetDrawing',
+      'generateTargetDrawing called, currentChallenge:',
+      this.currentChallenge
+    );
     if (!this.currentChallenge) return;
 
     const shape = this.currentChallenge.targetShape;
@@ -79,7 +84,20 @@ export class ShapeChallenge {
     const radius = this.challengeConfig.size;
     const points = this.challengeConfig.points;
 
-    log('shapeChallenge', 'generateTargetDrawing', 'Generating shape:', shape, 'at center:', centerX, centerY, centerZ, 'radius:', radius, 'points:', points);
+    log(
+      'shapeChallenge',
+      'generateTargetDrawing',
+      'Generating shape:',
+      shape,
+      'at center:',
+      centerX,
+      centerY,
+      centerZ,
+      'radius:',
+      radius,
+      'points:',
+      points
+    );
 
     switch (shape) {
       case 'circle':
@@ -99,7 +117,13 @@ export class ShapeChallenge {
         break;
     }
 
-    log('shapeChallenge', 'generateTargetDrawing', 'Generated targetDrawing with', this.targetDrawing.length, 'points');
+    log(
+      'shapeChallenge',
+      'generateTargetDrawing',
+      'Generated targetDrawing with',
+      this.targetDrawing.length,
+      'points'
+    );
   }
 
   generateCirclePath(centerX, centerY, centerZ, radius, points) {
@@ -135,7 +159,7 @@ export class ShapeChallenge {
 
     // Top side
     for (let i = 0; i <= sidePoints; i++) {
-      const x = centerX - radius + (2 * radius * i / sidePoints);
+      const x = centerX - radius + (2 * radius * i) / sidePoints;
       const y = centerY - radius;
       this.targetDrawing.push({ x, y, z: centerZ, timestamp: i * this.challengeConfig.speed });
     }
@@ -143,22 +167,37 @@ export class ShapeChallenge {
     // Right side
     for (let i = 0; i <= sidePoints; i++) {
       const x = centerX + radius;
-      const y = centerY - radius + (2 * radius * i / sidePoints);
-      this.targetDrawing.push({ x, y, z: centerZ, timestamp: (sidePoints + i) * this.challengeConfig.speed });
+      const y = centerY - radius + (2 * radius * i) / sidePoints;
+      this.targetDrawing.push({
+        x,
+        y,
+        z: centerZ,
+        timestamp: (sidePoints + i) * this.challengeConfig.speed,
+      });
     }
 
     // Bottom side
     for (let i = 0; i <= sidePoints; i++) {
-      const x = centerX + radius - (2 * radius * i / sidePoints);
+      const x = centerX + radius - (2 * radius * i) / sidePoints;
       const y = centerY + radius;
-      this.targetDrawing.push({ x, y, z: centerZ, timestamp: (2 * sidePoints + i) * this.challengeConfig.speed });
+      this.targetDrawing.push({
+        x,
+        y,
+        z: centerZ,
+        timestamp: (2 * sidePoints + i) * this.challengeConfig.speed,
+      });
     }
 
     // Left side
     for (let i = 0; i <= sidePoints; i++) {
       const x = centerX - radius;
-      const y = centerY + radius - (2 * radius * i / sidePoints);
-      this.targetDrawing.push({ x, y, z: centerZ, timestamp: (3 * sidePoints + i) * this.challengeConfig.speed });
+      const y = centerY + radius - (2 * radius * i) / sidePoints;
+      this.targetDrawing.push({
+        x,
+        y,
+        z: centerZ,
+        timestamp: (3 * sidePoints + i) * this.challengeConfig.speed,
+      });
     }
   }
 
@@ -168,8 +207,14 @@ export class ShapeChallenge {
 
     // Calculate triangle vertices
     const v1 = { x: centerX, y: centerY - radius };
-    const v2 = { x: centerX - radius * Math.cos(Math.PI / 6), y: centerY + radius * Math.sin(Math.PI / 6) };
-    const v3 = { x: centerX + radius * Math.cos(Math.PI / 6), y: centerY + radius * Math.sin(Math.PI / 6) };
+    const v2 = {
+      x: centerX - radius * Math.cos(Math.PI / 6),
+      y: centerY + radius * Math.sin(Math.PI / 6),
+    };
+    const v3 = {
+      x: centerX + radius * Math.cos(Math.PI / 6),
+      y: centerY + radius * Math.sin(Math.PI / 6),
+    };
 
     // Side 1: v1 to v2
     for (let i = 0; i <= sidePoints; i++) {
@@ -184,7 +229,12 @@ export class ShapeChallenge {
       const t = i / sidePoints;
       const x = v2.x + (v3.x - v2.x) * t;
       const y = v2.y + (v3.y - v2.y) * t;
-      this.targetDrawing.push({ x, y, z: centerZ, timestamp: (sidePoints + i) * this.challengeConfig.speed });
+      this.targetDrawing.push({
+        x,
+        y,
+        z: centerZ,
+        timestamp: (sidePoints + i) * this.challengeConfig.speed,
+      });
     }
 
     // Side 3: v3 to v1
@@ -192,7 +242,12 @@ export class ShapeChallenge {
       const t = i / sidePoints;
       const x = v3.x + (v1.x - v3.x) * t;
       const y = v3.y + (v1.y - v3.y) * t;
-      this.targetDrawing.push({ x, y, z: centerZ, timestamp: (2 * sidePoints + i) * this.challengeConfig.speed });
+      this.targetDrawing.push({
+        x,
+        y,
+        z: centerZ,
+        timestamp: (2 * sidePoints + i) * this.challengeConfig.speed,
+      });
     }
   }
 
@@ -204,7 +259,7 @@ export class ShapeChallenge {
 
     for (let i = 0; i <= points; i++) {
       const angle = (i / points) * 2 * Math.PI * spikes;
-      const currentRadius = (i % 2 === 0) ? outerRadius : innerRadius;
+      const currentRadius = i % 2 === 0 ? outerRadius : innerRadius;
       const x = centerX + currentRadius * Math.cos(angle);
       const y = centerY + currentRadius * Math.sin(angle);
       this.targetDrawing.push({ x, y, z: centerZ, timestamp: i * this.challengeConfig.speed });
@@ -212,7 +267,12 @@ export class ShapeChallenge {
   }
 
   showTargetDrawing(paintingSystem) {
-    log('shapeChallenge', 'showTargetDrawing', 'showTargetDrawing called, targetDrawing length:', this.targetDrawing.length);
+    log(
+      'shapeChallenge',
+      'showTargetDrawing',
+      'showTargetDrawing called, targetDrawing length:',
+      this.targetDrawing.length
+    );
     if (!this.targetDrawing.length) return;
 
     // Always show the target shape on the mesh first, then hide it
@@ -221,18 +281,35 @@ export class ShapeChallenge {
 
     // Hide the target shape after a delay for the user to memorize
     setTimeout(() => {
-      log('shapeChallenge', 'showTargetDrawing', 'Hiding target shape - user should now replicate from memory');
+      log(
+        'shapeChallenge',
+        'showTargetDrawing',
+        'Hiding target shape - user should now replicate from memory'
+      );
       paintingSystem.clearTargetDrawing();
       this.isShowingTarget = false;
     }, 3000); // Show for 3 seconds, then hide
   }
 
   drawCompleteTargetShape(paintingSystem) {
-    log('shapeChallenge', 'drawCompleteTargetShape', 'drawCompleteTargetShape called with', this.targetDrawing.length, 'points');
+    log(
+      'shapeChallenge',
+      'drawCompleteTargetShape',
+      'drawCompleteTargetShape called with',
+      this.targetDrawing.length,
+      'points'
+    );
     log('shapeChallenge', 'drawCompleteTargetShape', 'Shape config:', this.challengeConfig);
     // Draw all points of the target shape at once
     this.targetDrawing.forEach((point, index) => {
-      log('shapeChallenge', 'drawCompleteTargetShape', `Drawing target point ${index}:`, point.x, point.y, point.z);
+      log(
+        'shapeChallenge',
+        'drawCompleteTargetShape',
+        `Drawing target point ${index}:`,
+        point.x,
+        point.y,
+        point.z
+      );
       paintingSystem.paintTargetPoint(point.x, point.y, point.z || 0, '#00ff00'); // Green for target
     });
     log('shapeChallenge', 'drawCompleteTargetShape', 'drawCompleteTargetShape finished');
@@ -263,9 +340,9 @@ export class ShapeChallenge {
 
     return {
       score: points,
-      accuracy: accuracy,
+      accuracy,
       message: this.getFeedbackMessage(accuracy),
-      totalScore: this.score
+      totalScore: this.score,
     };
   }
 
@@ -279,11 +356,15 @@ export class ShapeChallenge {
     const motionAccuracy = this.calculateMotionAccuracyInternal();
 
     // Combine both scores using configurable weights
-    const finalAccuracy = (dotConnectionScore * CHALLENGE_CONFIG.dotConnectionWeight) +
-                         (motionAccuracy * CHALLENGE_CONFIG.motionAccuracyWeight);
+    const finalAccuracy =
+      dotConnectionScore * CHALLENGE_CONFIG.dotConnectionWeight +
+      motionAccuracy * CHALLENGE_CONFIG.motionAccuracyWeight;
 
     // Small attempt bonus for trying
-    const attemptBonus = this.userDrawing.length > CHALLENGE_CONFIG.attemptBonusThreshold ? CHALLENGE_CONFIG.attemptBonus : 0;
+    const attemptBonus =
+      this.userDrawing.length > CHALLENGE_CONFIG.attemptBonusThreshold
+        ? CHALLENGE_CONFIG.attemptBonus
+        : 0;
 
     return Math.min(1, finalAccuracy + attemptBonus);
   }
@@ -293,7 +374,9 @@ export class ShapeChallenge {
 
     // Create a grid to track which target dots have been visited
     const gridSize = CHALLENGE_CONFIG.dotConnectionGridSize;
-    const visitedGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
+    const visitedGrid = Array(gridSize)
+      .fill()
+      .map(() => Array(gridSize).fill(false));
 
     // Find the bounding box of target drawing
     const targetBounds = this.calculateBoundingBox(this.targetDrawing);
@@ -304,35 +387,47 @@ export class ShapeChallenge {
 
     // Calculate grid coordinates for target dots
     const targetDots = [];
-    this.targetDrawing.forEach(point => {
+    this.targetDrawing.forEach((point) => {
       const widthDiff = targetBounds.maxX - targetBounds.minX;
       const heightDiff = targetBounds.maxY - targetBounds.minY;
 
-      const gridX = widthDiff !== 0
-        ? Math.floor(((point.x - targetBounds.minX) / widthDiff) * (gridSize - 1))
-        : 0;
-      const gridY = heightDiff !== 0
-        ? Math.floor(((point.y - targetBounds.minY) / heightDiff) * (gridSize - 1))
-        : 0;
+      const gridX =
+        widthDiff !== 0
+          ? Math.floor(((point.x - targetBounds.minX) / widthDiff) * (gridSize - 1))
+          : 0;
+      const gridY =
+        heightDiff !== 0
+          ? Math.floor(((point.y - targetBounds.minY) / heightDiff) * (gridSize - 1))
+          : 0;
       targetDots.push({ x: gridX, y: gridY, original: point });
     });
 
-    log('shapeChallenge', 'calculateDotConnectionAccuracy', 'Target dots count:', targetDots.length);
+    log(
+      'shapeChallenge',
+      'calculateDotConnectionAccuracy',
+      'Target dots count:',
+      targetDots.length
+    );
 
     // Mark visited areas based on user drawing
-    const connectionRadius = Math.max(2, Math.floor(gridSize * CHALLENGE_CONFIG.dotConnectionRadius));
+    const connectionRadius = Math.max(
+      2,
+      Math.floor(gridSize * CHALLENGE_CONFIG.dotConnectionRadius)
+    );
     log('shapeChallenge', 'calculateDotConnectionAccuracy', 'Connection radius:', connectionRadius);
 
-    this.userDrawing.forEach(point => {
+    this.userDrawing.forEach((point) => {
       const widthDiff = targetBounds.maxX - targetBounds.minX;
       const heightDiff = targetBounds.maxY - targetBounds.minY;
 
-      const gridX = widthDiff !== 0
-        ? Math.floor(((point.x - targetBounds.minX) / widthDiff) * (gridSize - 1))
-        : 0;
-      const gridY = heightDiff !== 0
-        ? Math.floor(((point.y - targetBounds.minY) / heightDiff) * (gridSize - 1))
-        : 0;
+      const gridX =
+        widthDiff !== 0
+          ? Math.floor(((point.x - targetBounds.minX) / widthDiff) * (gridSize - 1))
+          : 0;
+      const gridY =
+        heightDiff !== 0
+          ? Math.floor(((point.y - targetBounds.minY) / heightDiff) * (gridSize - 1))
+          : 0;
 
       // Mark a small area around the user's point as visited
       for (let dx = -connectionRadius; dx <= connectionRadius; dx++) {
@@ -348,7 +443,7 @@ export class ShapeChallenge {
 
     // Check how many target dots were connected
     let connectedDots = 0;
-    targetDots.forEach(dot => {
+    targetDots.forEach((dot) => {
       if (visitedGrid[dot.x][dot.y]) {
         connectedDots++;
       }
@@ -360,13 +455,33 @@ export class ShapeChallenge {
     // Bonus for completing the shape (connecting first and last dots)
     const firstDot = targetDots[0];
     const lastDot = targetDots[targetDots.length - 1];
-    const shapeCompletionBonus = (visitedGrid[firstDot.x][firstDot.y] && visitedGrid[lastDot.x][lastDot.y]) ? CHALLENGE_CONFIG.shapeCompletionBonus : 0;
+    const shapeCompletionBonus =
+      visitedGrid[firstDot.x][firstDot.y] && visitedGrid[lastDot.x][lastDot.y]
+        ? CHALLENGE_CONFIG.shapeCompletionBonus
+        : 0;
 
     const finalScore = Math.min(1, connectionPercentage + shapeCompletionBonus);
 
-    log('shapeChallenge', 'calculateDotConnectionAccuracy', 'Connected dots:', connectedDots, 'of', targetDots.length);
-    log('shapeChallenge', 'calculateDotConnectionAccuracy', 'Connection percentage:', connectionPercentage);
-    log('shapeChallenge', 'calculateDotConnectionAccuracy', 'Shape completion bonus:', shapeCompletionBonus);
+    log(
+      'shapeChallenge',
+      'calculateDotConnectionAccuracy',
+      'Connected dots:',
+      connectedDots,
+      'of',
+      targetDots.length
+    );
+    log(
+      'shapeChallenge',
+      'calculateDotConnectionAccuracy',
+      'Connection percentage:',
+      connectionPercentage
+    );
+    log(
+      'shapeChallenge',
+      'calculateDotConnectionAccuracy',
+      'Shape completion bonus:',
+      shapeCompletionBonus
+    );
     log('shapeChallenge', 'calculateDotConnectionAccuracy', 'Final score:', finalScore);
 
     return finalScore;
@@ -392,8 +507,14 @@ export class ShapeChallenge {
 
       // Direction accuracy (if we have previous points)
       if (i > 0) {
-        const targetDir = Math.atan2(target.y - normalizedTarget[i-1].y, target.x - normalizedTarget[i-1].x);
-        const userDir = Math.atan2(user.y - normalizedUser[i-1].y, user.x - normalizedUser[i-1].x);
+        const targetDir = Math.atan2(
+          target.y - normalizedTarget[i - 1].y,
+          target.x - normalizedTarget[i - 1].x
+        );
+        const userDir = Math.atan2(
+          user.y - normalizedUser[i - 1].y,
+          user.x - normalizedUser[i - 1].x
+        );
         const dirDiff = Math.abs(targetDir - userDir);
         totalDirection += Math.min(dirDiff, 2 * Math.PI - dirDiff);
       }
@@ -404,11 +525,16 @@ export class ShapeChallenge {
     const avgDirection = minLength > 1 ? totalDirection / (minLength - 1) : 0;
 
     // More lenient accuracy scoring (0-1)
-    const distanceAccuracy = Math.max(0, 1 - avgDistance / CHALLENGE_CONFIG.distanceAccuracyDivisor);
+    const distanceAccuracy = Math.max(
+      0,
+      1 - avgDistance / CHALLENGE_CONFIG.distanceAccuracyDivisor
+    );
     const directionAccuracy = Math.max(0, 1 - avgDirection / (Math.PI * 1.5)); // More lenient than original
 
     // Weight distance more heavily than direction
-    const finalAccuracy = (distanceAccuracy * CHALLENGE_CONFIG.distanceWeight) + (directionAccuracy * CHALLENGE_CONFIG.directionWeight);
+    const finalAccuracy =
+      distanceAccuracy * CHALLENGE_CONFIG.distanceWeight +
+      directionAccuracy * CHALLENGE_CONFIG.directionWeight;
 
     return finalAccuracy;
   }
@@ -426,7 +552,7 @@ export class ShapeChallenge {
 
   calculateAccuracy() {
     const shape = this.currentChallenge.targetShape;
-    const points = this.userDrawing.map(p => ({ x: p.x, y: p.y }));
+    const points = this.userDrawing.map((p) => ({ x: p.x, y: p.y }));
 
     switch (shape) {
       case 'circle':
@@ -451,12 +577,12 @@ export class ShapeChallenge {
 
     // Check how consistent the radius is
     let radiusVariance = 0;
-    points.forEach(point => {
+    points.forEach((point) => {
       const distance = Math.sqrt((point.x - center.x) ** 2 + (point.y - center.y) ** 2);
       radiusVariance += Math.abs(distance - avgRadius);
     });
 
-    const consistency = 1 - (radiusVariance / (points.length * avgRadius));
+    const consistency = 1 - radiusVariance / (points.length * avgRadius);
     return Math.max(0, Math.min(1, consistency));
   }
 
@@ -486,9 +612,8 @@ export class ShapeChallenge {
 
     // Check if angles are roughly 60 degrees
     const angles = this.calculateTriangleAngles(vertices);
-    const angleAccuracy = angles.reduce((acc, angle) => {
-      return acc + (1 - Math.abs(angle - 60) / 60);
-    }, 0) / 3;
+    const angleAccuracy =
+      angles.reduce((acc, angle) => acc + (1 - Math.abs(angle - 60) / 60), 0) / 3;
 
     return Math.max(0, Math.min(1, angleAccuracy));
   }
@@ -513,20 +638,20 @@ export class ShapeChallenge {
   }
 
   calculateAverageRadius(points, center) {
-    const distances = points.map(point =>
+    const distances = points.map((point) =>
       Math.sqrt((point.x - center.x) ** 2 + (point.y - center.y) ** 2)
     );
     return distances.reduce((sum, d) => sum + d, 0) / distances.length;
   }
 
   calculateBoundingBox(points) {
-    const xs = points.map(p => p.x);
-    const ys = points.map(p => p.y);
+    const xs = points.map((p) => p.x);
+    const ys = points.map((p) => p.y);
     return {
       minX: Math.min(...xs),
       maxX: Math.max(...xs),
       minY: Math.min(...ys),
-      maxY: Math.max(...ys)
+      maxY: Math.max(...ys),
     };
   }
 
@@ -534,7 +659,7 @@ export class ShapeChallenge {
     const tolerance = CHALLENGE_CONFIG.edgeDetectionTolerance;
     let alignedPoints = 0;
 
-    points.forEach(point => {
+    points.forEach((point) => {
       const distToLeft = Math.abs(point.x - bounds.minX);
       const distToRight = Math.abs(point.x - bounds.maxX);
       const distToTop = Math.abs(point.y - bounds.minY);
@@ -556,11 +681,11 @@ export class ShapeChallenge {
     const center = this.calculateCenter(points);
     const distances = points.map((point, index) => ({
       index,
-      distance: Math.sqrt((point.x - center.x) ** 2 + (point.y - center.y) ** 2)
+      distance: Math.sqrt((point.x - center.x) ** 2 + (point.y - center.y) ** 2),
     }));
 
     distances.sort((a, b) => b.distance - a.distance);
-    return distances.slice(0, 3).map(d => points[d.index]);
+    return distances.slice(0, 3).map((d) => points[d.index]);
   }
 
   calculateTriangleAngles(vertices) {
@@ -589,9 +714,9 @@ export class ShapeChallenge {
   }
 
   calculateAnglesFromCenter(points, center) {
-    return points.map(point => {
-      return Math.atan2(point.y - center.y, point.x - center.x) * (180 / Math.PI);
-    });
+    return points.map(
+      (point) => Math.atan2(point.y - center.y, point.x - center.x) * (180 / Math.PI)
+    );
   }
 
   calculateSymmetry(angles, symmetryOrder) {
@@ -602,7 +727,7 @@ export class ShapeChallenge {
       const expectedAngle = (i * angleStep) % 360;
       const actualAngle = angles[i];
       const angleDiff = Math.abs(actualAngle - expectedAngle);
-      symmetryScore += 1 - (angleDiff / 180);
+      symmetryScore += 1 - angleDiff / 180;
     }
 
     return symmetryScore / angles.length;
@@ -648,7 +773,7 @@ export class ShapeChallenge {
   }
 
   getAvailableChallenges() {
-    return this.challenges.filter(c => c.difficulty <= this.level);
+    return this.challenges.filter((c) => c.difficulty <= this.level);
   }
 
   getCurrentChallenge() {
@@ -707,7 +832,9 @@ export class ShapeChallenge {
     }
 
     const gridSize = CHALLENGE_CONFIG.dotConnectionGridSize;
-    const visitedGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
+    const visitedGrid = Array(gridSize)
+      .fill()
+      .map(() => Array(gridSize).fill(false));
 
     const targetBounds = this.calculateBoundingBox(this.targetDrawing);
 
@@ -717,27 +844,34 @@ export class ShapeChallenge {
       const widthDiff = targetBounds.maxX - targetBounds.minX;
       const heightDiff = targetBounds.maxY - targetBounds.minY;
 
-      const gridX = widthDiff !== 0
-        ? Math.floor(((point.x - targetBounds.minX) / widthDiff) * (gridSize - 1))
-        : 0;
-      const gridY = heightDiff !== 0
-        ? Math.floor(((point.y - targetBounds.minY) / heightDiff) * (gridSize - 1))
-        : 0;
+      const gridX =
+        widthDiff !== 0
+          ? Math.floor(((point.x - targetBounds.minX) / widthDiff) * (gridSize - 1))
+          : 0;
+      const gridY =
+        heightDiff !== 0
+          ? Math.floor(((point.y - targetBounds.minY) / heightDiff) * (gridSize - 1))
+          : 0;
       targetDots.push({ x: gridX, y: gridY, original: point, index });
     });
 
     // Mark visited areas based on user drawing
-    const connectionRadius = Math.max(2, Math.floor(gridSize * CHALLENGE_CONFIG.dotConnectionRadius));
-    this.userDrawing.forEach(point => {
+    const connectionRadius = Math.max(
+      2,
+      Math.floor(gridSize * CHALLENGE_CONFIG.dotConnectionRadius)
+    );
+    this.userDrawing.forEach((point) => {
       const widthDiff = targetBounds.maxX - targetBounds.minX;
       const heightDiff = targetBounds.maxY - targetBounds.minY;
 
-      const gridX = widthDiff !== 0
-        ? Math.floor(((point.x - targetBounds.minX) / widthDiff) * (gridSize - 1))
-        : 0;
-      const gridY = heightDiff !== 0
-        ? Math.floor(((point.y - targetBounds.minY) / heightDiff) * (gridSize - 1))
-        : 0;
+      const gridX =
+        widthDiff !== 0
+          ? Math.floor(((point.x - targetBounds.minX) / widthDiff) * (gridSize - 1))
+          : 0;
+      const gridY =
+        heightDiff !== 0
+          ? Math.floor(((point.y - targetBounds.minY) / heightDiff) * (gridSize - 1))
+          : 0;
 
       for (let dx = -connectionRadius; dx <= connectionRadius; dx++) {
         for (let dy = -connectionRadius; dy <= connectionRadius; dy++) {
@@ -751,20 +885,20 @@ export class ShapeChallenge {
     });
 
     // Check which dots were connected
-    const details = targetDots.map(dot => ({
+    const details = targetDots.map((dot) => ({
       index: dot.index,
       connected: visitedGrid[dot.x][dot.y],
-      position: dot.original
+      position: dot.original,
     }));
 
-    const connected = details.filter(d => d.connected).length;
+    const connected = details.filter((d) => d.connected).length;
     const percentage = connected / targetDots.length;
 
     return {
       connected,
       total: targetDots.length,
       percentage,
-      details
+      details,
     };
   }
 

@@ -101,7 +101,7 @@ export class GameUI {
     buttonContainer.style.marginBottom = '15px';
 
     const challenges = this.shapeChallenge.getAvailableChallenges() || [];
-    challenges.forEach(challenge => {
+    challenges.forEach((challenge) => {
       const button = document.createElement('button');
       button.textContent = challenge.name;
       button.style.margin = '2px';
@@ -146,7 +146,11 @@ export class GameUI {
     finishButton.addEventListener('click', finishDrawingHandler);
     // Store reference for cleanup
     if (!this.eventListeners) this.eventListeners = [];
-    this.eventListeners.push({ element: finishButton, event: 'click', handler: finishDrawingHandler });
+    this.eventListeners.push({
+      element: finishButton,
+      event: 'click',
+      handler: finishDrawingHandler,
+    });
 
     const resetButton = document.createElement('button');
     resetButton.textContent = 'Reset Canvas';
@@ -209,7 +213,9 @@ export class GameUI {
 
       // Get current config to check if using custom coordinates
       const config = this.shapeChallenge.getChallengeConfig();
-      const isCustomCoordinates = Math.abs(config.centerX - CHALLENGE_CONFIG.defaultCenterX) > CHALLENGE_CONFIG.tolerance || Math.abs(config.centerY - CHALLENGE_CONFIG.defaultCenterY) > CHALLENGE_CONFIG.tolerance;
+      const isCustomCoordinates =
+        Math.abs(config.centerX - CHALLENGE_CONFIG.defaultCenterX) > CHALLENGE_CONFIG.tolerance ||
+        Math.abs(config.centerY - CHALLENGE_CONFIG.defaultCenterY) > CHALLENGE_CONFIG.tolerance;
 
       // Show target shape immediately if using custom coordinates, otherwise with delay
       if (isCustomCoordinates) {
@@ -222,7 +228,10 @@ export class GameUI {
         }, 500);
       }
 
-      this.showFeedback(`Started ${challenge.name} challenge! Watch the dots, then replicate!`, 'info');
+      this.showFeedback(
+        `Started ${challenge.name} challenge! Watch the dots, then replicate!`,
+        'info'
+      );
     }
   }
 
@@ -243,13 +252,11 @@ export class GameUI {
       if (dotConnectionPercentage < 50) {
         feedbackMessage += '<br><small>💡 Tip: Try to connect more of the target dots!</small>';
       } else if (dotConnectionPercentage < 80) {
-        feedbackMessage += '<br><small>💡 Good progress! Connect a few more dots for better score!</small>';
+        feedbackMessage +=
+          '<br><small>💡 Good progress! Connect a few more dots for better score!</small>';
       }
 
-      this.showFeedback(
-        feedbackMessage,
-        result.accuracy >= 0.7 ? 'success' : 'warning'
-      );
+      this.showFeedback(feedbackMessage, result.accuracy >= 0.7 ? 'success' : 'warning');
     } else {
       this.showFeedback(result.message, 'error');
     }
@@ -270,8 +277,8 @@ export class GameUI {
       return;
     }
 
-    const connectedDots = dotDetails.details.filter(d => d.connected).map(d => d.index + 1);
-    const missedDots = dotDetails.details.filter(d => !d.connected).map(d => d.index + 1);
+    const connectedDots = dotDetails.details.filter((d) => d.connected).map((d) => d.index + 1);
+    const missedDots = dotDetails.details.filter((d) => !d.connected).map((d) => d.index + 1);
 
     let analysisMessage = `Dot Connection Analysis:<br>Connected: ${dotDetails.connected}/${dotDetails.total} (${Math.round(dotDetails.percentage * 100)}%)`;
 

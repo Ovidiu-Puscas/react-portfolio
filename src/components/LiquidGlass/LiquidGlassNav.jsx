@@ -1,12 +1,10 @@
 import React from 'react';
 import styles from '../../styles/liquidGlass.module.css';
 
-const LiquidGlassNav = ({ children, className = '', ...props }) => {
-  return (
-    <nav className={`${styles.glassNav} ${className}`} {...props}>
-      {children}
-    </nav>
-  );
-};
+const LiquidGlassNav = ({ children, className = '', ...props }) => (
+  <nav className={`${styles.glassNav} ${className}`} {...props}>
+    {children}
+  </nav>
+);
 
 export default LiquidGlassNav;

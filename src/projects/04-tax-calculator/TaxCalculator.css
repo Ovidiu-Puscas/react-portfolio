@@ -1,6 +1,6 @@
 /* Tax Calculator Custom Styles */
 .tax-calculator-container {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: rgb(249 250 251 / 0.85);
   backdrop-filter: blur(20px) saturate(180%);
   border-radius: 16px;
@@ -50,13 +50,13 @@
   color: #4b5563;
 }
 
-.radio-group input[type="radio"] {
+.radio-group input[type='radio'] {
   width: auto;
   max-width: none;
   accent-color: #8b5cf6;
 }
 
-input[type="number"] {
+input[type='number'] {
   padding: 0.6rem 1rem;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
@@ -66,13 +66,13 @@ input[type="number"] {
   color: #374151;
 }
 
-input[type="number"]:focus {
+input[type='number']:focus {
   outline: none;
   border-color: #8b5cf6;
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
 }
 
-input[type="number"]:disabled {
+input[type='number']:disabled {
   background-color: #f3f4f6;
   cursor: not-allowed;
 }
@@ -92,7 +92,12 @@ input[type="number"]:disabled {
   .container {
     padding: 1.5rem;
   }
-  table, thead, tbody, th, td, tr {
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
     display: block;
   }
   thead tr {
@@ -131,7 +136,7 @@ input[type="number"]:disabled {
   td:last-child {
     border-bottom: none;
   }
-  input[type="number"] {
+  input[type='number'] {
     max-width: none;
   }
   .input-group {

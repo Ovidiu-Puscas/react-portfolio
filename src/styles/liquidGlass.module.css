@@ -15,7 +15,7 @@
   position: relative;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
@@ -47,11 +47,7 @@
   left: 0;
   right: 0;
   height: 30%;
-  background: linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.05) 0%,
-    transparent 100%
-  );
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, transparent 100%);
   pointer-events: none;
   border-radius: 0 0 24px 24px;
 }
@@ -62,7 +58,7 @@
   -webkit-backdrop-filter: blur(25px) saturate(200%);
   background: rgba(255, 255, 255, 0.08);
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 12px 48px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
@@ -72,11 +68,7 @@
 .glassCard {
   composes: liquidGlass;
   padding: 2rem;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
 }
 
 /* Glass button with liquid effect */
@@ -88,11 +80,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
 }
 
 .glassButton::before {
@@ -103,13 +91,11 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.3) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
   transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
+  transition:
+    width 0.6s,
+    height 0.6s;
 }
 
 .glassButton:hover::before {
@@ -119,7 +105,7 @@
 
 .glassButton:hover {
   transform: translateY(-1px);
-  box-shadow: 
+  box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.12),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
 }
@@ -132,11 +118,7 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.05) 100%);
 }
 
 /* Glass input field */
@@ -153,7 +135,7 @@
 .glassInput:focus {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 
+  box-shadow:
     0 0 0 3px rgba(255, 255, 255, 0.1),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
@@ -191,31 +173,19 @@
 /* Colored glass variants */
 .glassPrimary {
   composes: liquidGlass;
-  background: linear-gradient(
-    135deg,
-    rgba(59, 130, 246, 0.1) 0%,
-    rgba(59, 130, 246, 0.05) 100%
-  );
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
   border-color: rgba(59, 130, 246, 0.2);
 }
 
 .glassSuccess {
   composes: liquidGlass;
-  background: linear-gradient(
-    135deg,
-    rgba(34, 197, 94, 0.1) 0%,
-    rgba(34, 197, 94, 0.05) 100%
-  );
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
   border-color: rgba(34, 197, 94, 0.2);
 }
 
 .glassDanger {
   composes: liquidGlass;
-  background: linear-gradient(
-    135deg,
-    rgba(239, 68, 68, 0.1) 0%,
-    rgba(239, 68, 68, 0.05) 100%
-  );
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
   border-color: rgba(239, 68, 68, 0.2);
 }
 
@@ -225,12 +195,8 @@
   padding: 2.5rem;
   max-width: 90vw;
   max-height: 90vh;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.06) 100%
-  );
-  box-shadow: 
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+  box-shadow:
     0 24px 64px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
@@ -241,11 +207,11 @@
   .liquidGlass {
     border-radius: 16px;
   }
-  
+
   .glassCard {
     padding: 1.5rem;
   }
-  
+
   .glassNav {
     padding: 0.75rem 1.5rem;
     border-radius: 16px;
@@ -258,15 +224,15 @@
     background: rgba(255, 255, 255, 0.03);
     border-color: rgba(255, 255, 255, 0.08);
   }
-  
+
   .liquidGlass:hover {
     background: rgba(255, 255, 255, 0.05);
   }
-  
+
   .glassInput {
     background: rgba(255, 255, 255, 0.03);
   }
-  
+
   .glassInput:focus {
     background: rgba(255, 255, 255, 0.05);
   }
@@ -279,11 +245,11 @@
   .glassInput {
     transition: none;
   }
-  
+
   .gradientOverlay {
     animation: none;
   }
-  
+
   .glassButton::before {
     transition: none;
   }

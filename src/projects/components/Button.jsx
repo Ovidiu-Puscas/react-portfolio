@@ -22,7 +22,7 @@ const Button = ({
   const sizeClasses = {
     small: 'px-3 py-1.5 text-sm',
     medium: 'px-4 py-2 text-base',
-    large: 'px-6 py-3 text-lg'
+    large: 'px-6 py-3 text-lg',
   };
 
   const variantClasses = {
@@ -32,8 +32,9 @@ const Button = ({
     success: 'bg-green-500 hover:bg-green-600 text-white focus:ring-green-500',
     warning: 'bg-orange-500 hover:bg-orange-600 text-white focus:ring-orange-500',
     danger: 'bg-red-500 hover:bg-red-600 text-white focus:ring-red-500',
-    outline: 'border-2 border-gray-300 hover:border-gray-400 bg-transparent text-gray-700 focus:ring-gray-500',
-    ghost: 'bg-transparent hover:bg-gray-100 text-gray-700 focus:ring-gray-500'
+    outline:
+      'border-2 border-gray-300 hover:border-gray-400 bg-transparent text-gray-700 focus:ring-gray-500',
+    ghost: 'bg-transparent hover:bg-gray-100 text-gray-700 focus:ring-gray-500',
   };
 
   const combinedClasses = `
@@ -44,19 +45,10 @@ const Button = ({
   `;
 
   return (
-    <button
-      className={combinedClasses}
-      onClick={onClick}
-      disabled={disabled}
-      {...props}
-    >
-      {icon && iconPosition === 'left' && (
-        <span className={children ? 'mr-2' : ''}>{icon}</span>
-      )}
+    <button className={combinedClasses} onClick={onClick} disabled={disabled} {...props}>
+      {icon && iconPosition === 'left' && <span className={children ? 'mr-2' : ''}>{icon}</span>}
       {children}
-      {icon && iconPosition === 'right' && (
-        <span className={children ? 'ml-2' : ''}>{icon}</span>
-      )}
+      {icon && iconPosition === 'right' && <span className={children ? 'ml-2' : ''}>{icon}</span>}
     </button>
   );
 };

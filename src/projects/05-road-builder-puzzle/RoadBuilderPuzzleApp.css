@@ -51,7 +51,10 @@
   color: #ff6b35;
 }
 
-.reset-btn, .drive-btn, .debug-btn, .editor-btn {
+.reset-btn,
+.drive-btn,
+.debug-btn,
+.editor-btn {
   background: #ff6b35;
   color: white;
   border: none;
@@ -183,7 +186,9 @@
   transform: rotate(-90deg);
 }
 
-.empty-marker, .car-marker, .flag-marker {
+.empty-marker,
+.car-marker,
+.flag-marker {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -295,7 +300,8 @@
   z-index: 2000;
 }
 
-.explosion-container, .confetti-container {
+.explosion-container,
+.confetti-container {
   text-align: center;
   color: white;
 }
@@ -415,7 +421,8 @@
   gap: 10px;
 }
 
-.export-btn, .reset-connections-btn {
+.export-btn,
+.reset-connections-btn {
   background: #28a745;
   color: white;
   border: none;
@@ -444,7 +451,8 @@
   gap: 30px;
 }
 
-.tile-selector h4, .connection-editor-panel h4 {
+.tile-selector h4,
+.connection-editor-panel h4 {
   margin: 0 0 15px 0;
   color: #333;
 }
@@ -526,7 +534,7 @@
   background: rgba(255, 107, 53, 0.1);
 }
 
-.connection-option input[type="checkbox"] {
+.connection-option input[type='checkbox'] {
   margin: 0;
 }
 
@@ -573,7 +581,8 @@
     gap: 10px;
   }
 
-  .drive-btn, .reset-btn {
+  .drive-btn,
+  .reset-btn {
     padding: 8px 12px;
     font-size: 0.9rem;
   }

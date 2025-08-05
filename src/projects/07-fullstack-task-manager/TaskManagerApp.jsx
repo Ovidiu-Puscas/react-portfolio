@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Box, Typography, Container, Card, CardContent, Button, Chip, IconButton, Menu, MenuItem } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Container,
+  Card,
+  CardContent,
+  Button,
+  Chip,
+  IconButton,
+  Menu,
+  MenuItem,
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ErrorBoundary } from 'react-error-boundary';
-import { AuthProvider } from './hooks/useAuth';
+import { AuthProvider, useAuth } from './hooks/useAuth';
 import AuthPage from './components/auth/AuthPage';
 import Header from './components/common/Header';
-import { useAuth } from './hooks/useAuth';
 import { useProjects } from './hooks/useProjects';
 import ProjectForm from './components/projects/ProjectForm';
 import ProjectDetail from './components/projects/ProjectDetail';
@@ -109,11 +119,7 @@ const Dashboard = () => {
         <Typography variant="h4" component="h1">
           My Projects
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setFormOpen(true)}
-        >
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setFormOpen(true)}>
           New Project
         </Button>
       </Box>
@@ -145,7 +151,10 @@ const Dashboard = () => {
       ) : (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
           {projects.map((project) => (
-            <Box key={project.id} sx={{ width: { xs: '100%', md: 'calc(50% - 12px)', lg: 'calc(33.333% - 16px)' } }}>
+            <Box
+              key={project.id}
+              sx={{ width: { xs: '100%', md: 'calc(50% - 12px)', lg: 'calc(33.333% - 16px)' } }}
+            >
               <Card
                 sx={{ height: '100%', cursor: 'pointer', '&:hover': { boxShadow: 3 } }}
                 onClick={() => handleProjectClick(project)}
@@ -161,10 +170,7 @@ const Dashboard = () => {
                         size="small"
                         color={project.status === 'active' ? 'success' : 'default'}
                       />
-                      <IconButton
-                        size="small"
-                        onClick={(e) => handleMenuOpen(e, project)}
-                      >
+                      <IconButton size="small" onClick={(e) => handleMenuOpen(e, project)}>
                         <MoreVertIcon fontSize="small" />
                       </IconButton>
                     </Box>
@@ -183,11 +189,7 @@ const Dashboard = () => {
       )}
 
       {/* Project Menu */}
-      <Menu
-        anchorEl={menuAnchor}
-        open={Boolean(menuAnchor)}
-        onClose={handleMenuClose}
-      >
+      <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={handleMenuClose}>
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
         <MenuItem onClick={handleDeleteProject} sx={{ color: 'error.main' }}>
           Delete
@@ -212,7 +214,6 @@ const Dashboard = () => {
   );
 };
 
-
 // Main app content that uses auth
 const AppContent = () => {
   const { user, loading } = useAuth();
@@ -221,7 +222,9 @@ const AppContent = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}
+      >
         <Typography>Loading...</Typography>
       </Box>
     );
@@ -239,22 +242,28 @@ const AppContent = () => {
   );
 };
 
-const TaskManagerApp = () => {
-  return (
-    <ErrorBoundary
-      FallbackComponent={TaskManagerErrorFallback}
-      onReset={() => window.location.reload()}
-    >
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AuthProvider>
-          <Box sx={{ height: '100%', bgcolor: 'rgb(249 250 251 / 0.65)', borderRadius: '16px', overflow: 'hidden', backdropFilter: 'blur(20px) saturate(180%)' }}>
-            <AppContent />
-          </Box>
-        </AuthProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
-};
+const TaskManagerApp = () => (
+  <ErrorBoundary
+    FallbackComponent={TaskManagerErrorFallback}
+    onReset={() => window.location.reload()}
+  >
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AuthProvider>
+        <Box
+          sx={{
+            height: '100%',
+            bgcolor: 'rgb(249 250 251 / 0.65)',
+            borderRadius: '16px',
+            overflow: 'hidden',
+            backdropFilter: 'blur(20px) saturate(180%)',
+          }}
+        >
+          <AppContent />
+        </Box>
+      </AuthProvider>
+    </ThemeProvider>
+  </ErrorBoundary>
+);
 
 export default TaskManagerApp;

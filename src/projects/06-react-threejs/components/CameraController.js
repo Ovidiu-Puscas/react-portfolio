@@ -9,14 +9,14 @@ export class CameraController {
     this.rotationStep = Math.PI / 4; // 45 degrees
 
     // Set initial camera position as requested
-    this.cameraRadius = Math.sqrt((-8) * (-8) + (0.6) * (0.6));
+    this.cameraRadius = Math.sqrt(-8 * -8 + 0.6 * 0.6);
     this.cameraHeight = 11;
     this.camera.position.set(-8, 11, 0.6);
     this.cameraTarget = new THREE.Vector3(0, 1, 0);
     this.camera.lookAt(this.cameraTarget);
 
     // Calculate initial rotation angle from desired position
-    let initialRotationY = Math.atan2(-8, 0.6);
+    const initialRotationY = Math.atan2(-8, 0.6);
     this.currentRotationY = initialRotationY;
     this.targetRotationY = initialRotationY;
 

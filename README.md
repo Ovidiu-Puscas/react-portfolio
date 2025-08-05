@@ -448,6 +448,8 @@ This project demonstrates proficiency in:
 
 - Node.js (version 14 or higher)
 - npm or yarn package manager
+- Git for version control
+- Firebase CLI (for deployment)
 
 ### Environment Variables
 
@@ -458,6 +460,17 @@ REACT_APP_CURRENCY_API_KEY=your_currency_api_key_here
 ```
 
 You can get a free API key from [CurrencyAPI](https://currencyapi.com/).
+
+### GitHub Repository Setup
+
+For CI/CD to work properly, add these secrets to your GitHub repository:
+
+1. Go to Settings → Secrets and variables → Actions
+2. Add the following secrets:
+   - `FIREBASE_TOKEN` - Get it by running `firebase login:ci`
+   - `CODECOV_TOKEN` - (Optional) For coverage reports
+   - `SNYK_TOKEN` - (Optional) For security scanning
+   - `SLACK_WEBHOOK` - (Optional) For deployment notifications
 
 ### Installation
 
@@ -477,6 +490,84 @@ npm start
 
 The application will open at [http://localhost:3000](http://localhost:3000)
 
+### Development Branches
+
+- `main` - Production branch (auto-deploys to production)
+- `develop` - Development branch (auto-deploys to staging)
+- Feature branches should be created from `develop`
+
+## 🚀 CI/CD & Automation
+
+### Continuous Integration/Deployment
+
+This project features a comprehensive CI/CD pipeline powered by GitHub Actions:
+
+- **Automated Testing**: Runs on every push and pull request
+- **Code Quality Checks**: ESLint and Prettier validation
+- **Security Scanning**: Automated vulnerability detection
+- **Multi-Environment Deployment**:
+  - `develop` branch → Staging environment
+  - `main` branch → Production environment
+- **Performance Monitoring**: Lighthouse CI for performance metrics
+
+### Code Quality Automation
+
+- **ESLint**: React 18 rules with accessibility checks
+- **Prettier**: Consistent code formatting
+- **Husky**: Pre-commit hooks for quality gates
+- **Commitlint**: Enforces conventional commit messages
+- **Dependabot**: Automated dependency updates
+
+### Development Workflow
+
+```bash
+# Run quality checks
+npm run quality        # Run ESLint and Prettier checks
+npm run quality:fix    # Auto-fix issues
+
+# Linting
+npm run lint          # Check code with ESLint
+npm run lint:fix      # Auto-fix ESLint issues
+
+# Formatting
+npm run format        # Format code with Prettier
+npm run format:check  # Check formatting
+```
+
+### Commit Conventions
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/). All commits must follow this format:
+
+```
+type(scope): description
+
+[optional body]
+[optional footer]
+```
+
+**Types:**
+
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, missing semicolons, etc.)
+- `refactor`: Code refactoring
+- `perf`: Performance improvements
+- `test`: Adding or modifying tests
+- `build`: Build system changes
+- `ci`: CI/CD configuration changes
+- `chore`: Other changes (updating dependencies, etc.)
+- `revert`: Reverting a previous commit
+
+**Examples:**
+
+```bash
+git commit -m "feat: add dark mode toggle to settings"
+git commit -m "fix: resolve navigation issue on mobile devices"
+git commit -m "docs: update README with CI/CD information"
+git commit -m "chore: update dependencies to latest versions"
+```
+
 ## Available Scripts
 
 ### `npm start`
@@ -490,6 +581,30 @@ Launches the test runner in interactive watch mode.
 ### `npm run build`
 
 Builds the app for production with optimization and minification.
+
+### `npm run lint`
+
+Runs ESLint to check code quality.
+
+### `npm run lint:fix`
+
+Automatically fixes ESLint issues where possible.
+
+### `npm run format`
+
+Formats code using Prettier.
+
+### `npm run format:check`
+
+Checks if code matches Prettier formatting.
+
+### `npm run quality`
+
+Runs both ESLint and Prettier checks.
+
+### `npm run quality:fix`
+
+Fixes both ESLint and Prettier issues.
 
 ### `npm run deploy`
 
@@ -507,16 +622,36 @@ Removes the single build dependency and copies configuration files into the proj
 ## Project Structure
 
 ```
-src/
-├── App.js                 # Main application component with error boundary
-├── App.css               # Global styles
-├── index.js              # Application entry point
-├── components/
-│   ├── SEO.jsx          # Global SEO component
-│   └── ErrorFallback.jsx # Global error fallback component
-├── utils/
-│   └── errorLogger.js   # Error logging utility with localStorage
-└── projects/
+/
+├── .github/
+│   ├── workflows/
+│   │   ├── ci-cd.yml         # Main CI/CD pipeline
+│   │   ├── pr-check.yml      # Pull request validation
+│   │   └── security.yml      # Security scanning workflow
+│   ├── dependabot.yml        # Automated dependency updates
+│   └── auto-assign.yml       # PR auto-assignment config
+├── .husky/
+│   ├── pre-commit            # Pre-commit quality checks
+│   └── commit-msg            # Commit message validation
+├── .eslintrc.js              # ESLint configuration
+├── .prettierrc               # Prettier formatting rules
+├── .prettierignore           # Files to ignore for formatting
+├── .lintstagedrc.js          # Lint-staged configuration
+├── commitlint.config.js      # Commit message rules
+├── firebase.json             # Firebase configuration
+├── package.json              # Dependencies and scripts
+├── README.md                 # This file
+├── CLAUDE.md                 # AI assistant instructions
+└── src/
+    ├── App.js                 # Main application component with error boundary
+    ├── App.css               # Global styles
+    ├── index.js              # Application entry point
+    ├── components/
+    │   ├── SEO.jsx          # Global SEO component
+    │   └── ErrorFallback.jsx # Global error fallback component
+    ├── utils/
+    │   └── errorLogger.js   # Error logging utility with localStorage
+    └── projects/
     ├── AppLibrary.jsx    # Main project library component
     ├── components/       # Project-shared components
     │   ├── ProjectCard.jsx
@@ -624,4 +759,3 @@ src/
             ├── mockData.js        # Mock data for development
             └── sampleData.js      # Sample data creation
 ```
-
