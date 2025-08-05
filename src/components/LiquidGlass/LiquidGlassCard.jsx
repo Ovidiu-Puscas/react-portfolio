@@ -23,7 +23,23 @@ const LiquidGlassCard = ({
   };
 
   return (
-    <div className={`${getVariantClass()} ${className}`} onClick={onClick} {...props}>
+    <div
+      className={`${getVariantClass()} ${className}`}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick(e);
+              }
+            }
+          : undefined
+      }
+      {...props}
+    >
       {animated && <div className={styles.gradientOverlay} />}
       {children}
     </div>

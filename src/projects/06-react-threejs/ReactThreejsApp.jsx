@@ -133,8 +133,8 @@ const ReactThreejsApp = () => {
         // Loading complete
         setIsLoading(false);
       },
-      (xhr) => {
-        console.log(`GLB ${(xhr.loaded / xhr.total) * 100}% loaded`);
+      (_xhr) => {
+        // GLB loading progress
       },
       (error) => {
         console.error('An error happened loading the GLB:', error);

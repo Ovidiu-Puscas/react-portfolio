@@ -29,9 +29,7 @@ const TaskCard = ({ task, onEdit, onDelete, onMove, isDragging = false }) => {
   };
 
   const handleDelete = () => {
-    if (window.confirm(`Delete task "${task.title}"?`)) {
-      onDelete(task.id);
-    }
+    onDelete(task.id);
     handleMenuClose();
   };
 

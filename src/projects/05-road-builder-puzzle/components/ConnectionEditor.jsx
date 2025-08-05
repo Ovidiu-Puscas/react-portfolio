@@ -33,7 +33,15 @@ const ConnectionEditor = ({
             <div
               key={tileType}
               className={`tile-option ${selectedTileType === tileType ? 'selected' : ''}`}
+              role="button"
+              tabIndex={0}
               onClick={() => setSelectedTileType(tileType)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelectedTileType(tileType);
+                }
+              }}
             >
               <div
                 className="tile-preview"

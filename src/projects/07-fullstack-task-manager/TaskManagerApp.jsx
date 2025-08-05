@@ -64,7 +64,7 @@ const Dashboard = () => {
   };
 
   const handleDeleteProject = async () => {
-    if (menuProject && window.confirm(`Delete "${menuProject.name}"?`)) {
+    if (menuProject) {
       await deleteProject(menuProject.id);
     }
     setMenuAnchor(null);

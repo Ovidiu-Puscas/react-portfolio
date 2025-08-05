@@ -112,7 +112,6 @@ const ProjectForm = ({ open, onClose, onSubmit, project = null }) => {
             error={!!errors.name}
             helperText={errors.name}
             disabled={loading}
-            autoFocus
           />
 
           <TextField

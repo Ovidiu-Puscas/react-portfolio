@@ -29,9 +29,17 @@ const ProjectCard = ({ title, description, icon, color = 'blue', onClick, isActi
           ${isHovered ? 'shadow-2xl' : 'shadow-lg'}
           flex flex-col
         `}
+        role="button"
+        tabIndex={0}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={onClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick?.(e);
+          }
+        }}
       >
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">

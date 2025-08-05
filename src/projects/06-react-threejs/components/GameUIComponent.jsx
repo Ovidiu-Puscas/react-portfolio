@@ -204,7 +204,15 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
             <div
               key={challenge.id}
               className={`game-ui-challenge-item ${currentChallenge?.id === challenge.id ? 'active' : ''}`}
+              role="button"
+              tabIndex={0}
               onClick={() => startChallenge(challenge.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  startChallenge(challenge.id);
+                }
+              }}
             >
               <div className="game-ui-challenge-name">{challenge.name}</div>
               <div className="game-ui-challenge-desc">{challenge.description}</div>

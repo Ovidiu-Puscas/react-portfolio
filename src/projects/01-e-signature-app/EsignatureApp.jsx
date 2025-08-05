@@ -16,7 +16,9 @@ export default function EsignatureApp() {
 
   const handleSaveSignature = () => {
     if (sigPadRef.current.isEmpty()) {
-      alert('Please provide a signature first!');
+      // Show user feedback without using alert
+      setSignatureData('error');
+      setTimeout(() => setSignatureData(null), 2000);
       return;
     }
 

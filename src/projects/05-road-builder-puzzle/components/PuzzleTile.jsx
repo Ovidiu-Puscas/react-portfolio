@@ -21,7 +21,16 @@ const PuzzleTile = ({ tile, rowIndex, colIndex, onTileClick, canMoveTile, gameSt
         ${tile.type === 'empty' ? 'empty' : 'filled'}
         ${canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? 'movable' : ''}
       `}
+      role="button"
+      tabIndex={canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? 0 : -1}
+      aria-label={`Puzzle tile at row ${rowIndex + 1}, column ${colIndex + 1}${canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? ', clickable' : ''}`}
       onClick={() => onTileClick(rowIndex, colIndex)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onTileClick(rowIndex, colIndex);
+        }
+      }}
       style={getTileStyle(tile)}
     >
       {/* Static checkered flag background for finish position */}

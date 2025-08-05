@@ -85,7 +85,6 @@ const LoginForm = ({ onSwitchToRegister }) => {
             margin="normal"
             required
             autoComplete="email"
-            autoFocus
           />
 
           <TextField

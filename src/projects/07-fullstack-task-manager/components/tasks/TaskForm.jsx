@@ -127,7 +127,6 @@ const TaskForm = ({ open, onClose, onSubmit, task = null }) => {
             error={!!errors.title}
             helperText={errors.title}
             disabled={loading}
-            autoFocus
           />
 
           <TextField

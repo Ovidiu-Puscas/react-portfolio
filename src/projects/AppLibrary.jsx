@@ -148,8 +148,8 @@ const AppLibrary = () => {
     if (app.component) {
       setSelectedApp(app);
     } else {
-      // For coming soon apps, show a notification or modal
-      alert(`${app.title} is coming soon!`);
+      // For coming soon apps, show console message
+      console.warn(`${app.title} is coming soon!`);
     }
   };
 

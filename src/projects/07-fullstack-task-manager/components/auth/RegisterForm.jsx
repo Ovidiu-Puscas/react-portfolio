@@ -105,7 +105,6 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             margin="normal"
             required
             autoComplete="name"
-            autoFocus
           />
 
           <TextField

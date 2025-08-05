@@ -143,5 +143,57 @@ module.exports = {
         'no-console': 'off',
       },
     },
+    {
+      // Development/debugging files - allow console.log
+      files: [
+        '**/DevControls.js',
+        '**/debug.js',
+        '**/development.js',
+        '**/PaintingSystem.js',
+        '**/GameUI.js',
+        '**/settings.js',
+        '**/*threejs*/**/*.js',
+      ],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+    {
+      // Service files and utilities - allow console for logging
+      files: ['**/services/**/*.js', '**/utils/**/*.js', '**/hooks/**/*.js'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+    {
+      // Cypress test files
+      files: ['cypress/**/*.js', '**/*.cy.js'],
+      env: {
+        mocha: true,
+      },
+      globals: {
+        cy: 'readonly',
+        Cypress: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        before: 'readonly',
+        beforeEach: 'readonly',
+        after: 'readonly',
+        afterEach: 'readonly',
+        expect: 'readonly',
+        assert: 'readonly',
+      },
+      rules: {
+        'no-console': 'off',
+        'no-undef': 'off', // Cypress globals are handled above
+        'no-unused-vars': 'off', // Cypress commands often appear unused
+        'no-param-reassign': [
+          'error',
+          { props: true, ignorePropertyModificationsFor: ['win', 'window'] },
+        ],
+        'arrow-body-style': 'off', // Allow block statements in test callbacks
+        'no-unused-expressions': 'off', // Allow expressions in test files for assertions
+      },
+    },
   ],
 };
