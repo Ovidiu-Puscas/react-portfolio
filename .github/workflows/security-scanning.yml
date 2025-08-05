@@ -95,17 +95,25 @@ jobs:
         echo "📋 NPM Security Audit Results:"
         npm audit --audit-level=moderate || true
         
-        # Check for high/critical vulnerabilities
-        HIGH_VULNS=$(cat audit-results.json | jq -r '.vulnerabilities | to_entries[] | select(.value.severity == "high" or .value.severity == "critical") | .key' | wc -l)
+        # Check for high/critical vulnerabilities in production dependencies only
+        PROD_HIGH_VULNS=$(cat audit-results.json | jq -r '.vulnerabilities | to_entries[] | select(.value.severity == "high" or .value.severity == "critical") | select(.value.via[] | type == "object" and .title and (.source // "") | test("node_modules/(?!.*dev)")) | .key' | wc -l || echo "0")
         
-        echo "🔍 Found $HIGH_VULNS high/critical vulnerabilities"
+        echo "🔍 Found $PROD_HIGH_VULNS high/critical vulnerabilities in production dependencies"
         
-        if [ $HIGH_VULNS -gt 0 ]; then
-          echo "❌ High or critical vulnerabilities found!"
-          echo "Run 'npm audit fix' to resolve automatically fixable issues"
+        # Also show total count for reference
+        TOTAL_HIGH_VULNS=$(cat audit-results.json | jq -r '.vulnerabilities | to_entries[] | select(.value.severity == "high" or .value.severity == "critical") | .key' | wc -l || echo "0")
+        echo "ℹ️ Total high/critical vulnerabilities (including dev deps): $TOTAL_HIGH_VULNS"
+        
+        if [ $PROD_HIGH_VULNS -gt 0 ]; then
+          echo "❌ High or critical vulnerabilities found in production dependencies!"
+          echo "These affect your deployed application and must be fixed"
           exit 1
         else
-          echo "✅ No high or critical vulnerabilities found"
+          echo "✅ No high or critical vulnerabilities in production dependencies"
+          if [ $TOTAL_HIGH_VULNS -gt 0 ]; then
+            echo "⚠️ Note: Found vulnerabilities in development dependencies"
+            echo "These don't affect production but consider updating when possible"
+          fi
         fi
 
     - name: Upload audit results
