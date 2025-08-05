@@ -49,9 +49,9 @@ const Dashboard = () => {
 
   const handleCreateProject = async (formData) => {
     try {
-      console.log('Dashboard: Creating project with data:', formData);
+      // Creating project with form data
       await createProject(formData);
-      console.log('Dashboard: Project created successfully');
+      // Project created successfully
       setFormOpen(false);
     } catch (error) {
       console.error('Dashboard: Error creating project:', error);
@@ -98,9 +98,8 @@ const Dashboard = () => {
   const handleCreateSampleData = async () => {
     setCreatingDemoData(true);
     try {
-      const result = await createSampleDataForUser(user.uid);
-      console.log(`Created ${result.projects} projects and ${result.tasks} tasks`);
-      // Data will refresh automatically via real-time listener
+      await createSampleDataForUser(user.uid);
+      // Created sample projects and tasks - data will refresh automatically via real-time listener
     } catch (error) {
       console.error('Error creating sample data:', error);
     } finally {
@@ -218,7 +217,7 @@ const Dashboard = () => {
 const AppContent = () => {
   const { user, loading } = useAuth();
 
-  console.log('AppContent - User:', user, 'Loading:', loading);
+  // AppContent - checking user and loading state
 
   if (loading) {
     return (

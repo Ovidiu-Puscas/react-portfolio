@@ -32,9 +32,9 @@ const LoginForm = ({ onSwitchToRegister }) => {
     }
 
     try {
-      console.log('Attempting login...');
+      // Attempting login with provided credentials
       await login(email, password);
-      console.log('Login successful! Should redirect to dashboard now.');
+      // Login successful - should redirect to dashboard
     } catch (err) {
       console.error('Login failed:', err);
       setLocalError(err.message);

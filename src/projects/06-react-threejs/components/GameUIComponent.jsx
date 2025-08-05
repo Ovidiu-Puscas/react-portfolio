@@ -77,7 +77,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
 
         // Show target shape immediately if using custom coordinates, otherwise with delay
         if (isCustomCoordinates) {
-          console.log('Using custom coordinates, showing target immediately');
+          // Using custom coordinates, showing target immediately
           shapeChallenge.showTargetDrawing(paintingSystem);
         } else {
           // Show target shape on the mesh for memorization with delay
