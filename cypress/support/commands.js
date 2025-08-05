@@ -47,7 +47,7 @@ Cypress.Commands.add('testResponsive', (callback) => {
 
 // Custom command to handle async operations with retry
 Cypress.Commands.add('waitForElement', (selector, options = {}) => {
-  const { timeout = 10000, interval = 100 } = options;
+  const { timeout = 10000 } = options;
 
   cy.get(selector, { timeout }).should('be.visible').and('not.be.disabled');
 });
