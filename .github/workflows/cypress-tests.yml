@@ -1,0 +1,74 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Start Firebase Emulators
+        run: |
+          firebase emulators:start --only auth,firestore --project demo-test &
+          sleep 10
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Build React App
+        run: npm run build
+        env:
+          # Use emulator endpoints
+          REACT_APP_FIREBASE_AUTH_EMULATOR_HOST: localhost:9099
+          REACT_APP_FIREBASE_FIRESTORE_EMULATOR_HOST: localhost:8080
+          REACT_APP_USE_FIREBASE_EMULATOR: true
+
+      - name: Start App
+        run: |
+          npm start &
+          sleep 10
+
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v6
+        with:
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          browser: chrome
+          record: false
+        env:
+          # Emulator configuration
+          REACT_APP_USE_FIREBASE_EMULATOR: true
+          REACT_APP_FIREBASE_AUTH_EMULATOR_HOST: localhost:9099
+          REACT_APP_FIREBASE_FIRESTORE_EMULATOR_HOST: localhost:8080
+
+      - name: Upload Cypress Screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - name: Upload Cypress Videos
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos

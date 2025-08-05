@@ -8,19 +8,28 @@ describe('Tax Calculator App', () => {
   });
 
   beforeEach(() => {
+    // Handle Firebase errors by setting up a listener
+    cy.on('uncaught:exception', (err) => {
+      // Ignore Firebase API key errors in test environment
+      if (err.message.includes('auth/invalid-api-key')) {
+        return false;
+      }
+      return true;
+    });
+
     cy.visit('/');
     cy.waitForProjectLoad();
   });
 
   it('should load the tax calculator application', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     cy.url().should('include', '/tax-calculator');
-    cy.get('h1').should('contain', 'Tax Calculator');
+    cy.get('.liquid-nav-title').should('contain.text', 'Tax & Currency Calculator');
   });
 
   it('should display input form with required fields', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Check for income input
     cy.get(
@@ -35,7 +44,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should allow entering income amount', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Enter income
     cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
@@ -50,7 +59,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should allow selecting currency', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Select currency
     cy.get('select, [data-testid="currency-select"]').first().select(testData.testData.currency);
@@ -62,7 +71,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should allow selecting tax year', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Select year
     cy.get('select, [data-testid="year-select"]').first().select(testData.testData.year);
@@ -74,7 +83,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should calculate taxes when values are entered', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Fill out the form
     cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
@@ -94,7 +103,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should display tax breakdown table', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Enter valid data
     cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
@@ -108,14 +117,14 @@ describe('Tax Calculator App', () => {
     cy.get('table, .tax-breakdown, [data-testid="tax-breakdown"]').should('be.visible');
 
     // Check for specific tax types
-    cy.get('body')
-      .should('contain.text', 'Income Tax')
-      .or('contain.text', 'Tax')
-      .or('contain.text', 'Total');
+    // Check for tax calculation results
+    cy.get('body').should('contain.text', 'Income Tax');
+    cy.get('body').should('contain.text', 'Tax');
+    cy.get('body').should('contain.text', 'Total');
   });
 
   it('should show real-time currency exchange rates', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Enter income in USD
     cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
@@ -128,14 +137,14 @@ describe('Tax Calculator App', () => {
     cy.wait(2000); // Wait for API call
 
     // Check for exchange rate information
-    cy.get('body')
-      .should('contain.text', 'RON')
-      .or('contain.text', 'Exchange')
-      .or('contain.text', 'Rate');
+    // Check for currency exchange information
+    cy.get('body').should('contain.text', 'RON');
+    cy.get('body').should('contain.text', 'Exchange');
+    cy.get('body').should('contain.text', 'Rate');
   });
 
   it('should handle different currencies correctly', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     const currencies = ['USD', 'EUR', 'RON'];
 
@@ -158,7 +167,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should validate input fields', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Try negative income
     cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
@@ -181,7 +190,7 @@ describe('Tax Calculator App', () => {
 
   it('should be responsive on mobile devices', () => {
     cy.testResponsive((viewport) => {
-      cy.navigateToProject('Tax Calculator');
+      cy.navigateToProject('Tax & Currency Calculator');
 
       // Form should be visible on all devices
       cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
@@ -196,7 +205,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should show loading state while fetching exchange rates', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Change currency to trigger API call
     cy.get('select, [data-testid="currency-select"]').first().select('USD');
@@ -211,7 +220,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should handle API failures gracefully', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Intercept API calls and simulate failure
     cy.intercept('GET', '**/api/currency/**', { statusCode: 500 }).as('currencyAPI');
@@ -228,7 +237,7 @@ describe('Tax Calculator App', () => {
   });
 
   it('should navigate back to homepage', () => {
-    cy.navigateToProject('Tax Calculator');
+    cy.navigateToProject('Tax & Currency Calculator');
 
     // Find and click back/home button
     cy.get('[data-testid="back-to-home"], .back-button, a[href="/"]')

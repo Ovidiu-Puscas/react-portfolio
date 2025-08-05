@@ -1,4 +1,4 @@
-describe('3D Painting App', () => {
+describe('3D Paint Studio', () => {
   let testData;
 
   before(() => {
@@ -8,19 +8,29 @@ describe('3D Painting App', () => {
   });
 
   beforeEach(() => {
+    // Handle Firebase errors by setting up a listener
+    cy.on('uncaught:exception', (err) => {
+      // Ignore Firebase API key errors in test environment
+      if (err.message.includes('auth/invalid-api-key')) {
+        return false;
+      }
+      return true;
+    });
+
     cy.visit('/');
     cy.waitForProjectLoad();
   });
 
   it('should load the 3D painting application', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
-    cy.url().should('include', '/react-threejs');
-    cy.get('h1').should('contain', '3D');
+    // Should show liquid glass navigation for 3D Paint Studio
+    cy.get('.liquid-nav-title').should('contain.text', '3D Paint Studio');
+    cy.get('.liquid-back-button').should('be.visible');
   });
 
   it('should display 3D canvas and painting interface', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for Three.js to load
     cy.get('canvas', { timeout: 15000 }).should('be.visible');
@@ -30,7 +40,7 @@ describe('3D Painting App', () => {
   });
 
   it('should show brush size controls', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for interface to load
     cy.get('canvas', { timeout: 10000 }).should('be.visible');
@@ -43,7 +53,7 @@ describe('3D Painting App', () => {
   });
 
   it('should display color palette', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for 3D scene to load
     cy.get('canvas', { timeout: 10000 }).should('be.visible');
@@ -56,7 +66,7 @@ describe('3D Painting App', () => {
   });
 
   it('should allow painting on the 3D canvas', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for 3D scene to be ready
     cy.get('canvas', { timeout: 15000 }).should('be.visible');
@@ -74,7 +84,7 @@ describe('3D Painting App', () => {
   });
 
   it('should allow changing brush size', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for interface
     cy.get('canvas', { timeout: 10000 }).should('be.visible');
@@ -100,7 +110,7 @@ describe('3D Painting App', () => {
   });
 
   it('should allow changing paint colors', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for scene to load
     cy.get('canvas', { timeout: 10000 }).should('be.visible');
@@ -119,23 +129,23 @@ describe('3D Painting App', () => {
   });
 
   it('should show camera controls', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for 3D scene
     cy.get('canvas', { timeout: 10000 }).should('be.visible');
 
     // Look for camera control instructions or buttons
-    cy.get('body')
-      .should('contain.text', 'rotate')
-      .or('contain.text', 'camera')
-      .or('contain.text', 'mouse');
+    // Look for camera control text (separate assertions)
+    cy.get('body').should('contain.text', 'rotate');
+    cy.get('body').should('contain.text', 'camera');
+    cy.get('body').should('contain.text', 'mouse');
 
     // Or check for camera control UI
     cy.get('.camera, .rotate, [data-testid="camera-controls"]').should('exist');
   });
 
   it('should handle 3D scene interactions', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for scene to load
     cy.get('canvas', { timeout: 15000 }).should('be.visible');
@@ -154,7 +164,7 @@ describe('3D Painting App', () => {
   });
 
   it('should show shape challenge mode', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for interface to load
     cy.get('canvas', { timeout: 10000 }).should('be.visible');
@@ -175,7 +185,7 @@ describe('3D Painting App', () => {
   });
 
   it('should handle brush stroke interpolation', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for 3D scene
     cy.get('canvas', { timeout: 15000 }).should('be.visible');
@@ -196,7 +206,7 @@ describe('3D Painting App', () => {
 
   it('should be responsive on different devices', () => {
     cy.testResponsive((viewport) => {
-      cy.navigateToProject('3D Painting');
+      cy.navigateToProject('3D Paint Studio');
 
       // 3D canvas should adapt to screen size
       cy.get('canvas', { timeout: 10000 }).should('be.visible');
@@ -216,18 +226,20 @@ describe('3D Painting App', () => {
   it('should show loading state while 3D assets load', () => {
     cy.visit('/');
 
-    // Navigate and look for loading indicator
-    cy.get('[data-testid="project-card"]').contains('3D Painting').click();
+    // Navigate using liquid glass navigation
+    cy.get('.liquid-app-card').contains('3D Paint Studio').click();
 
     // Should show loading state initially
-    cy.get('.loading, [data-testid="loading"], .spinner').should('be.visible');
+    cy.get('.loading, [data-testid="loading"], .spinner, p')
+      .contains('Loading 3D')
+      .should('be.visible');
 
     // Then canvas should appear
     cy.get('canvas', { timeout: 15000 }).should('be.visible');
   });
 
   it('should handle WebGL context gracefully', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for Three.js initialization
     cy.get('canvas', { timeout: 15000 }).should('be.visible');
@@ -241,7 +253,7 @@ describe('3D Painting App', () => {
   });
 
   it('should maintain performance with multiple brush strokes', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for scene to load
     cy.get('canvas', { timeout: 15000 }).should('be.visible');
@@ -263,7 +275,7 @@ describe('3D Painting App', () => {
 
   it('should show proper error handling for WebGL issues', () => {
     // This test would require mocking WebGL failures
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for potential error handling
     cy.get('body', { timeout: 15000 }).should('be.visible');
@@ -273,18 +285,16 @@ describe('3D Painting App', () => {
   });
 
   it('should navigate back to homepage', () => {
-    cy.navigateToProject('3D Painting');
+    cy.navigateToProject('3D Paint Studio');
 
     // Wait for app to load
     cy.get('canvas', { timeout: 10000 }).should('be.visible');
 
-    // Find and click back/home button
-    cy.get('[data-testid="back-to-home"], .back-button, a[href="/"]')
-      .first()
-      .should('be.visible')
-      .click();
+    // Click liquid glass back button
+    cy.get('.liquid-back-button').should('be.visible').click();
 
-    cy.url().should('eq', Cypress.config().baseUrl + '/');
-    cy.get('[data-testid="project-card"]').should('have.length.greaterThan', 0);
+    // Should return to homepage
+    cy.get('.liquid-hero-title').should('be.visible');
+    cy.get('.liquid-app-card').should('have.length', 7);
   });
 });

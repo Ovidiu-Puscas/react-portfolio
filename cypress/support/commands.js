@@ -11,7 +11,9 @@
 // Custom command to navigate to a specific project
 Cypress.Commands.add('navigateToProject', (projectName) => {
   cy.visit('/');
-  cy.get('[role="button"]').contains(projectName).should('be.visible').click();
+  cy.waitForProjectLoad();
+  // Use liquid glass card navigation
+  cy.get('.liquid-app-card').contains(projectName).should('be.visible').click();
 });
 
 // Custom command to wait for project to load

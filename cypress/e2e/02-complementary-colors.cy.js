@@ -8,15 +8,24 @@ describe('Complementary Colors App', () => {
   });
 
   beforeEach(() => {
+    // Handle Firebase errors by setting up a listener
+    cy.on('uncaught:exception', (err) => {
+      // Ignore Firebase API key errors in test environment
+      if (err.message.includes('auth/invalid-api-key')) {
+        return false;
+      }
+      return true;
+    });
+
     cy.visit('/');
     cy.waitForProjectLoad();
   });
 
   it('should load the project from homepage', () => {
-    cy.get('[role="button"]').contains('Color Harmony Generator').should('be.visible').click();
+    cy.get('.liquid-app-card').contains('Color Harmony Generator').should('be.visible').click();
 
-    cy.get('h1').should('contain', 'Color Harmony Generator');
-    cy.get('button').contains('Back to Library').should('be.visible');
+    cy.get('.liquid-nav-title').should('contain.text', 'Color Harmony Generator');
+    cy.get('.liquid-back-button').should('be.visible');
   });
 
   it('should display the main interface elements', () => {
@@ -155,10 +164,10 @@ describe('Complementary Colors App', () => {
     cy.navigateToProject('Color Harmony Generator');
 
     // Click the back to library button
-    cy.get('button').contains('Back to Library').should('be.visible').click();
+    cy.get('.liquid-back-button').should('be.visible').click();
 
     // Should be back at homepage
-    cy.get('h1').should('contain.text', 'Project Library');
-    cy.get('.min-h-\\[320px\\]').should('have.length', 7);
+    cy.get('.liquid-hero-title').should('be.visible');
+    cy.get('.liquid-app-card').should('have.length', 7);
   });
 });

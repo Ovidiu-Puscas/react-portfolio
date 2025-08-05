@@ -10,7 +10,6 @@ module.exports = defineConfig({
     screenshotsFolder: 'cypress/screenshots',
     video: true,
     videoCompression: 32, // Compress videos (0-51, lower = better quality, higher = smaller file)
-    videoUploadOnPasses: false, // Only keep videos for failed tests
     screenshot: true,
     screenshotOnRunFailure: true, // Take screenshots when tests fail
     viewportWidth: 1280,
