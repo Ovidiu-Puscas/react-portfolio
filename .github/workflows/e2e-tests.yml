@@ -42,11 +42,7 @@ jobs:
         wait-on: 'http://localhost:3000'
         wait-on-timeout: 120
         browser: ${{ matrix.browser }}
-        record: false
-        parallel: true
-        group: 'E2E Tests - ${{ matrix.browser }}'
       env:
-        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Cypress screenshots
@@ -137,7 +133,6 @@ jobs:
         wait-on-timeout: 120
         browser: chrome
         spec: 'cypress/e2e/00-homepage.cy.js'
-        config: 'testFiles=**/*a11y*.cy.js'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
