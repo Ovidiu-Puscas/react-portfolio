@@ -24,8 +24,10 @@ describe('Tax Calculator App', () => {
   it('should load the tax calculator application', () => {
     cy.navigateToProject('Tax & Currency Calculator');
 
-    cy.url().should('include', '/tax-calculator');
+    // Check that we're in the tax calculator app by looking for app-specific elements
     cy.get('.liquid-nav-title').should('contain.text', 'Tax & Currency Calculator');
+    cy.get('[data-testid="income-input"]').should('be.visible');
+    cy.get('[data-testid="currency-select"]').should('be.visible');
   });
 
   it('should display input form with required fields', () => {
@@ -37,10 +39,10 @@ describe('Tax Calculator App', () => {
     ).should('be.visible');
 
     // Check for currency selector
-    cy.get('select, [data-testid="currency-select"]').should('be.visible');
+    cy.get('[data-testid="currency-select"]').should('be.visible');
 
     // Check for year selector
-    cy.get('select, [data-testid="year-select"]').should('be.visible');
+    cy.get('[data-testid="year-select"]').should('be.visible');
   });
 
   it('should allow entering income amount', () => {
@@ -61,25 +63,29 @@ describe('Tax Calculator App', () => {
   it('should allow selecting currency', () => {
     cy.navigateToProject('Tax & Currency Calculator');
 
-    // Select currency
-    cy.get('select, [data-testid="currency-select"]').first().select(testData.testData.currency);
+    // Select currency using radio buttons
+    cy.get('[data-testid="currency-select"]').within(() => {
+      cy.get(`input[value="${testData.testData.currency}"]`).check();
+    });
 
     // Verify selection
-    cy.get('select, [data-testid="currency-select"]')
-      .first()
-      .should('have.value', testData.testData.currency);
+    cy.get('[data-testid="currency-select"]').within(() => {
+      cy.get(`input[value="${testData.testData.currency}"]`).should('be.checked');
+    });
   });
 
   it('should allow selecting tax year', () => {
     cy.navigateToProject('Tax & Currency Calculator');
 
-    // Select year
-    cy.get('select, [data-testid="year-select"]').first().select(testData.testData.year);
+    // Select year using radio buttons
+    cy.get('[data-testid="year-select"]').within(() => {
+      cy.get(`input[value="${testData.testData.year}"]`).check();
+    });
 
     // Verify selection
-    cy.get('select, [data-testid="year-select"]')
-      .first()
-      .should('have.value', testData.testData.year);
+    cy.get('[data-testid="year-select"]').within(() => {
+      cy.get(`input[value="${testData.testData.year}"]`).should('be.checked');
+    });
   });
 
   it('should calculate taxes when values are entered', () => {
@@ -91,9 +97,13 @@ describe('Tax Calculator App', () => {
       .clear()
       .type(testData.testData.income);
 
-    cy.get('select, [data-testid="currency-select"]').first().select(testData.testData.currency);
+    cy.get('[data-testid="currency-select"]').within(() => {
+      cy.get(`input[value="${testData.testData.currency}"]`).check();
+    });
 
-    cy.get('select, [data-testid="year-select"]').first().select(testData.testData.year);
+    cy.get('[data-testid="year-select"]').within(() => {
+      cy.get(`input[value="${testData.testData.year}"]`).check();
+    });
 
     // Wait for calculation
     cy.wait(1000);
@@ -116,11 +126,10 @@ describe('Tax Calculator App', () => {
     // Check for tax breakdown
     cy.get('table, .tax-breakdown, [data-testid="tax-breakdown"]').should('be.visible');
 
-    // Check for specific tax types
-    // Check for tax calculation results
-    cy.get('body').should('contain.text', 'Income Tax');
-    cy.get('body').should('contain.text', 'Tax');
-    cy.get('body').should('contain.text', 'Total');
+    // Check for specific tax types and table headers
+    cy.get('[data-testid="tax-breakdown"]').should('contain.text', 'Company Tax');
+    cy.get('[data-testid="tax-breakdown"]').should('contain.text', 'Individual Net');
+    cy.get('[data-testid="tax-breakdown"]').should('contain.text', 'Hourly Rate');
   });
 
   it('should show real-time currency exchange rates', () => {
@@ -132,7 +141,9 @@ describe('Tax Calculator App', () => {
       .clear()
       .type('1000');
 
-    cy.get('select, [data-testid="currency-select"]').first().select('USD');
+    cy.get('[data-testid="currency-select"]').within(() => {
+      cy.get('input[value="USD"]').check();
+    });
 
     cy.wait(2000); // Wait for API call
 
@@ -151,7 +162,9 @@ describe('Tax Calculator App', () => {
     currencies.forEach((currency) => {
       if (currency !== 'RON') {
         // Skip if RON is already selected
-        cy.get('select, [data-testid="currency-select"]').first().select(currency);
+        cy.get('[data-testid="currency-select"]').within(() => {
+          cy.get(`input[value="${currency}"]`).check();
+        });
 
         cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
           .first()
@@ -208,7 +221,9 @@ describe('Tax Calculator App', () => {
     cy.navigateToProject('Tax & Currency Calculator');
 
     // Change currency to trigger API call
-    cy.get('select, [data-testid="currency-select"]').first().select('USD');
+    cy.get('[data-testid="currency-select"]').within(() => {
+      cy.get('input[value="USD"]').check();
+    });
 
     cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
       .first()
@@ -225,7 +240,9 @@ describe('Tax Calculator App', () => {
     // Intercept API calls and simulate failure
     cy.intercept('GET', '**/api/currency/**', { statusCode: 500 }).as('currencyAPI');
 
-    cy.get('select, [data-testid="currency-select"]').first().select('USD');
+    cy.get('[data-testid="currency-select"]').within(() => {
+      cy.get('input[value="USD"]').check();
+    });
 
     cy.get('input[type="number"], input[placeholder*="income"], [data-testid="income-input"]')
       .first()
@@ -240,12 +257,13 @@ describe('Tax Calculator App', () => {
     cy.navigateToProject('Tax & Currency Calculator');
 
     // Find and click back/home button
-    cy.get('[data-testid="back-to-home"], .back-button, a[href="/"]')
+    cy.get('[data-testid="back-to-home"], .liquid-back-button, .back-button')
       .first()
       .should('be.visible')
       .click();
 
-    cy.url().should('eq', Cypress.config().baseUrl + '/');
-    cy.get('[data-testid="project-card"]').should('have.length.greaterThan', 0);
+    // Check that we're back on the homepage by looking for project cards
+    cy.get('.liquid-app-card').should('have.length.greaterThan', 0);
+    cy.get('.liquid-hero-title').should('be.visible');
   });
 });

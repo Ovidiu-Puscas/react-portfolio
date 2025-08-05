@@ -2,7 +2,7 @@ import React from 'react';
 import Title from '../../../projects/components/Title';
 
 const GameInstructions = () => (
-  <div className="game-instructions">
+  <div className="game-instructions" data-testid="instructions">
     <Title title={{ heading: 'h3', text: 'How to Play:', class: '' }} />
     <ul>
       <li>Click tiles adjacent to the empty space to move them</li>

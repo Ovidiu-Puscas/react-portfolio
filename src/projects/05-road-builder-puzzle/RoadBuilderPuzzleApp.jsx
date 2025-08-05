@@ -34,6 +34,8 @@ const RoadBuilderPuzzleApp = () => {
   const [gameBoard, setGameBoard] = useState([]);
   const [gameState, setGameState] = useState('playing'); // 'playing', 'won', 'testing', 'failed', 'editor'
   const [moves, setMoves] = useState(0);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(Date.now());
   const [emptyPosition, setEmptyPosition] = useState({ row: 3, col: 3 });
   const [showAnimation, setShowAnimation] = useState(false);
   const [animationType, setAnimationType] = useState(''); // 'explosion', 'confetti'
@@ -70,6 +72,16 @@ const RoadBuilderPuzzleApp = () => {
     initializeGame();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Timer effect
+  useEffect(() => {
+    if (gameState === 'playing') {
+      const timer = setInterval(() => {
+        setCurrentTime(Date.now());
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [gameState]);
 
   const initializeGame = () => {
     const boardSize = 4;
@@ -115,6 +127,8 @@ const RoadBuilderPuzzleApp = () => {
     setGameBoard(board);
     setGameState('playing');
     setMoves(0);
+    setStartTime(Date.now());
+    setCurrentTime(Date.now());
   };
 
   const canMoveTile = (row, col) => {
@@ -433,9 +447,18 @@ const RoadBuilderPuzzleApp = () => {
     return imageMap[tileType];
   };
 
+  // Calculate elapsed time
+  const elapsedTime = Math.floor((currentTime - startTime) / 1000);
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+  const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
   // Prepare stats and buttons for GameStats component
   const gameStatsData = {
-    stats: [{ label: 'Moves', value: moves }],
+    stats: [
+      { label: 'Moves', value: moves },
+      { label: 'Time', value: timeDisplay },
+    ],
     buttons: [
       {
         text: 'Drive!',

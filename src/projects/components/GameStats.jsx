@@ -15,7 +15,13 @@ const GameStats = ({
       {stats.length > 0 && (
         <div className="stats-container flex flex-wrap items-center gap-4">
           {stats.map((stat, index) => (
-            <div key={index} className="stat-item">
+            <div
+              key={index}
+              className="stat-item"
+              data-testid={
+                stat.label.toLowerCase() === 'time' ? 'timer' : `stat-${stat.label.toLowerCase()}`
+              }
+            >
               <span className="stat-label font-medium text-gray-700">{stat.label}:</span>
               <span className="stat-value ml-2 font-bold text-blue-600">{stat.value}</span>
             </div>

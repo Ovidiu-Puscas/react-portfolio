@@ -186,6 +186,22 @@
   transform: rotate(-90deg);
 }
 
+.car-label {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-weight: bold;
+  text-shadow: none;
+  z-index: 11;
+}
+
 .empty-marker,
 .car-marker,
 .flag-marker {

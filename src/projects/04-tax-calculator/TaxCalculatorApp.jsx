@@ -196,7 +196,7 @@ const TaxCalculatorApp = () => {
           {/* Exchange Rate Status */}
           <div className="py-4 mb-6">
             {isLoadingRates && (
-              <div className="text-blue-600 text-sm mb-2">
+              <div className="text-blue-600 text-sm mb-2" data-testid="loading">
                 🔄 Loading real-time exchange rates...
               </div>
             )}
@@ -244,17 +244,19 @@ const TaxCalculatorApp = () => {
             setSelectedCurrency={setSelectedCurrency}
           />
 
-          <ResultsTable
-            selectedYear={selectedYear}
-            selectedCurrency={selectedCurrency}
-            customRate={parseFloat(customRate)}
-            usdToRonRate={parseFloat(usdToRonRate)}
-            ronToEurRate={parseFloat(ronToEurRate)}
-            microSrlTaxRate={parseFloat(microSrlTaxRate)}
-            nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
-            calculateIncome={calculateIncome}
-            formatCurrency={formatCurrency}
-          />
+          <div data-testid="tax-results" className="overflow-visible">
+            <ResultsTable
+              selectedYear={selectedYear}
+              selectedCurrency={selectedCurrency}
+              customRate={parseFloat(customRate)}
+              usdToRonRate={parseFloat(usdToRonRate)}
+              ronToEurRate={parseFloat(ronToEurRate)}
+              microSrlTaxRate={parseFloat(microSrlTaxRate)}
+              nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
+              calculateIncome={calculateIncome}
+              formatCurrency={formatCurrency}
+            />
+          </div>
 
           <Disclaimer />
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import PuzzleTile from './PuzzleTile';
 
 const PuzzleBoard = ({ gameBoard, onTileClick, canMoveTile, gameState }) => (
-  <div className="puzzle-board">
+  <div className="puzzle-board" data-testid="puzzle-board">
     {gameBoard.map((row, rowIndex) => (
       <div key={rowIndex} className="puzzle-row">
         {row.map((tile, colIndex) => (

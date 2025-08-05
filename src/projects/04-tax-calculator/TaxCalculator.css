@@ -9,7 +9,7 @@
   align-items: flex-start;
   box-sizing: border-box;
   height: 100%;
-  overflow: auto;
+  overflow: visible;
   padding-bottom: 15px;
 }
 
@@ -87,10 +87,29 @@ input[type='number']:disabled {
   font-size: 0.9rem;
 }
 
+/* Ensure table is always visible */
+table[data-testid='tax-breakdown'] {
+  overflow: visible !important;
+  visibility: visible !important;
+  display: table !important;
+}
+
+@media (max-width: 768px) {
+  table[data-testid='tax-breakdown'] {
+    display: block !important;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .container {
     padding: 1.5rem;
+    overflow: visible;
+  }
+  .tax-calculator-container {
+    overflow: visible;
+    height: auto;
+    min-height: 100vh;
   }
   table,
   thead,

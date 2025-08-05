@@ -218,7 +218,11 @@ const AppLibraryLiquid = () => {
         </div>
 
         <LiquidGlassNav className="liquid-nav-header">
-          <LiquidGlassButton onClick={() => setSelectedApp(null)} className="liquid-back-button">
+          <LiquidGlassButton
+            onClick={() => setSelectedApp(null)}
+            className="liquid-back-button"
+            data-testid="back-to-home"
+          >
             <svg className="w-4 h-4" fill="none" stroke="black" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"

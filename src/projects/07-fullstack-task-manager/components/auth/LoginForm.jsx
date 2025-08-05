@@ -85,6 +85,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
             margin="normal"
             required
             autoComplete="email"
+            data-testid="email-input"
           />
 
           <TextField
@@ -96,6 +97,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
             margin="normal"
             required
             autoComplete="current-password"
+            data-testid="password-input"
           />
 
           <Button
@@ -106,6 +108,19 @@ const LoginForm = ({ onSwitchToRegister }) => {
             sx={{ mt: 3, mb: 2 }}
           >
             {loading ? <CircularProgress size={24} /> : 'Sign In'}
+          </Button>
+
+          <Button
+            fullWidth
+            variant="outlined"
+            disabled={loading}
+            onClick={() => {
+              setEmail('test@test.com');
+              setPassword('test123');
+            }}
+            sx={{ mb: 2 }}
+          >
+            Try Demo
           </Button>
 
           <Box textAlign="center">

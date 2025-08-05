@@ -109,6 +109,7 @@ const ProjectDetail = ({ project, onBack }) => {
         onEditTask={handleEditTaskClick}
         onDeleteTask={handleDeleteTask}
         onMoveTask={handleMoveTask}
+        data-testid="kanban-board"
       />
 
       {/* Create Task Dialog */}

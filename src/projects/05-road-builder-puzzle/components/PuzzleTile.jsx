@@ -21,6 +21,7 @@ const PuzzleTile = ({ tile, rowIndex, colIndex, onTileClick, canMoveTile, gameSt
         ${tile.type === 'empty' ? 'empty' : 'filled'}
         ${canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? 'movable' : ''}
       `}
+      data-testid="puzzle-tile"
       role="button"
       tabIndex={canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? 0 : -1}
       aria-label={`Puzzle tile at row ${rowIndex + 1}, column ${colIndex + 1}${canMoveTile(rowIndex, colIndex) && gameState === 'playing' ? ', clickable' : ''}`}

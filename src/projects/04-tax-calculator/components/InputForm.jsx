@@ -24,6 +24,7 @@ const InputForm = ({
       <input
         type="number"
         id="customRate"
+        data-testid="income-input"
         className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         placeholder="e.g., 27.50"
         min="0"

@@ -10,7 +10,7 @@ const SelectionOptions = ({
     <div className="input-item">
       <fieldset>
         <legend className="block text-gray-700 text-sm font-bold mb-2">Select Year:</legend>
-        <div className="radio-group">
+        <div className="radio-group" data-testid="year-select">
           <label>
             <input
               type="radio"
@@ -39,7 +39,7 @@ const SelectionOptions = ({
         <legend className="block text-gray-700 text-sm font-bold mb-2">
           Select Currency for All Values:
         </legend>
-        <div className="radio-group">
+        <div className="radio-group" data-testid="currency-select">
           <label>
             <input
               type="radio"

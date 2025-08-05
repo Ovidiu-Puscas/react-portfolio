@@ -171,7 +171,7 @@ const GameUIComponent = ({ shapeChallenge, paintingSystem, isVisible = true }) =
   // Removed unused getBackgroundColor function
 
   return (
-    <div className="game-ui-container">
+    <div className="game-ui-container" data-testid="painting-controls">
       {/* Title and Score */}
       <div className="game-ui-header">
         <h3 className="game-ui-title">🎯 Shape Drawing Game</h3>

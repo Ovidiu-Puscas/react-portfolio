@@ -105,6 +105,7 @@ export class PaintingSystem {
     // Create brush size control container
     this.brushUIContainer = document.createElement('div');
     this.brushUIContainer.className = 'brush-ui-container';
+    this.brushUIContainer.setAttribute('data-testid', 'brush-size');
     this.brushUIContainer.style.position = 'fixed';
     this.brushUIContainer.style.right = '20px';
     this.brushUIContainer.style.top = '50%';
@@ -113,9 +114,10 @@ export class PaintingSystem {
     this.brushUIContainer.style.color = 'white';
     this.brushUIContainer.style.padding = '20px';
     this.brushUIContainer.style.borderRadius = '10px';
-    this.brushUIContainer.style.zIndex = '1000';
+    this.brushUIContainer.style.zIndex = '10';
     this.brushUIContainer.style.fontFamily = 'Arial, sans-serif';
     this.brushUIContainer.style.minWidth = '200px';
+    this.brushUIContainer.style.pointerEvents = 'auto';
 
     // Title
     const title = document.createElement('h3');

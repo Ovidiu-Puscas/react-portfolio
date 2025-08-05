@@ -136,7 +136,10 @@ const ResultsTable = ({
   };
 
   return (
-    <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-sm w-full border-collapse border-spacing-0 mt-6 text-left">
+    <table
+      data-testid="tax-breakdown"
+      className="min-w-full bg-white rounded-lg overflow-hidden shadow-sm w-full border-collapse border-spacing-0 mt-6 text-left"
+    >
       <thead>
         <tr>
           <th className="py-3 px-4 bg-gray-50 font-semibold text-gray-700 uppercase text-sm border-b border-gray-200">

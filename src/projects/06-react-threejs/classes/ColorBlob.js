@@ -21,6 +21,7 @@ export class ColorBlob {
     });
     this.mainSphere = new Mesh(geometry, material);
     this.mainSphere.name = 'ColorBlob_' + this.name;
+    this.mainSphere.userData.testId = 'color-palette';
     this.group.add(this.mainSphere);
 
     // Drip (ellipsoid)

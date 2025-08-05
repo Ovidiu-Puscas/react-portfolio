@@ -113,7 +113,7 @@ const Dashboard = () => {
   }
 
   return (
-    <Container sx={{ py: 4 }}>
+    <Container sx={{ py: 4 }} data-testid="projects-list">
       <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h4" component="h1">
           My Projects
@@ -148,7 +148,7 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       ) : (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }} data-testid="projects-grid">
           {projects.map((project) => (
             <Box
               key={project.id}
