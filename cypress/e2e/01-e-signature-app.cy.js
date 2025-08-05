@@ -13,142 +13,172 @@ describe('E-Signature App', () => {
   });
 
   it('should load the project from homepage', () => {
-    cy.get('[data-testid="project-card"]').contains('E-Signature').should('be.visible').click();
+    // Click on E-Signature App card
+    cy.get('[role="button"]').contains('E-Signature App').should('be.visible').click();
 
-    cy.url().should('include', '/e-signature');
-    cy.get('h1').should('contain', 'E-Signature');
+    // Should show the e-signature app interface
+    cy.get('h1').should('contain', 'E-Signature App');
+    cy.get('button').contains('Back to Library').should('be.visible');
   });
 
   it('should display the main interface elements', () => {
-    cy.navigateToProject('E-Signature');
+    cy.navigateToProject('E-Signature App');
 
-    // Check main UI elements
-    cy.get('input[placeholder="Enter signer name here"]').should('be.visible');
-    cy.get('input[placeholder="Enter document title here"]').should('be.visible');
-    cy.get('textarea[placeholder="Enter document content here"]').should('be.visible');
-    cy.get('canvas').should('be.visible');
+    // Check main UI elements with correct placeholders and IDs
+    cy.get('#signer-name')
+      .should('be.visible')
+      .and('have.attr', 'placeholder', 'Enter signer name');
+    cy.get('#document-title')
+      .should('be.visible')
+      .and('have.attr', 'placeholder', 'Enter document title');
+    cy.get('#document-content')
+      .should('be.visible')
+      .and('have.attr', 'placeholder', 'Enter document content');
+
+    // Check for signature canvas
+    cy.get('canvas.sigCanvas').should('be.visible');
+
+    // Check section headers
+    cy.get('h2').contains('Document Details').should('be.visible');
+    cy.get('h2').contains('PDF Preview').should('be.visible');
+    cy.get('h3').contains('Digital Signature').should('be.visible');
   });
 
   it('should allow filling out document information', () => {
-    cy.navigateToProject('E-Signature');
+    cy.navigateToProject('E-Signature App');
 
-    // Fill out the form
-    cy.get('input[placeholder="Enter signer name here"]')
-      .clear()
-      .type(testData.testData.signerName);
+    // Fill out the form with correct selectors
+    cy.get('#signer-name').clear().type(testData.testData.signerName);
 
-    cy.get('input[placeholder="Enter document title here"]')
-      .clear()
-      .type(testData.testData.documentTitle);
+    cy.get('#document-title').clear().type(testData.testData.documentTitle);
 
-    cy.get('textarea[placeholder="Enter document content here"]')
-      .clear()
-      .type(testData.testData.documentContent);
+    cy.get('#document-content').clear().type(testData.testData.documentContent);
 
     // Verify values are entered
-    cy.get('input[placeholder="Enter signer name here"]').should(
-      'have.value',
-      testData.testData.signerName
-    );
-    cy.get('input[placeholder="Enter document title here"]').should(
-      'have.value',
-      testData.testData.documentTitle
-    );
-    cy.get('textarea[placeholder="Enter document content here"]').should(
-      'have.value',
-      testData.testData.documentContent
-    );
+    cy.get('#signer-name').should('have.value', testData.testData.signerName);
+    cy.get('#document-title').should('have.value', testData.testData.documentTitle);
+    cy.get('#document-content').should('have.value', testData.testData.documentContent);
   });
 
   it('should allow drawing a signature', () => {
-    cy.navigateToProject('E-Signature');
+    cy.navigateToProject('E-Signature App');
 
-    // Draw on the signature canvas
-    cy.get('canvas')
+    // Draw on the signature canvas using the specific class
+    cy.get('canvas.sigCanvas')
       .should('be.visible')
-      .trigger('mousedown', 100, 100)
-      .trigger('mousemove', 200, 150)
-      .trigger('mousemove', 300, 100)
+      .trigger('mousedown', 100, 50)
+      .trigger('mousemove', 200, 75)
+      .trigger('mousemove', 250, 50)
       .trigger('mouseup');
 
     // Check if signature was drawn (canvas should have content)
-    cy.get('canvas').should('be.visible');
+    cy.get('canvas.sigCanvas').should('be.visible');
   });
 
   it('should clear signature when clear button is clicked', () => {
-    cy.navigateToProject('E-Signature');
+    cy.navigateToProject('E-Signature App');
 
     // Draw signature first
-    cy.get('canvas')
-      .trigger('mousedown', 100, 100)
-      .trigger('mousemove', 200, 150)
+    cy.get('canvas.sigCanvas')
+      .trigger('mousedown', 100, 50)
+      .trigger('mousemove', 200, 75)
       .trigger('mouseup');
 
-    // Clear signature
+    // Clear signature using the correct button text
     cy.contains('Clear Signature').click();
 
-    // Canvas should be cleared (implementation detail - would need data-testid)
-    cy.get('canvas').should('be.visible');
+    // Canvas should still be visible after clearing
+    cy.get('canvas.sigCanvas').should('be.visible');
   });
 
-  it('should generate PDF when generate button is clicked', () => {
-    cy.navigateToProject('E-Signature');
+  it('should show PDF preview when signature is saved', () => {
+    cy.navigateToProject('E-Signature App');
 
     // Fill out form
-    cy.get('input[placeholder="Enter signer name here"]').type(testData.testData.signerName);
-    cy.get('input[placeholder="Enter document title here"]').type(testData.testData.documentTitle);
-    cy.get('textarea[placeholder="Enter document content here"]').type(
-      testData.testData.documentContent
-    );
+    cy.get('#signer-name').type(testData.testData.signerName);
+    cy.get('#document-title').type(testData.testData.documentTitle);
+    cy.get('#document-content').type(testData.testData.documentContent);
 
     // Draw signature
-    cy.get('canvas')
-      .trigger('mousedown', 100, 100)
-      .trigger('mousemove', 200, 150)
+    cy.get('canvas.sigCanvas')
+      .trigger('mousedown', 100, 50)
+      .trigger('mousemove', 200, 75)
       .trigger('mouseup');
 
-    // Generate PDF
-    cy.contains('Generate PDF').click();
+    // Save signature to generate PDF preview
+    cy.contains('Save Signature').click();
 
-    // Check if PDF preview appears
-    cy.get('.pdf-preview, iframe, embed', { timeout: 10000 }).should('be.visible');
+    // Check if PDF preview appears (should replace the placeholder)
+    cy.get('.pdf-preview, iframe, embed, object', { timeout: 10000 }).should('be.visible');
+
+    // The placeholder should be gone
+    cy.get('svg').contains('path[d*="M9 12h6m-6 4h6m2 5H7"]').should('not.exist');
   });
 
   it('should be responsive on mobile devices', () => {
     cy.testResponsive((viewport) => {
-      cy.navigateToProject('E-Signature');
+      cy.navigateToProject('E-Signature App');
 
       // Check responsive layout
-      cy.get('canvas').should('be.visible');
-      cy.get('input[placeholder="Enter signer name here"]').should('be.visible');
+      cy.get('canvas.sigCanvas').should('be.visible');
+      cy.get('#signer-name').should('be.visible');
 
       if (viewport.name === 'mobile') {
-        // On mobile, elements might stack vertically
-        cy.get('.grid').should('have.class', 'md:grid-cols-2');
+        // On mobile, should use flex-col layout
+        cy.get('.lg\\:grid').should('exist');
+        // Form should be in order-2 on mobile
+        cy.get('.order-2.lg\\:order-1').should('exist');
       }
     });
   });
 
-  it('should handle empty form submission gracefully', () => {
-    cy.navigateToProject('E-Signature');
+  it('should handle empty signature gracefully', () => {
+    cy.navigateToProject('E-Signature App');
 
-    // Try to generate PDF without filling form
-    cy.contains('Generate PDF').click();
+    // Try to save signature without drawing anything
+    cy.contains('Save Signature').click();
 
-    // Should handle gracefully (either show validation or use defaults)
-    cy.get('body').should('be.visible'); // Basic check that page doesn't crash
+    // Should still show the placeholder content
+    cy.get('svg').should('be.visible'); // The placeholder icon should still be there
+    cy.contains('Complete the form and add your signature').should('be.visible');
   });
 
   it('should navigate back to homepage', () => {
-    cy.navigateToProject('E-Signature');
+    cy.navigateToProject('E-Signature App');
 
-    // Look for back/home navigation
-    cy.get('[data-testid="back-to-home"], .back-button, a[href="/"]')
-      .first()
+    // Click the back to library button
+    cy.get('button').contains('Back to Library').should('be.visible').click();
+
+    // Should be back at the homepage
+    cy.get('h1').should('contain.text', 'Project Library');
+    cy.get('.min-h-\\[320px\\]').should('have.length', 7);
+  });
+
+  it('should have proper form labels and accessibility', () => {
+    cy.navigateToProject('E-Signature App');
+
+    // Check for proper labels
+    cy.get('label[for="document-title"]').should('contain', 'Document Title');
+    cy.get('label[for="document-content"]').should('contain', 'Document Content');
+    cy.get('label[for="signer-name"]').should('contain', 'Signer Name');
+
+    // Check that inputs are properly associated with labels
+    cy.get('#document-title').should('have.attr', 'id', 'document-title');
+    cy.get('#document-content').should('have.attr', 'id', 'document-content');
+    cy.get('#signer-name').should('have.attr', 'id', 'signer-name');
+  });
+
+  it('should show signature canvas with proper styling', () => {
+    cy.navigateToProject('E-Signature App');
+
+    // Check signature canvas styling
+    cy.get('canvas.sigCanvas')
       .should('be.visible')
-      .click();
+      .and('have.class', 'border-2')
+      .and('have.class', 'border-gray-300')
+      .and('have.class', 'rounded-lg');
 
-    cy.url().should('eq', Cypress.config().baseUrl + '/');
-    cy.get('[data-testid="project-card"]').should('have.length.greaterThan', 0);
+    // Check signature section background
+    cy.get('.bg-gray-50.rounded-lg').should('contain', 'canvas.sigCanvas');
   });
 });

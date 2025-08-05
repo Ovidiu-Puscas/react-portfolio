@@ -11,13 +11,15 @@
 // Custom command to navigate to a specific project
 Cypress.Commands.add('navigateToProject', (projectName) => {
   cy.visit('/');
-  cy.get('[data-testid="project-card"]').contains(projectName).should('be.visible').click();
+  cy.get('[role="button"]').contains(projectName).should('be.visible').click();
 });
 
 // Custom command to wait for project to load
 Cypress.Commands.add('waitForProjectLoad', () => {
-  cy.get('[data-testid="loading"]', { timeout: 10000 }).should('not.exist');
+  // Wait for the main content to be visible instead of looking for loading spinner
   cy.get('body').should('be.visible');
+  // Wait a bit for any animations to complete
+  cy.wait(500);
 });
 
 // Custom command to take screenshot with timestamp

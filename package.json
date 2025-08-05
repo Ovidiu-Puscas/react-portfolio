@@ -45,6 +45,8 @@
     "e2e": "start-server-and-test start http://localhost:3000 cypress:run",
     "e2e:open": "start-server-and-test start http://localhost:3000 cypress:open",
     "e2e:headless": "start-server-and-test start http://localhost:3000 cypress:run:headless",
+    "performance": "node scripts/performance-test.js",
+    "lighthouse": "lhci autorun",
     "test:all": "npm run test:coverage && npm run e2e:headless",
     "deploy": "npm run build && firebase deploy",
     "deploy:hosting": "firebase deploy --only hosting",

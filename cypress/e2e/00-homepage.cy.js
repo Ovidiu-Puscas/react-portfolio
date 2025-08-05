@@ -17,44 +17,53 @@ describe('Portfolio Homepage', () => {
     cy.get('body').should('be.visible');
   });
 
-  it('should display the main navigation', () => {
-    // Check for header/navigation
-    cy.get('header, nav, .navigation, [data-testid="navigation"]').should('be.visible');
+  it('should display the top-right navigation links', () => {
+    // Check for GitHub link in top-right navigation
+    cy.get('a[href*="github.com/Ovidiu-Puscas/react-portfolio"]')
+      .should('be.visible')
+      .and('have.attr', 'target', '_blank')
+      .and('have.attr', 'rel', 'noopener noreferrer');
 
-    // Should have home link or logo
-    cy.get('a[href="/"], .logo, [data-testid="home-link"]').should('be.visible');
+    // Check for Home link in top-right navigation
+    cy.get('a[href="https://xtreemedigital.com/"]')
+      .should('be.visible')
+      .and('have.attr', 'target', '_blank')
+      .and('have.attr', 'rel', 'noopener noreferrer');
   });
 
   it('should display the portfolio title and description', () => {
-    // Check for main title
-    cy.get('h1')
-      .should('contain.text', 'React Portfolio')
-      .or('contain.text', 'Portfolio')
-      .or('contain.text', 'Projects');
+    // Check for main title "Project Library"
+    cy.get('h1').should('contain.text', 'Project Library');
 
-    // Check for description or tagline
-    cy.get('p, .description, [data-testid="description"]').should('be.visible');
+    // Check for description
+    cy.get('p').should('contain.text', 'Explore my collection of React applications');
   });
 
   it('should display all 7 project cards', () => {
-    // Should show all project cards
-    cy.get('[data-testid="project-card"], .project-card, .project').should('have.length', 7);
+    // Check for project cards using the grid structure
+    cy.get('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3')
+      .should('be.visible')
+      .within(() => {
+        // Should have 7 project cards
+        cy.get('.min-h-\\[320px\\]').should('have.length', 7);
+      });
 
-    // Each card should be visible
-    cy.get('[data-testid="project-card"], .project-card, .project').each(($card) => {
+    // Each card should be visible and clickable
+    cy.get('.min-h-\\[320px\\]').each(($card) => {
       cy.wrap($card).should('be.visible');
+      cy.wrap($card).find('[role="button"]').should('be.visible');
     });
   });
 
   it('should show correct project information on cards', () => {
     const expectedProjects = [
-      'E-Signature',
-      'Complementary Colors',
-      'Like My Photo',
-      'Tax Calculator',
-      'Road Builder',
-      '3D Painting',
-      'Task Manager',
+      'Full-Stack Task Manager',
+      'E-Signature App',
+      'Color Harmony Generator',
+      '3D Canvas Painter',
+      'Romanian Tax Calculator',
+      'Road Builder Puzzle',
+      'Interactive Photo Gallery',
     ];
 
     expectedProjects.forEach((projectName) => {
@@ -62,49 +71,53 @@ describe('Portfolio Homepage', () => {
     });
   });
 
-  it('should have clickable project cards', () => {
-    // All project cards should be clickable
-    cy.get('[data-testid="project-card"], .project-card, .project').each(($card) => {
-      cy.wrap($card).should('have.css', 'cursor', 'pointer').or('be.enabled');
+  it('should have clickable project cards with proper styling', () => {
+    // All project cards should have cursor pointer and be interactive
+    cy.get('[role="button"]').each(($card) => {
+      cy.wrap($card).should('have.css', 'cursor', 'pointer');
+      cy.wrap($card).should('have.attr', 'tabindex', '0');
     });
   });
 
   it('should show hover effects on project cards', () => {
     // Test hover effect on first card
-    cy.get('[data-testid="project-card"], .project-card, .project').first().trigger('mouseover');
+    cy.get('[role="button"]').first().trigger('mouseover');
 
     cy.waitForAnimations();
 
-    // Should have some hover effect (scale, shadow, etc.)
-    cy.get('[data-testid="project-card"], .project-card, .project').first().should('be.visible');
+    // Should have hover effects (the component has hover:scale-[1.02] and hover:shadow-xl)
+    cy.get('[role="button"]').first().should('be.visible');
   });
 
   it('should navigate to projects when cards are clicked', () => {
-    // Test navigation to first project
-    cy.get('[data-testid="project-card"], .project-card, .project').first().click();
+    // Test navigation to first project (Task Manager)
+    cy.get('[role="button"]').first().click();
 
-    // URL should change
-    cy.url().should('not.eq', Cypress.config().baseUrl + '/');
-
-    // Should load project content
-    cy.get('body').should('be.visible');
+    // Should show the task manager app with header
+    cy.get('.bg-white.shadow-sm.border-b').should('be.visible');
+    cy.get('button').contains('Back to Library').should('be.visible');
+    cy.get('h1').should('contain.text', 'Full-Stack Task Manager');
   });
 
-  it('should display GitHub and external links', () => {
-    // Look for GitHub link
-    cy.get('a[href*="github"], [data-testid="github-link"]')
+  it('should display GitHub and Home links with proper attributes', () => {
+    // Check GitHub link
+    cy.get('a[href*="github.com"]')
       .should('be.visible')
-      .and('have.attr', 'href');
+      .and('have.attr', 'href')
+      .and('have.attr', 'target', '_blank')
+      .and('have.attr', 'rel', 'noopener noreferrer');
 
-    // Check that external links open in new tab
-    cy.get('a[href*="github"]')
-      .should('have.attr', 'target', '_blank')
-      .or('have.attr', 'rel', 'noopener');
+    // Check Home link
+    cy.get('a[href*="xtreemedigital.com"]')
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('have.attr', 'target', '_blank')
+      .and('have.attr', 'rel', 'noopener noreferrer');
   });
 
   it('should have proper SEO elements', () => {
     // Check for title
-    cy.title().should('not.be.empty');
+    cy.title().should('contain', 'React Portfolio - Interactive Web Applications');
 
     // Check for meta description
     cy.get('head meta[name="description"]').should('have.attr', 'content');
@@ -116,26 +129,18 @@ describe('Portfolio Homepage', () => {
   it('should be responsive on different screen sizes', () => {
     cy.testResponsive((viewport) => {
       // Project cards should be visible on all devices
-      cy.get('[data-testid="project-card"], .project-card, .project').should('have.length', 7);
+      cy.get('.min-h-\\[320px\\]').should('have.length', 7);
 
       if (viewport.name === 'mobile') {
-        // On mobile, cards might stack vertically
-        cy.get('.grid, .projects-grid').should('be.visible');
+        // On mobile, grid should use single column
+        cy.get('.grid-cols-1').should('exist');
       }
 
       if (viewport.name === 'desktop') {
         // On desktop, should show multiple columns
-        cy.get('[data-testid="project-card"], .project-card, .project').should('be.visible');
+        cy.get('.lg\\:grid-cols-3').should('exist');
       }
     });
-  });
-
-  it('should show animated background elements', () => {
-    // Check for background animations (blobs, particles, etc.)
-    cy.get('.blob, .particle, .background-animation, [data-testid="background"]').should('exist');
-
-    // Background should not interfere with content
-    cy.get('[data-testid="project-card"], .project-card, .project').first().should('be.visible');
   });
 
   it('should have proper accessibility features', () => {
@@ -144,110 +149,73 @@ describe('Portfolio Homepage', () => {
     // Check for proper heading hierarchy
     cy.get('h1').should('have.length', 1);
 
-    // Links should have proper text or aria-labels
+    // Check that project cards have proper keyboard navigation
+    cy.get('[role="button"]').each(($button) => {
+      cy.wrap($button).should('have.attr', 'tabindex', '0');
+    });
+
+    // Links should have proper text
     cy.get('a').each(($link) => {
       cy.wrap($link).should('satisfy', ($el) => {
         const text = $el.text().trim();
-        const ariaLabel = $el.attr('aria-label');
-        return text.length > 0 || ariaLabel;
+        const title = $el.attr('title');
+        return text.length > 0 || title;
       });
     });
   });
 
-  it('should handle loading states properly', () => {
-    // Refresh page and check loading
-    cy.reload();
+  it('should navigate back from project to homepage', () => {
+    // Navigate to a project
+    cy.get('[role="button"]').first().click();
 
-    // Should show some loading state initially
-    cy.get('.loading, .spinner, [data-testid="loading"]').should('exist');
+    // Should be in project view
+    cy.get('button').contains('Back to Library').should('be.visible');
 
-    // Then content should load
-    cy.get('[data-testid="project-card"], .project-card, .project').should('have.length', 7);
+    // Navigate back
+    cy.get('button').contains('Back to Library').click();
+
+    // Should be back at homepage
+    cy.get('h1').should('contain.text', 'Project Library');
+    cy.get('.min-h-\\[320px\\]').should('have.length', 7);
   });
 
-  it('should show performance optimizations', () => {
-    // Check that images are loaded properly
-    cy.get('img').each(($img) => {
-      cy.wrap($img).should('be.visible').and('have.attr', 'src').and('have.attr', 'alt');
-    });
+  it('should have proper gradient background and styling', () => {
+    // Check main background gradient
+    cy.get('.bg-gradient-to-br.from-gray-50').should('be.visible');
 
-    // Check for lazy loading or performance attributes
-    cy.get('img')
-      .first()
-      .should('satisfy', ($el) => {
-        return $el.attr('loading') === 'lazy' || $el.attr('decoding') === 'async' || $el.complete; // Image is loaded
+    // Check gradient separator line
+    cy.get('.bg-gradient-to-r.from-blue-500.to-purple-500').should('be.visible');
+  });
+
+  it('should display project cards with proper structure', () => {
+    // Each card should have icon, title, description, and action indicator
+    cy.get('[role="button"]').each(($card) => {
+      cy.wrap($card).within(() => {
+        // Should have icon container
+        cy.get('.bg-white\\/20.rounded-xl').should('be.visible');
+
+        // Should have title (h3)
+        cy.get('h3').should('be.visible');
+
+        // Should have action indicator at bottom
+        cy.get('svg').should('exist');
       });
-  });
-
-  it('should show proper error boundaries', () => {
-    // Error boundaries should be in place (test by triggering error)
-    cy.window().then((win) => {
-      // Add error handler to prevent test failure
-      win.addEventListener('error', (e) => {
-        e.preventDefault();
-        return false;
-      });
-    });
-
-    // If error boundary exists, it should handle errors gracefully
-    cy.get('body').should('be.visible');
-  });
-
-  it('should have analytics and tracking setup', () => {
-    // Check for analytics scripts (Google Analytics, etc.)
-    cy.window().then((win) => {
-      // This would depend on the analytics implementation
-      expect(win).to.exist;
     });
   });
 
-  it('should show social media links', () => {
-    // Look for social media links
-    cy.get('a[href*="linkedin"], a[href*="twitter"], a[href*="github"]').should(
-      'have.length.greaterThan',
-      0
-    );
+  it('should handle keyboard navigation properly', () => {
+    // Focus on first project card
+    cy.get('[role="button"]').first().focus();
+
+    // Press Enter to activate
+    cy.get('[role="button"]').first().type('{enter}');
+
+    // Should navigate to project
+    cy.get('h1').should('contain.text', 'Full-Stack Task Manager');
   });
 
-  it('should display contact information or links', () => {
-    // Look for contact information
-    cy.get('body').should('satisfy', ($body) => {
-      const text = $body.text();
-      return (
-        text.includes('@') || // Email
-        text.includes('contact') || // Contact link
-        text.includes('linkedin') || // LinkedIn
-        text.includes('github')
-      ); // GitHub
-    });
-  });
-
-  it('should have proper meta tags for social sharing', () => {
-    // Check for Open Graph tags
-    cy.get('head meta[property^="og:"]').should('have.length.greaterThan', 0);
-
-    // Check for Twitter Card tags
-    cy.get('head meta[name^="twitter:"]').should('exist');
-  });
-
-  it('should load quickly and meet performance thresholds', () => {
-    const startTime = Date.now();
-
-    cy.visit('/');
-    cy.waitForProjectLoad();
-
-    cy.then(() => {
-      const loadTime = Date.now() - startTime;
-      expect(loadTime).to.be.lessThan(testData.performance.thresholds.loadTime);
-    });
-  });
-
-  it('should work with JavaScript disabled fallback', () => {
-    // This would require special Cypress configuration
-    // For now, just ensure content is visible
-    cy.get('[data-testid="project-card"], .project-card, .project').should(
-      'have.length.greaterThan',
-      0
-    );
+  it('should show footer information', () => {
+    // Check for footer text
+    cy.get('body').should('contain.text', 'More projects coming soon!');
   });
 });

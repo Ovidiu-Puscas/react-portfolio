@@ -12,169 +12,153 @@ describe('Complementary Colors App', () => {
     cy.waitForProjectLoad();
   });
 
-  it('should load the color theory application', () => {
-    cy.navigateToProject('Complementary Colors');
+  it('should load the project from homepage', () => {
+    cy.get('[role="button"]').contains('Color Harmony Generator').should('be.visible').click();
 
-    cy.url().should('include', '/complementary-colors');
-    cy.get('h1').should('contain', 'Complementary Colors');
+    cy.get('h1').should('contain', 'Color Harmony Generator');
+    cy.get('button').contains('Back to Library').should('be.visible');
   });
 
-  it('should display the color wheel interface', () => {
-    cy.navigateToProject('Complementary Colors');
+  it('should display the main interface elements', () => {
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Check for color wheel elements
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg', { timeout: 5000 }).should(
-      'be.visible'
-    );
+    // Check main sections
+    cy.get('h2').contains('Color Picker').should('be.visible');
+    cy.get('h3').contains('Color Harmony').should('be.visible');
+    cy.get('h3').contains('Custom Color').should('be.visible');
+    cy.get('h3').contains('Quick Colors').should('be.visible');
 
-    // Check for color display areas
-    cy.get('.color-display, .color-preview, [data-testid="color-display"]').should('be.visible');
+    // Check color wheel
+    cy.get('svg').should('be.visible'); // Color wheel is SVG
+
+    // Check custom hex input
+    cy.get('input[placeholder="#FF0000"]').should('be.visible');
   });
 
-  it('should allow color selection on the wheel', () => {
-    cy.navigateToProject('Complementary Colors');
+  it('should display default complementary colors', () => {
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Wait for color wheel to load
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').should('be.visible');
+    // Should show harmony display section
+    cy.get('.grid.grid-cols-1.lg\\:grid-cols-2').should('be.visible');
 
-    // Click on different areas of the color wheel
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').first().click(100, 100);
-
-    cy.waitForAnimations();
-
-    // Color values should update
-    cy.get('[data-testid="selected-color"], .selected-color, .color-value').should('be.visible');
+    // Default should be complementary harmony
+    cy.get('button[aria-checked="true"]').should('contain.text', 'Complementary');
   });
 
-  it('should display complementary color when primary color is selected', () => {
-    cy.navigateToProject('Complementary Colors');
+  it('should update colors when hex input is changed', () => {
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Wait for interface to load
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').should('be.visible');
+    // Change the hex color input
+    cy.get('input[placeholder="#FF0000"]').clear().type('#00FF00');
 
-    // Select a color
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').first().click(150, 50);
-
-    cy.waitForAnimations();
-
-    // Check that complementary color is displayed
-    cy.get('[data-testid="complementary-color"], .complementary-color, .complement').should(
-      'be.visible'
-    );
+    // The color preview should update
+    cy.get('.w-12.h-12.rounded-lg')
+      .should('have.css', 'background-color')
+      .and('not.equal', 'rgb(255, 0, 0)'); // Should not be the default red
   });
 
-  it('should show color harmony variations', () => {
-    cy.navigateToProject('Complementary Colors');
+  it('should show different harmony types', () => {
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Wait for color wheel
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').should('be.visible');
+    const harmonyTypes = [
+      'Complementary',
+      'Monochromatic',
+      'Analogous',
+      'Triadic',
+      'Tetradic',
+      'Square',
+    ];
 
-    // Select a color
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').first().click(100, 100);
+    harmonyTypes.forEach((harmonyType) => {
+      // Find and click harmony type button
+      cy.get('button[role="radio"]').contains(harmonyType).click();
 
-    cy.waitForAnimations();
-
-    // Look for harmony displays (analogous, triadic, etc.)
-    cy.get('.harmony, [data-testid="color-harmony"], .analogous, .triadic').should(
-      'have.length.greaterThan',
-      0
-    );
+      // Should show as selected
+      cy.get('button[aria-checked="true"]').should('contain.text', harmonyType);
+    });
   });
 
-  it('should display hex and RGB color values', () => {
-    cy.navigateToProject('Complementary Colors');
+  it('should allow selecting preset colors', () => {
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Select a color
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').should('be.visible').click(100, 100);
+    // Click on a preset color (first one should be red #FF0000)
+    cy.get('.grid.grid-cols-6 button').first().click();
 
-    cy.waitForAnimations();
+    // Should update the hex input
+    cy.get('input[placeholder="#FF0000"]').should('have.value', '#FF0000');
+  });
 
-    // Check for hex values
-    cy.get('body').should('contain.text', '#');
+  it('should have proper accessibility features', () => {
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Check for RGB values
-    cy.get('body').should('contain.text', 'RGB');
+    // Check radiogroup for harmony options
+    cy.get('[role="radiogroup"]')
+      .should('be.visible')
+      .and('have.attr', 'aria-label', 'Color harmony options');
+
+    // Check that harmony buttons have proper radio role
+    cy.get('button[role="radio"]').should('have.length', 6);
+
+    // Check that preset color buttons have titles
+    cy.get('.grid.grid-cols-6 button').each(($button) => {
+      cy.wrap($button).should('have.attr', 'title');
+    });
   });
 
   it('should be responsive on different screen sizes', () => {
     cy.testResponsive((viewport) => {
-      cy.navigateToProject('Complementary Colors');
+      cy.navigateToProject('Color Harmony Generator');
 
-      // Color wheel should be visible on all devices
-      cy.get('.color-wheel, [data-testid="color-wheel"], svg').should('be.visible');
+      // Color picker should be visible on all devices
+      cy.get('h2').contains('Color Picker').should('be.visible');
 
       if (viewport.name === 'mobile') {
-        // On mobile, layout might be stacked
-        cy.get('.color-display, .color-preview').should('be.visible');
+        // On mobile, grid should stack
+        cy.get('.grid.grid-cols-1.lg\\:grid-cols-2').should('be.visible');
+      }
+
+      if (viewport.name === 'desktop') {
+        // On desktop, should use 2 columns
+        cy.get('.lg\\:grid-cols-2').should('exist');
       }
     });
   });
 
-  it('should handle multiple color selections', () => {
-    cy.navigateToProject('Complementary Colors');
+  it('should validate hex input format', () => {
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Wait for color wheel
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').should('be.visible');
+    // Enter invalid hex color
+    cy.get('input[placeholder="#FF0000"]').clear().type('invalid');
 
-    // Select multiple colors in sequence
-    const positions = [
-      [100, 100],
-      [200, 150],
-      [150, 200],
-    ];
+    // Input should still be visible but color won't update
+    cy.get('input[placeholder="#FF0000"]').should('have.value', 'invalid');
 
-    positions.forEach(([x, y]) => {
-      cy.get('.color-wheel, [data-testid="color-wheel"], svg').first().click(x, y);
+    // Enter valid hex color
+    cy.get('input[placeholder="#FF0000"]').clear().type('#123ABC');
 
-      cy.waitForAnimations();
-
-      // Each selection should update the display
-      cy.get('.color-display, [data-testid="color-display"]').should('be.visible');
-    });
+    // Color preview should update
+    cy.get('.w-12.h-12.rounded-lg').should('be.visible');
   });
 
-  it('should provide visual feedback for color interactions', () => {
-    cy.navigateToProject('Complementary Colors');
+  it('should have proper layout structure', () => {
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Wait for color wheel
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').should('be.visible');
+    // Check main container structure
+    cy.get('.bg-gray-50\\/65.backdrop-blur-sm').should('be.visible');
+    cy.get('.max-w-6xl.mx-auto').should('be.visible');
 
-    // Hover over color wheel (if hover effects exist)
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').first().trigger('mouseover', 100, 100);
-
-    // Click to select
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').first().click(100, 100);
-
-    cy.waitForAnimations();
-
-    // Visual feedback should be present
-    cy.get('body').should('be.visible'); // Basic check for no crashes
-  });
-
-  it('should calculate accurate complementary colors', () => {
-    cy.navigateToProject('Complementary Colors');
-
-    // This test would need specific implementation details
-    // to verify color calculation accuracy
-    cy.get('.color-wheel, [data-testid="color-wheel"], svg').should('be.visible').click(100, 100);
-
-    cy.waitForAnimations();
-
-    // Check that colors are displayed (specific values would require DOM inspection)
-    cy.get('[data-testid="selected-color"], .selected-color').should('be.visible');
-    cy.get('[data-testid="complementary-color"], .complementary-color').should('be.visible');
+    // Check white background for color picker
+    cy.get('.bg-white.rounded-lg.shadow-lg').should('be.visible');
   });
 
   it('should navigate back to homepage', () => {
-    cy.navigateToProject('Complementary Colors');
+    cy.navigateToProject('Color Harmony Generator');
 
-    // Find and click back/home button
-    cy.get('[data-testid="back-to-home"], .back-button, a[href="/"]')
-      .first()
-      .should('be.visible')
-      .click();
+    // Click the back to library button
+    cy.get('button').contains('Back to Library').should('be.visible').click();
 
-    cy.url().should('eq', Cypress.config().baseUrl + '/');
-    cy.get('[data-testid="project-card"]').should('have.length.greaterThan', 0);
+    // Should be back at homepage
+    cy.get('h1').should('contain.text', 'Project Library');
+    cy.get('.min-h-\\[320px\\]').should('have.length', 7);
   });
 });
