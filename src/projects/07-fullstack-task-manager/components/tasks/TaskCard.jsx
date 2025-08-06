@@ -1,18 +1,26 @@
-import React from 'react';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
+  Box,
   Card,
   CardContent,
-  Typography,
   Chip,
-  Box,
   IconButton,
   Menu,
   MenuItem,
+  Typography,
 } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import React from 'react';
 
 const TaskCard = ({ task, onEdit, onDelete, onMove, isDragging = false }) => {
   const [menuAnchor, setMenuAnchor] = React.useState(null);
+
+  // Cleanup effect to close menu on unmount
+  React.useEffect(
+    () => () => {
+      setMenuAnchor(null);
+    },
+    []
+  );
 
   const handleMenuOpen = (event) => {
     event.stopPropagation();
@@ -121,7 +129,19 @@ const TaskCard = ({ task, onEdit, onDelete, onMove, isDragging = false }) => {
         </Box>
       </CardContent>
 
-      <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={handleMenuClose}>
+      <Menu
+        anchorEl={menuAnchor}
+        open={Boolean(menuAnchor)}
+        onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
         <MenuItem onClick={() => handleStatusChange('todo')}>Move to To Do</MenuItem>
         <MenuItem onClick={() => handleStatusChange('in-progress')}>Move to In Progress</MenuItem>

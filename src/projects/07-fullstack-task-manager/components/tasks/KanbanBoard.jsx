@@ -44,7 +44,7 @@ const KanbanBoard = ({ tasksByStatus, onCreateTask, onMoveTask, onEditTask, onDe
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Box sx={{ display: 'flex', gap: 3, overflow: 'auto' }} data-testid="kanban-board">
+      <Box sx={{ display: 'flex', gap: 3 }} data-testid="kanban-board">
         {columns.map((column) => (
           <Paper
             key={column.id}

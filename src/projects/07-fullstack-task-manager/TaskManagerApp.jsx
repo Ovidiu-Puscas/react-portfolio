@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import {
@@ -46,6 +46,15 @@ const Dashboard = () => {
   const [menuProject, setMenuProject] = useState(null);
   const [viewingProject, setViewingProject] = useState(null);
   const [creatingDemoData, setCreatingDemoData] = useState(false);
+
+  // Cleanup effect to close menu on unmount
+  useEffect(
+    () => () => {
+      setMenuAnchor(null);
+      setMenuProject(null);
+    },
+    []
+  );
 
   const handleCreateProject = async (formData) => {
     try {
@@ -205,7 +214,19 @@ const Dashboard = () => {
       )}
 
       {/* Project Menu */}
-      <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={handleMenuClose}>
+      <Menu
+        anchorEl={menuAnchor}
+        open={Boolean(menuAnchor && menuProject)}
+        onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
         <MenuItem onClick={handleEditClick}>Edit</MenuItem>
         <MenuItem onClick={handleDeleteProject} sx={{ color: 'error.main' }}>
           Delete

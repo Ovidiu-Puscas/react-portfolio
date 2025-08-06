@@ -53,7 +53,15 @@ const ProjectDetail = ({ project, onBack }) => {
   }
 
   return (
-    <Container sx={{ py: 4 }}>
+    <Container
+      sx={{
+        width: '100%',
+        maxWidth: '100%!important',
+        padding: '30px 24px',
+        overflowY: 'scroll',
+        height: 'calc(100% - 64px)',
+      }}
+    >
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Breadcrumbs sx={{ mb: 2 }}>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from '../../components/ErrorFallback';
+import SEO from '../../components/SEO';
+import { logError } from '../../utils/errorLogger';
 import ColorPicker from './components/ColorPicker';
 import HarmonyDisplay from './components/HarmonyDisplay';
 import { calculateHarmony } from './utils/colorUtils';
-import SEO from '../../components/SEO';
-import ErrorFallback from '../../components/ErrorFallback';
-import { logError } from '../../utils/errorLogger';
 
 const ComplementaryColorsApp = () => {
   const [selectedColor, setSelectedColor] = useState('#ff0000');
