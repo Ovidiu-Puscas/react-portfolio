@@ -7,6 +7,15 @@ const ParallaxBlobBackground = () => {
 
   useEffect(() => {
     let animationFrameId;
+    const isCoarsePointer =
+      (typeof window !== 'undefined' &&
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(pointer: coarse)').matches) ||
+      (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0);
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const handleMouseMove = (e) => {
       if (!containerRef.current) return;
@@ -23,24 +32,37 @@ const ParallaxBlobBackground = () => {
       if (!containerRef.current) return;
 
       const scrolled = window.pageYOffset;
-      const windowHeight = window.innerHeight;
-      const scrollProgress = scrolled / (document.body.scrollHeight - windowHeight);
+      // Use visual viewport height to keep progress stable when URL bar collapses
+      const viewportHeight = window.visualViewport?.height || window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const scrollProgress =
+        documentHeight > viewportHeight ? scrolled / (documentHeight - viewportHeight) : 0;
 
       containerRef.current.style.setProperty('--scroll-progress', scrollProgress);
       containerRef.current.style.setProperty('--scroll-y', scrolled + 'px');
     };
 
+    // On coarse pointers or reduced-motion, avoid continuous rAF; use scroll events only
     const updateAnimation = () => {
       handleScroll();
-      animationFrameId = requestAnimationFrame(updateAnimation);
+      if (!isCoarsePointer && !prefersReducedMotion) {
+        animationFrameId = requestAnimationFrame(updateAnimation);
+      }
     };
 
-    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    // Only track mouse on fine pointers
+    let mouseListenerAdded = false;
+    if (!isCoarsePointer && !prefersReducedMotion) {
+      document.addEventListener('mousemove', handleMouseMove, { passive: true });
+      mouseListenerAdded = true;
+    }
     window.addEventListener('scroll', handleScroll, { passive: true });
     updateAnimation();
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      if (mouseListenerAdded) {
+        document.removeEventListener('mousemove', handleMouseMove);
+      }
       window.removeEventListener('scroll', handleScroll);
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);

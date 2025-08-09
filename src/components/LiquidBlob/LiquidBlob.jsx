@@ -34,23 +34,38 @@ const LiquidBlob = ({
 
     const { scrollSpeed, mouseSpeed, rotationSpeed } = getDepthSpeeds(size);
 
+    // Detect coarse pointers (touch) and reduced motion
+    const isCoarsePointer =
+      (typeof window !== 'undefined' &&
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(pointer: coarse)').matches) ||
+      (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0);
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Disable mouse influence on touch devices or when reduced motion is requested
+    const effectiveMouseSpeed = isCoarsePointer || prefersReducedMotion ? 0 : mouseSpeed;
+
     const updateBlob = () => {
       if (!blobRef.current) return;
 
       const currentScrollY = window.pageYOffset;
 
       // Mouse position
-      const mouseX = lastMouseX * mouseSpeed * 50;
-      const mouseY = lastMouseY * mouseSpeed * 50;
-      const mouseRotate = (lastMouseX + lastMouseY) * rotationSpeed;
+      const mouseX = lastMouseX * effectiveMouseSpeed * 50;
+      const mouseY = lastMouseY * effectiveMouseSpeed * 50;
+      const mouseRotate = (lastMouseX + lastMouseY) * (effectiveMouseSpeed > 0 ? rotationSpeed : 0);
 
       // Scroll-based translation (different for each blob)
-      const scrollTranslateY = currentScrollY * scrollSpeed * -0.3;
+      // Use device-pixel-anchored translation to minimize visual jumps with URL bar collapse
+      const scrollTranslateY = Math.round(currentScrollY * scrollSpeed * -0.3);
       const scrollRotate = currentScrollY * 0.001 * rotationSpeed;
 
       // Combine transforms
       const finalTransform = `
-        translate(${mouseX}px, ${mouseY + scrollTranslateY}px) 
+        translate(${mouseX}px, ${mouseY + scrollTranslateY}px)
         rotate(${mouseRotate + scrollRotate}deg)
       `;
 
@@ -64,13 +79,20 @@ const LiquidBlob = ({
       lastMouseY = e.clientY / window.innerHeight - 0.5;
     };
 
-    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    // Only track mouse on fine pointers
+    let mouseListenerAdded = false;
+    if (!isCoarsePointer && !prefersReducedMotion) {
+      document.addEventListener('mousemove', handleMouseMove, { passive: true });
+      mouseListenerAdded = true;
+    }
 
     // Start animation loop
     updateBlob();
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      if (mouseListenerAdded) {
+        document.removeEventListener('mousemove', handleMouseMove);
+      }
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }

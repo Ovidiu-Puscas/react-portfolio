@@ -2,29 +2,29 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 // Import only needed Three.js modules instead of entire library
 import {
-  Scene,
-  PerspectiveCamera,
-  WebGLRenderer,
-  Color,
   AmbientLight,
-  DirectionalLight,
-  SpotLight,
-  PointLight,
   AxesHelper,
+  Color,
+  DirectionalLight,
   GridHelper,
+  PerspectiveCamera,
+  PointLight,
+  Scene,
+  SpotLight,
+  WebGLRenderer,
 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // Import the GLB file as a URL
 
 // Import modular components
-import { ColorPalette } from './classes/ColorPalette';
-import { CameraController } from './components/CameraController';
-import { PaintingSystem } from './components/PaintingSystem';
-import { ShapeChallenge } from './classes/ShapeChallenge';
-import GameUIComponent from './components/GameUIComponent';
-import { SCENE_CONFIG } from './config/settings';
 import ErrorFallback from '../../components/ErrorFallback';
 import { logError } from '../../utils/errorLogger';
+import { ColorPalette } from './classes/ColorPalette';
+import { ShapeChallenge } from './classes/ShapeChallenge';
+import { CameraController } from './components/CameraController';
+import GameUIComponent from './components/GameUIComponent';
+import { PaintingSystem } from './components/PaintingSystem';
+import { SCENE_CONFIG } from './config/settings';
 
 const ReactThreejsApp = () => {
   const mountRef = useRef(null);
@@ -94,7 +94,7 @@ const ReactThreejsApp = () => {
 
     // Create camera and renderer with initial size
     const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new WebGLRenderer({ antialias: true });
+    const renderer = new WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     rendererRef.current = renderer;
 
     // Initialize components
@@ -242,7 +242,7 @@ const ReactThreejsApp = () => {
         )}
         <div
           ref={mountRef}
-          className="flex-grow w-full overflow-hidden relative"
+          className="flex-grow w-full overflow-hidden relative touch-none select-none"
           style={{ minHeight: 0 }}
         />
         <GameUIComponent

@@ -1,5 +1,5 @@
-import { Vector2, Raycaster, CanvasTexture, MeshStandardMaterial } from 'three';
-import { PAINTING_CONFIG, CHALLENGE_CONFIG, log } from '../config/settings.js';
+import { CanvasTexture, MeshStandardMaterial, Raycaster, Vector2 } from 'three';
+import { CHALLENGE_CONFIG, PAINTING_CONFIG, log } from '../config/settings.js';
 
 export class PaintingSystem {
   constructor() {
@@ -27,6 +27,7 @@ export class PaintingSystem {
 
     // Initialize canvases
     this.initCanvas();
+    this.eventTarget = null; // Element currently receiving pointer listeners
     this.setupEventListeners();
     this.createBrushUI();
   }
@@ -92,13 +93,23 @@ export class PaintingSystem {
 
   setupEventListeners() {
     // Store bound functions for proper cleanup
-    this.boundOnPointerDown = this.onPointerDown.bind(this);
-    this.boundOnPointerMove = this.onPointerMove.bind(this);
-    this.boundOnPointerUp = this.onPointerUp.bind(this);
+    if (!this.boundOnPointerDown) this.boundOnPointerDown = this.onPointerDown.bind(this);
+    if (!this.boundOnPointerMove) this.boundOnPointerMove = this.onPointerMove.bind(this);
+    if (!this.boundOnPointerUp) this.boundOnPointerUp = this.onPointerUp.bind(this);
 
-    window.addEventListener('pointerdown', this.boundOnPointerDown);
-    window.addEventListener('pointermove', this.boundOnPointerMove);
-    window.addEventListener('pointerup', this.boundOnPointerUp);
+    // Choose best target
+    const target = this.renderer && this.renderer.domElement ? this.renderer.domElement : window;
+
+    if (this.eventTarget && this.eventTarget !== target) {
+      this.eventTarget.removeEventListener('pointerdown', this.boundOnPointerDown);
+      this.eventTarget.removeEventListener('pointermove', this.boundOnPointerMove);
+      this.eventTarget.removeEventListener('pointerup', this.boundOnPointerUp);
+    }
+
+    target.addEventListener('pointerdown', this.boundOnPointerDown, { passive: false });
+    target.addEventListener('pointermove', this.boundOnPointerMove, { passive: false });
+    target.addEventListener('pointerup', this.boundOnPointerUp, { passive: false });
+    this.eventTarget = target;
   }
 
   createBrushUI() {
@@ -354,6 +365,7 @@ export class PaintingSystem {
   }
 
   onPointerDown(event) {
+    if (event && event.cancelable) event.preventDefault();
     // Raycast for color blobs
     const rect = this.renderer ? this.renderer.domElement.getBoundingClientRect() : null;
 
@@ -383,12 +395,18 @@ export class PaintingSystem {
     }
 
     if (!this.canvasMesh) return; // Only proceed if canvasMesh is ready
+    if (event && event.target && event.target.setPointerCapture) {
+      try {
+        event.target.setPointerCapture(event.pointerId);
+      } catch (_) {}
+    }
     this.isPainting = true;
     this.lastPaintPoint = null; // Reset last point when starting new stroke
     this.paintFromEvent(event);
   }
 
   onPointerMove(event) {
+    if (event && event.cancelable) event.preventDefault();
     if (this.isPainting) this.paintFromEvent(event);
   }
 
@@ -471,6 +489,16 @@ export class PaintingSystem {
 
   setRenderer(renderer) {
     this.renderer = renderer;
+    if (this.renderer && this.renderer.domElement) {
+      const canvas = this.renderer.domElement;
+      canvas.style.touchAction = 'none';
+      canvas.style.userSelect = 'none';
+      canvas.style.webkitUserSelect = 'none';
+      canvas.style.msTouchAction = 'none';
+      canvas.style.webkitTapHighlightColor = 'transparent';
+    }
+    // Rebind listeners to the canvas target now that it's available
+    this.setupEventListeners();
   }
 
   // Game integration methods
@@ -827,14 +855,15 @@ export class PaintingSystem {
 
   destroy() {
     // Remove event listeners
+    const target = this.eventTarget || window;
     if (this.boundOnPointerDown) {
-      window.removeEventListener('pointerdown', this.boundOnPointerDown);
+      target.removeEventListener('pointerdown', this.boundOnPointerDown);
     }
     if (this.boundOnPointerMove) {
-      window.removeEventListener('pointermove', this.boundOnPointerMove);
+      target.removeEventListener('pointermove', this.boundOnPointerMove);
     }
     if (this.boundOnPointerUp) {
-      window.removeEventListener('pointerup', this.boundOnPointerUp);
+      target.removeEventListener('pointerup', this.boundOnPointerUp);
     }
 
     // Clean up brush UI

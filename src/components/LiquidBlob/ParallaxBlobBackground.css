@@ -5,19 +5,22 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
   --mouse-x: 0;
   --mouse-y: 0;
   --scroll-progress: 0;
   --scroll-y: 0px;
+  backface-visibility: hidden;
 }
 
 .parallax-blob {
   position: absolute;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* Large ambient blobs - slow, deep parallax */
@@ -270,17 +273,17 @@
 
   /* Reduce parallax intensity on mobile */
   .parallax-blob-1 {
-    transform: translateX(calc(var(--mouse-x) * 40px)) translateY(calc(var(--mouse-y) * 30px))
+    transform: translateX(calc(var(--mouse-x) * 20px)) translateY(calc(var(--mouse-y) * 15px))
       translateY(calc(var(--scroll-progress) * -100px));
   }
 
   .parallax-blob-2 {
-    transform: translateX(calc(var(--mouse-x) * -30px)) translateY(calc(var(--mouse-y) * 20px))
+    transform: translateX(calc(var(--mouse-x) * -15px)) translateY(calc(var(--mouse-y) * 10px))
       translateY(calc(var(--scroll-progress) * -75px));
   }
 
   .parallax-blob-3 {
-    transform: translateX(calc(var(--mouse-x) * 35px)) translateY(calc(var(--mouse-y) * -25px))
+    transform: translateX(calc(var(--mouse-x) * 18px)) translateY(calc(var(--mouse-y) * -12px))
       translateY(calc(var(--scroll-progress) * -50px));
   }
 }
@@ -290,6 +293,24 @@
   .parallax-blob {
     animation: none !important;
     transform: none !important;
+  }
+}
+
+/* Coarse pointer optimizations: disable float animations and lighten transforms */
+@media (pointer: coarse) {
+  .parallax-blob {
+    animation: none !important;
+  }
+  .parallax-blob-1,
+  .parallax-blob-2,
+  .parallax-blob-3,
+  .parallax-blob-4,
+  .parallax-blob-5,
+  .parallax-blob-6,
+  .parallax-blob-7,
+  .parallax-blob-8,
+  .parallax-blob-9 {
+    transform: translate3d(0, 0, 0);
   }
 }
 

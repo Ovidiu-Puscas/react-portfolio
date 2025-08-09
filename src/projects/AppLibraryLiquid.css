@@ -45,8 +45,8 @@
 }
 
 .liquid-library-container {
-  min-height: 100vh;
-  background: transparent;
+  min-height: 100dvh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
   overflow-x: hidden;
   z-index: 1;
@@ -80,9 +80,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
+  will-change: transform, opacity;
 }
 
 @keyframes liquidMove {
@@ -129,10 +129,11 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
+  will-change: transform;
 }
 
 .unified-blob {
@@ -257,12 +258,13 @@
   pointer-events: none;
 }
 
-.liquid-app-card:hover::before {
-  opacity: 0.05;
-}
-
-.liquid-app-card:hover {
-  transform: translateY(-8px) scale(1.02);
+@media (hover: hover) and (pointer: fine) {
+  .liquid-app-card:hover::before {
+    opacity: 0.05;
+  }
+  .liquid-app-card:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
 }
 
 .liquid-app-icon {
@@ -295,23 +297,24 @@
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-.liquid-app-card:hover .liquid-app-icon {
-  transform: rotate(3deg) scale(1.08);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.liquid-app-card:hover .liquid-app-icon svg {
-  transform: scale(1.05);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+@media (hover: hover) and (pointer: fine) {
+  .liquid-app-card:hover .liquid-app-icon {
+    transform: rotate(3deg) scale(1.08);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.08) 100%
+    );
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .liquid-app-card:hover .liquid-app-icon svg {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+  }
 }
 
 .liquid-app-title {
@@ -344,8 +347,14 @@
   transition: all 0.3s ease;
 }
 
-.liquid-launch-button:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%);
+@media (hover: hover) and (pointer: fine) {
+  .liquid-launch-button:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  }
 }
 
 /* Navigation */
@@ -374,9 +383,11 @@
   transition: all 0.2s ease;
 }
 
-.liquid-back-button:hover {
-  transform: scale(1.05);
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .liquid-back-button:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .liquid-nav-title {
@@ -586,31 +597,31 @@
   .unified-blob-1 {
     top: 3%;
     left: -5%;
-    opacity: 0.35;
+    opacity: 0.28;
   }
 
   .unified-blob-2 {
     top: 20%;
     right: -10%;
-    opacity: 0.3;
+    opacity: 0.25;
   }
 
   .unified-blob-3 {
     top: 45%;
     left: 60%;
-    opacity: 0.25;
+    opacity: 0.2;
   }
 
   .unified-blob-4 {
     bottom: 25%;
     left: -5%;
-    opacity: 0.28;
+    opacity: 0.22;
   }
 
   .unified-blob-5 {
     bottom: 5%;
     right: -8%;
-    opacity: 0.22;
+    opacity: 0.18;
   }
 
   /* Side panel mobile adjustments */
@@ -634,9 +645,7 @@
 
 /* Dark mode adjustments */
 @media (prefers-color-scheme: dark) {
-  .liquid-library-container {
-    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
-  }
+  /* Keep transparent so base gradient pseudo-element remains seamless */
 
   .liquid-app-card {
     background: rgba(0, 0, 0, 0.2) !important;
@@ -654,5 +663,16 @@
 
   .liquid-app-card:hover {
     transform: translateY(-4px);
+  }
+}
+
+/* Coarse pointer: reduce backdrop/blur stacking to avoid banding while scrolling */
+@media (pointer: coarse) {
+  .liquid-hero-content,
+  .liquid-app-card .liquid-app-icon,
+  .liquid-side-panel-card,
+  .liquid-tech-badge {
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
   }
 }

@@ -6,6 +6,8 @@
   height: var(--blob-size, 400px);
   pointer-events: none;
   z-index: 1;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .liquid-blob {
@@ -14,7 +16,9 @@
   height: 100%;
   filter: url(#gooey);
   transform-origin: center;
-  transform: translate(0, 0) rotate(0deg);
+  transform: translate3d(0, 0, 0) rotate(0deg);
+  backface-visibility: hidden;
+  will-change: transform, filter;
   /* Transform will be controlled by JavaScript for smooth parallax */
 }
 
@@ -158,5 +162,23 @@
 
   .blob-gradient {
     filter: blur(30px);
+  }
+}
+
+/* Touch/coarse pointer optimizations to mitigate flicker */
+@media (pointer: coarse) {
+  /* Disable heavy SVG gooey filter on mobile to avoid GPU thrash */
+  .liquid-blob {
+    filter: none;
+  }
+
+  /* Slightly reduce blur to stabilize rendering */
+  .blob-gradient {
+    filter: blur(24px);
+    /* Slow internal gradient animations to reduce rapid compositing */
+    animation-duration: calc(var(--animation-duration, 20s) * 1.5);
+    /* Avoid blend-mode artifacts that can darken/lighten during scroll */
+    mix-blend-mode: normal;
+    opacity: 0.75;
   }
 }
