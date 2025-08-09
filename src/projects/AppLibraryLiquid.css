@@ -641,6 +641,16 @@
     width: 50px;
     height: 50px;
   }
+
+  .liquid-nav-header {
+    top: 0.25rem;
+    left: 0.25rem;
+  }
+
+  .liquid-app-content {
+    padding: 0.25rem;
+    padding-top: 75px;
+  }
 }
 
 /* Dark mode adjustments */
