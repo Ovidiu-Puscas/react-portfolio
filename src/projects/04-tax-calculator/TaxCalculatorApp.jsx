@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import InputForm from './components/InputForm';
 import SelectionOptions from './components/SelectionOptions';
@@ -8,6 +8,13 @@ import { fetchExchangeRates, getDefaultRates } from './services/currencyService'
 import ErrorFallback from '../../components/ErrorFallback';
 import { logError } from '../../utils/errorLogger';
 import './TaxCalculator.css';
+
+// Lazy load chart components for better performance
+const IncomeComparisonChart = lazy(() => import('./components/charts/IncomeComparisonChart'));
+const TaxBreakdownChart = lazy(() => import('./components/charts/TaxBreakdownChart'));
+const RateProgressionChart = lazy(() => import('./components/charts/RateProgressionChart'));
+const CurrencyComparisonChart = lazy(() => import('./components/charts/CurrencyComparisonChart'));
+const YearComparisonChart = lazy(() => import('./components/charts/YearComparisonChart'));
 
 const TaxCalculatorApp = () => {
   // Constants for calculations
@@ -23,6 +30,10 @@ const TaxCalculatorApp = () => {
   const [nextYearDividendTaxRate, setNextYearDividendTaxRate] = useState('16');
   const [selectedYear, setSelectedYear] = useState('2025');
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
+
+  // Chart view states
+  const [activeChart, setActiveChart] = useState(null);
+  const [highlightedRate, setHighlightedRate] = useState(null);
 
   // Currency API states
   const [isLoadingRates, setIsLoadingRates] = useState(false);
@@ -192,72 +203,195 @@ const TaxCalculatorApp = () => {
       }}
     >
       <div className="tax-calculator-container">
-        {/* Exchange Rate Status */}
-        <div className="py-4 mb-6">
-          {isLoadingRates && (
-            <div className="text-blue-600 text-sm mb-2" data-testid="loading">
-              🔄 Loading real-time exchange rates...
+        {/* Main Layout Grid - Mobile First */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+          {/* Liquid Glass Side Panel - Collapsible on Mobile */}
+          <div className="lg:col-span-1">
+            <div className="liquid-glass-panel lg:sticky lg:top-0">
+              {/* Panel Header */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                  <span className="text-white text-lg">⚙️</span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-800">Configuration</h3>
+                  <p className="text-xs text-slate-500">Adjust parameters</p>
+                </div>
+              </div>
+
+              {/* Exchange Rate Status */}
+              <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-slate-50/50 to-blue-50/50 border border-white/20">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    Exchange Rates
+                  </span>
+                  {isLoadingRates && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  )}
+                  {lastUpdated && !isLoadingRates && (
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  )}
+                </div>
+
+                {lastUpdated && (
+                  <div className="text-xs text-slate-600 mb-2">
+                    Updated: {new Date(lastUpdated).toLocaleTimeString()}
+                  </div>
+                )}
+
+                <button
+                  onClick={refreshRates}
+                  disabled={isLoadingRates}
+                  className="w-full px-3 py-2 rounded-lg bg-white/50 hover:bg-white/70 disabled:bg-gray-100/50 text-slate-700 font-medium text-sm transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60 border border-slate-200/50"
+                >
+                  {isLoadingRates ? 'Refreshing...' : 'Refresh Rates'}
+                </button>
+              </div>
+
+              <InputForm
+                customRate={customRate}
+                setCustomRate={setCustomRate}
+                usdToRonRate={usdToRonRate}
+                setUsdToRonRate={setUsdToRonRate}
+                ronToEurRate={ronToEurRate}
+                setRonToEurRate={setRonToEurRate}
+                microSrlTaxRate={microSrlTaxRate}
+                setMicroSrlTaxRate={setMicroSrlTaxRate}
+                nextYearDividendTaxRate={nextYearDividendTaxRate}
+                setNextYearDividendTaxRate={setNextYearDividendTaxRate}
+                selectedYear={selectedYear}
+                setSelectedYear={setSelectedYear}
+                selectedCurrency={selectedCurrency}
+                setSelectedCurrency={setSelectedCurrency}
+                isLoadingRates={isLoadingRates}
+                lastUpdated={lastUpdated}
+                apiError={apiError}
+              />
             </div>
-          )}
-          {lastUpdated && (
-            <div className="text-green-600 text-sm mb-2">
-              ✅ Rates updated: {new Date(lastUpdated).toLocaleString()}
+          </div>
+
+          {/* Main Content Area */}
+          <div className="lg:col-span-3 space-y-4 lg:space-y-6">
+            {/* Visualization Controls */}
+            <div className="p-3 lg:p-6 bg-gradient-to-r from-slate-50 to-blue-50 rounded-2xl shadow-sm border border-slate-200">
+              <h3 className="text-lg lg:text-xl font-bold text-slate-800 mb-3 lg:mb-4 flex items-center gap-2">
+                <span className="text-base lg:text-xl">📊</span> Visual Analytics
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-3">
+                <button
+                  onClick={() => setActiveChart(activeChart === 'income' ? null : 'income')}
+                  className={`px-4 py-3 lg:px-6 lg:py-4 rounded-xl transition-all duration-300 text-sm font-semibold flex items-center justify-center gap-2 ${
+                    activeChart === 'income'
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg lg:transform lg:scale-105'
+                      : 'bg-white text-slate-700 hover:bg-slate-50 shadow-md hover:shadow-lg border border-slate-200'
+                  }`}
+                >
+                  <span className="hidden sm:inline">📊</span> Income Comparison
+                </button>
+                <button
+                  onClick={() => setActiveChart(activeChart === 'year' ? null : 'year')}
+                  className={`px-4 py-3 lg:px-6 lg:py-4 rounded-xl transition-all duration-300 text-sm font-semibold flex items-center justify-center gap-2 ${
+                    activeChart === 'year'
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg lg:transform lg:scale-105'
+                      : 'bg-white text-slate-700 hover:bg-slate-50 shadow-md hover:shadow-lg border border-slate-200'
+                  }`}
+                >
+                  <span className="hidden sm:inline">📅</span> Year Comparison
+                </button>
+              </div>
             </div>
-          )}
-          {apiError && (
-            <div className="text-orange-600 text-sm mb-2">⚠️ Using default rates: {apiError}</div>
-          )}
-          <button
-            onClick={refreshRates}
-            disabled={isLoadingRates}
-            className="bg-blue-500 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded text-sm transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isLoadingRates ? 'Refreshing...' : '🔄 Refresh Rates'}
-          </button>
+
+            {/* Chart Display Area */}
+            {activeChart && (
+              <Suspense
+                fallback={
+                  <div className="w-full bg-white rounded-lg shadow-sm p-8 mb-6 text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Loading chart...</p>
+                  </div>
+                }
+              >
+                {activeChart === 'income' && (
+                  <IncomeComparisonChart
+                    customRate={parseFloat(customRate)}
+                    usdToRonRate={parseFloat(usdToRonRate)}
+                    ronToEurRate={parseFloat(ronToEurRate)}
+                    microSrlTaxRate={parseFloat(microSrlTaxRate)}
+                    nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
+                    selectedYear={selectedYear}
+                    selectedCurrency={selectedCurrency}
+                    calculateIncome={calculateIncome}
+                    onRateClick={setHighlightedRate}
+                  />
+                )}
+                {activeChart === 'year' && (
+                  <YearComparisonChart
+                    customRate={parseFloat(customRate)}
+                    usdToRonRate={parseFloat(usdToRonRate)}
+                    ronToEurRate={parseFloat(ronToEurRate)}
+                    microSrlTaxRate={parseFloat(microSrlTaxRate)}
+                    nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
+                    selectedCurrency={selectedCurrency}
+                    calculateIncome={calculateIncome}
+                  />
+                )}
+              </Suspense>
+            )}
+
+            {/* Main Results Dashboard - Mobile Responsive */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+              {/* Tax Breakdown Widget - Full Width on Mobile */}
+              <div className="lg:col-span-1 order-2 lg:order-1">
+                <div className="bg-gradient-to-br from-white to-slate-50 rounded-2xl shadow-lg border border-slate-200 p-4 lg:p-6 h-full">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
+                    <h3 className="text-lg font-bold text-slate-800">Tax Breakdown</h3>
+                  </div>
+                  <TaxBreakdownChart
+                    hourlyRate={parseFloat(customRate) || 25}
+                    usdToRonRate={parseFloat(usdToRonRate)}
+                    ronToEurRate={parseFloat(ronToEurRate)}
+                    microSrlTaxRate={parseFloat(microSrlTaxRate)}
+                    nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
+                    selectedYear={selectedYear}
+                    selectedCurrency={selectedCurrency}
+                    calculateIncome={calculateIncome}
+                  />
+                </div>
+              </div>
+
+              {/* Results Table - Priority on Mobile */}
+              <div className="lg:col-span-2 order-1 lg:order-2" data-testid="tax-results">
+                <div className="bg-gradient-to-br from-white to-slate-50 rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                  <div className="p-4 lg:p-6 bg-gradient-to-r from-slate-50 to-blue-50 border-b border-slate-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></div>
+                      <h3 className="text-base lg:text-lg font-bold text-slate-800">
+                        Income Calculator Results
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="p-3 lg:p-6 overflow-x-auto">
+                    <ResultsTable
+                      selectedYear={selectedYear}
+                      selectedCurrency={selectedCurrency}
+                      customRate={parseFloat(customRate)}
+                      usdToRonRate={parseFloat(usdToRonRate)}
+                      ronToEurRate={parseFloat(ronToEurRate)}
+                      microSrlTaxRate={parseFloat(microSrlTaxRate)}
+                      nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
+                      calculateIncome={calculateIncome}
+                      formatCurrency={formatCurrency}
+                      highlightedRate={highlightedRate}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Disclaimer />
+          </div>
         </div>
-
-        <InputForm
-          customRate={customRate}
-          setCustomRate={setCustomRate}
-          usdToRonRate={usdToRonRate}
-          setUsdToRonRate={setUsdToRonRate}
-          ronToEurRate={ronToEurRate}
-          setRonToEurRate={setRonToEurRate}
-          microSrlTaxRate={microSrlTaxRate}
-          setMicroSrlTaxRate={setMicroSrlTaxRate}
-          nextYearDividendTaxRate={nextYearDividendTaxRate}
-          setNextYearDividendTaxRate={setNextYearDividendTaxRate}
-          selectedYear={selectedYear}
-          setSelectedYear={setSelectedYear}
-          selectedCurrency={selectedCurrency}
-          setSelectedCurrency={setSelectedCurrency}
-          isLoadingRates={isLoadingRates}
-          lastUpdated={lastUpdated}
-          apiError={apiError}
-        />
-
-        <SelectionOptions
-          selectedYear={selectedYear}
-          setSelectedYear={setSelectedYear}
-          selectedCurrency={selectedCurrency}
-          setSelectedCurrency={setSelectedCurrency}
-        />
-
-        <div data-testid="tax-results" className="overflow-visible">
-          <ResultsTable
-            selectedYear={selectedYear}
-            selectedCurrency={selectedCurrency}
-            customRate={parseFloat(customRate)}
-            usdToRonRate={parseFloat(usdToRonRate)}
-            ronToEurRate={parseFloat(ronToEurRate)}
-            microSrlTaxRate={parseFloat(microSrlTaxRate)}
-            nextYearDividendTaxRate={parseFloat(nextYearDividendTaxRate)}
-            calculateIncome={calculateIncome}
-            formatCurrency={formatCurrency}
-          />
-        </div>
-
-        <Disclaimer />
       </div>
     </ErrorBoundary>
   );

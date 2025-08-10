@@ -1,13 +1,130 @@
-/* Tax Calculator Custom Styles */
+/* Tax Calculator Custom Styles - Modern Tablet Design */
 .tax-calculator-container {
-  font-family: 'Inter', sans-serif;
-  background-color: rgb(249 250 251 / 0.85);
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   backdrop-filter: blur(20px) saturate(180%);
   border-radius: 16px;
   box-sizing: border-box;
   height: 100%;
-  overflow-y: scroll;
-  padding: 45px;
+  overflow-y: auto;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+}
+
+/* Handle very small screens */
+@media (max-width: 375px) {
+  .tax-calculator-container {
+    padding: 12px;
+    border-radius: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .tax-calculator-container {
+    padding: 24px;
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tax-calculator-container {
+    padding: 32px;
+    border-radius: 24px;
+  }
+}
+
+/* Liquid Glass Panel - Apple Style */
+.liquid-glass-panel {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+  .liquid-glass-panel {
+    padding: 20px;
+    border-radius: 18px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .liquid-glass-panel {
+    padding: 24px;
+    border-radius: 20px;
+    margin-bottom: 0;
+  }
+}
+
+/* Glass reflection effect */
+.liquid-glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 100%
+  );
+}
+
+/* Liquid glass inputs */
+.liquid-glass-panel input[type='number'],
+.liquid-glass-panel input[type='text'],
+.liquid-glass-panel select {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  border-radius: 12px;
+  padding: 10px 14px;
+  width: 100%;
+  font-size: 14px;
+  color: #1e293b;
+  transition: all 0.2s ease;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+}
+
+.liquid-glass-panel input:focus,
+.liquid-glass-panel select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow:
+    0 0 0 3px rgba(139, 92, 246, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+}
+
+/* Liquid glass labels */
+.liquid-glass-panel label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 6px;
+  display: block;
+  letter-spacing: 0.025em;
 }
 
 .header {
@@ -160,5 +277,184 @@ table[data-testid='tax-breakdown'] {
   }
   .input-item {
     flex: 1 1 100%;
+  }
+}
+
+/* Chart Styles */
+.recharts-wrapper {
+  font-family: inherit;
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: #4b5563;
+  font-size: 12px;
+}
+
+.recharts-legend-item-text {
+  color: #4b5563 !important;
+  font-size: 14px !important;
+}
+
+.recharts-tooltip-wrapper {
+  z-index: 1000;
+}
+
+.recharts-pie-label-text {
+  font-weight: 600;
+  fill: white;
+}
+
+.recharts-surface {
+  overflow: visible;
+}
+
+/* Pie chart specific fixes */
+.recharts-pie {
+  pointer-events: all;
+}
+
+.recharts-pie-sector {
+  outline: none !important;
+  stroke: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important;
+  transform-origin: center !important;
+}
+
+.recharts-pie-sector:focus {
+  outline: none !important;
+  stroke: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.recharts-pie-sector:focus-visible {
+  outline: none !important;
+  stroke: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.recharts-pie-sector:active {
+  outline: none !important;
+  stroke: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove focus outline from all chart elements and prevent zoom */
+.recharts-wrapper,
+.recharts-surface,
+.recharts-responsive-container,
+.recharts-wrapper *,
+.recharts-surface *,
+.recharts-responsive-container * {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+}
+
+/* Specific focus removal */
+svg:focus,
+g:focus,
+path:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.recharts-layer {
+  transform-box: fill-box;
+}
+
+.recharts-pie-label-text {
+  pointer-events: none !important;
+  z-index: 10;
+}
+
+/* Chart animations */
+.recharts-bar-rectangle path {
+  transition: fill 0.3s ease;
+}
+
+.recharts-pie-sector {
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease;
+  transform-origin: center;
+}
+
+/* Mobile responsive chart adjustments */
+@media (max-width: 640px) {
+  .recharts-cartesian-axis-tick-value {
+    font-size: 10px;
+  }
+
+  .recharts-legend-item-text {
+    font-size: 12px !important;
+  }
+
+  .recharts-default-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .recharts-legend-item {
+    margin: 0 8px !important;
+  }
+
+  /* Prevent chart overflow */
+  .recharts-wrapper {
+    min-width: 300px !important;
+    overflow-x: auto;
+  }
+
+  /* Improve touch targets */
+  .recharts-bar-rectangle,
+  .recharts-pie-sector {
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Better tooltip positioning on mobile */
+  .recharts-tooltip-wrapper {
+    z-index: 9999;
+    max-width: 280px;
+  }
+
+  /* Remove any borders/outlines on mobile */
+  .recharts-pie-sector,
+  .recharts-bar-rectangle,
+  .recharts-wrapper,
+  .recharts-surface,
+  .recharts-responsive-container {
+    outline: none !important;
+    stroke: none !important;
+    border: none !important;
+  }
+
+  /* Prevent double-tap zoom on charts */
+  .recharts-wrapper,
+  .recharts-surface,
+  .recharts-responsive-container {
+    touch-action: manipulation !important;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 375px) {
+  .recharts-cartesian-axis-tick-value {
+    font-size: 8px;
+  }
+
+  .recharts-legend-item-text {
+    font-size: 10px !important;
   }
 }
